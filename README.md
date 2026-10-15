@@ -1,23 +1,35 @@
-# Project Name
+# Wizard_Game
 
-A short description of the project, its purpose, and the main focus of the implementation.
+This project is a jump-and-run game built with HTML, CSS, and JavaScript as an exam assignment for an intensive Frontend Web Development Bootcamp. It focuses on applying object-oriented programming (OOP) principles in JavaScript and demonstrating the skills acquired throughout the course.
 
 ## Features
 
-- Feature 1
-- Feature 2
-- Feature 3
-- Feature 4
+The following features are planned for the game:
+
+- **Character Movement** – Move and jump through a side-scrolling game world.
+- **Combat System** – Defeat enemies using melee and ranged attacks.
+- **Enemy Variety** – Encounter different enemy types and face a challenging final boss.
+- **Collectibles** – Collect coins to restore health.
+- **Status Bars** – Monitor health and charge energy for powerful attacks.
+- **Character Animations** – Experience animated movement, combat, and inactivity behavior.
+- **Single-Level Gameplay** – Complete one level and defeat the final boss.
+- **Keyboard & Touch Controls** – Play using a keyboard on desktop or touch controls on mobile devices.
+- **Game Instructions** – View the game rules and controls in an interactive help dialog.
+- **Game Menus** – Start, pause, restart, or return to the main menu.
+- **Game Screens** – View dedicated victory and game-over screens.
+- **Audio Settings** – Enjoy background music and sound effects, with a mute option saved in Local Storage.
+- **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay.
+- **Mobile Landscape Support** – Play in landscape mode with an orientation notice for portrait mode.
 
 ## Technologies
 
 - HTML
 - CSS
-- JavaScript
+- Vanilla JavaScript
 
 ## What I Learned
 
-This project is currently in development. The key learnings and technical experience gained during the project will be documented here once the implementation is complete.
+The main focus of this project is learning and applying object-oriented programming (OOP) in JavaScript. Through developing the game, I aim to deepen my understanding of classes, objects, inheritance, and how they interact to create a structured and maintainable application.
 
 <!--
 WHAT I LEARNED:
@@ -25,20 +37,18 @@ WHAT I LEARNED:
 Update this section during or after development.
 Focus on what you actually learned or improved while working on the project.
 
-Example:
+Possible topics include object-oriented programming, game loops,
+collision detection, animation handling, and managing game states.
 
-## What I Learned
-
-During this project, I improved my understanding of working with JavaScript objects and JSON data. I also gained more experience with DOM manipulation, event handling, and storing application data using Local Storage.
-
-Try to describe the most relevant learnings in 2–4 sentences instead of simply repeating the technologies or features listed above.
+Describe your most relevant learnings in 2–4 sentences instead of
+simply repeating the technologies or features listed above.
 -->
 
 ## Project Status
 
-> **Current Status:** In Development
+> **Current Status:** Planning
 
-The project is currently being developed.
+The project concept and core features have been defined. Development has not yet started.
 
 <!--
 PROJECT STATUS:
@@ -65,7 +75,7 @@ The project has been completed successfully.
 Clone the repository:
 
 ```bash
-git clone https://github.com/PatrickWagnerDev/REPOSITORY-NAME.git
+git clone https://github.com/PatrickWagnerDev/Wizard_Game.git
 ```
 
 Open the project in **Visual Studio Code** and start `index.html` using the **Live Server** extension.
@@ -74,13 +84,13 @@ Open the project in **Visual Studio Code** and start `index.html` using the **Li
 
 This project was created as part of the **Frontend Web Developer Bootcamp at Developer Akademie**.
 
-It is a learning and portfolio project and is not intended for production use.
+It is a personal examination and portfolio project and is not intended for production use. External contributions are not accepted.
 
 ## License
 
 No license has been assigned to this project.
 
-This project was created for educational and portfolio purposes.
+This project was created for educational and portfolio purposes and is not distributed under an open-source license.
 
 ## Author
 
