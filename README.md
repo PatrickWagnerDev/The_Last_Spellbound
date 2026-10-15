@@ -1,4 +1,4 @@
-# Wizard_Game
+# The Last Spellbound
 
 This project is a jump-and-run game built with HTML, CSS, and JavaScript as an exam assignment for an intensive Frontend Web Development Bootcamp. It focuses on applying object-oriented programming (OOP) principles in JavaScript and demonstrating the skills acquired throughout the course.
 
