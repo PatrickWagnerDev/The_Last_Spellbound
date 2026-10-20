@@ -5,6 +5,9 @@ class World {
         new Enemy(),
         new Enemy()
     ]
+    trees = [
+        new Trees()
+    ];
     ctx;
     canvas;
     
@@ -19,6 +22,9 @@ class World {
         this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.height, this.character.width);
         this.enemies.forEach(Enemy => {
             this.ctx.drawImage(Enemy.img, Enemy.x, Enemy.y, Enemy.height, Enemy.width)
+        });
+        this.trees.forEach(Tree => {
+            this.ctx.drawImage(Tree.img, Tree.x, Tree.y, Tree.height, Tree.width)
         });
         let self = this;
         requestAnimationFrame(function(){
