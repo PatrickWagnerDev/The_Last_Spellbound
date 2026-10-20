@@ -8,6 +8,9 @@ class World {
     trees = [
         new Trees()
     ];
+    backgroundObjects = [
+        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png')
+    ];
     ctx;
     canvas;
     
@@ -19,16 +22,23 @@ class World {
 
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.height, this.character.width);
-        this.enemies.forEach(Enemy => {
-            this.ctx.drawImage(Enemy.img, Enemy.x, Enemy.y, Enemy.height, Enemy.width)
-        });
-        this.trees.forEach(Tree => {
-            this.ctx.drawImage(Tree.img, Tree.x, Tree.y, Tree.height, Tree.width)
-        });
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.trees);
+        this.addObjectsToMap(this.backgroundObjects);
         let self = this;
         requestAnimationFrame(function(){
             self.draw();
         });
+    }
+
+    addObjectsToMap(objects){
+        objects.forEach(o => {
+            this.addToMap(o);
+        });
+    }
+
+    addToMap(mo){
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.height, mo.width)
     }
 }
