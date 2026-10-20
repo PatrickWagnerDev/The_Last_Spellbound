@@ -22,10 +22,10 @@ class World {
 
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.addObjectsToMap(this.backgroundObjects);
+        this.addObjectsToMap(this.trees);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
-        this.addObjectsToMap(this.trees);
-        this.addObjectsToMap(this.backgroundObjects);
         let self = this;
         requestAnimationFrame(function(){
             self.draw();
