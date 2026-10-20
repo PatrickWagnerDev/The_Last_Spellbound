@@ -1,4 +1,4 @@
-class MovableObject extends World{
+class MovableObject{
     x = 120;
     y = 400;
     img;
