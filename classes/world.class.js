@@ -9,7 +9,9 @@ class World {
         new Trees()
     ];
     backgroundObjects = [
-        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png')
+        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png'),
+        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees2.png'),
+        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees1.png'),
     ];
     ctx;
     canvas;
