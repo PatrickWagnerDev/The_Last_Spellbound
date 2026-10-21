@@ -4,6 +4,8 @@ const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 class Character extends MovableObject{
     width = 150;
     height = 150;
+    x = TILE_SIZE;
+    y = 9 * TILE_SIZE - this.height;
     world;
     currentPath;
 
