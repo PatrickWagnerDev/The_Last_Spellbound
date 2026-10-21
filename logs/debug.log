@@ -3,3 +3,9 @@
 2026-10-21 | world.class.js | addToMap draws the current sprite frame and uses correct width/height order
 2026-10-21 | background-object.class.js, trees.class.js | Set width 720, height 480 and frameWidth 1920, frameHeight 1080, frameCount 1 to restore the full background after the sprite sheet change
 2026-10-21 | enemy.class.js | Set width/height 100, frameWidth/frameHeight 40, frameCount 4 and call animate() for the bear idle sprite sheet
+2026-10-21 | keyboard.class.js | New class Keyboard with LEFT, RIGHT, UP, DOWN, SPACE
+2026-10-21 | script.js | Added keyboard, KEY_MAP, updateKey with event.code and keydown/keyup listeners; removed console.log; World receives keyboard
+2026-10-21 | index.html | Included keyboard.class.js before script.js
+2026-10-21 | movable-object.class.js | Added speed, otherDirection, imageCache, loadImages; moveRight/moveLeft change x
+2026-10-21 | character.class.js | Added movement by keyboard, idle/walk sprite switching, width/height 150
+2026-10-21 | world.class.js | Added keyboard, setWorld, fixed draw() call, mirrored drawing via flipContext

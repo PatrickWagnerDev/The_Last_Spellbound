@@ -8,6 +8,9 @@ class MovableObject{
     frameHeight = 128;
     frameCount = 7;
     currentFrame = 0;
+    speed = 5;
+    otherDirection = false;
+    imageCache = {};
 
     constructor(){
     }
@@ -23,11 +26,19 @@ class MovableObject{
         this.img.src = path;
     }
 
+    loadImages(paths){
+        paths.forEach(path => {
+            const NEW_IMAGE = new Image();
+            NEW_IMAGE.src = path;
+            this.imageCache[path] = NEW_IMAGE;
+        });
+    }
+
     moveRight(){
-        console.log('Moving right');
+        this.x += this.speed;
     }
 
     moveLeft(){
-        console.log('Moving left');
+        this.x -= this.speed;
     }
 }
