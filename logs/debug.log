@@ -59,3 +59,5 @@
 2026-10-21 | enemy.class.js | Constructor takes column and row; start position is derived from the tile, removed random x and y field
 2026-10-21 | background-object.class.js | Removed BACKGROUND_LAYERS (moved into the level file)
 2026-10-21 | world.class.js | Enemies and background objects now come from the level, removed buildBackgrounds
+2026-10-21 | enemy.class.js | Set speed from 1 to 0.6
+2026-10-21 | enemy.class.js | Set speed from 0.6 to 0.5

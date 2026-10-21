@@ -6,7 +6,7 @@ class Enemy extends MovableObject {
     frameWidth = 40;
     frameHeight = 40;
     frameCount = 6;
-    speed = 1;
+    speed = 0.5;
     spriteFacesLeft = true;
 
     constructor(column, row){
