@@ -33,3 +33,4 @@
 2026-10-21 | world.class.js | setWorld also assigns world to all enemies
 2026-10-21 | movable-object.class.js, enemy.class.js, world.class.js | Added spriteFacesLeft and isFlipped(); enemy sprites face left, addToMap uses isFlipped()
 2026-10-21 | character.class.js | Added rest animation after 10 s without input (IMAGE_REST, REST_DELAY_TICKS, REST_FRAME_TICKS, idleTicks, updateIdleTicks, getRestFrame); plays once and holds last frame until input
+2026-10-21 | script.js | Added KeyW, KeyA, KeyS, KeyD to KEY_MAP as alternatives to the arrow keys

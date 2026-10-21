@@ -6,6 +6,10 @@ const KEY_MAP = {
     ArrowLeft: 'LEFT',
     ArrowUp: 'UP',
     ArrowDown: 'DOWN',
+    KeyD: 'RIGHT',
+    KeyA: 'LEFT',
+    KeyW: 'UP',
+    KeyS: 'DOWN',
     Space: 'SPACE'
 };
 
