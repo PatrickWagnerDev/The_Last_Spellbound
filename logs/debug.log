@@ -18,3 +18,4 @@
 2026-10-21 | tile.class.js | Added WALKABLE_TILE_IDS (1, 2, 3, 4, 21, 22, 23, 24, 25, 33, 34, 36, 37, 38)
 2026-10-21 | level.class.js | Replaced isSolidAt with getTileIdAt and isWalkableAt
 2026-10-21 | enemy.class.js | Set width/height to 80 for an integer 2x scale of the 40px sprite
+2026-10-21 | enemy.class.js | Round random x with Math.floor to avoid subpixel blur
