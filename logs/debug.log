@@ -19,3 +19,4 @@
 2026-10-21 | level.class.js | Replaced isSolidAt with getTileIdAt and isWalkableAt
 2026-10-21 | enemy.class.js | Set width/height to 80 for an integer 2x scale of the 40px sprite
 2026-10-21 | enemy.class.js | Round random x with Math.floor to avoid subpixel blur
+2026-10-21 | world.class.js | Disabled image smoothing in draw() with imageSmoothingEnabled = false
