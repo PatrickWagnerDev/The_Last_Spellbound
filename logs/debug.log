@@ -21,3 +21,4 @@
 2026-10-21 | enemy.class.js | Round random x with Math.floor to avoid subpixel blur
 2026-10-21 | world.class.js | Disabled image smoothing in draw() with imageSmoothingEnabled = false
 2026-10-21 | character.class.js | Set start position x = TILE_SIZE, y = 9 * TILE_SIZE - height (on top of the second tile in the bottom row)
+2026-10-21 | character.class.js | Added jump and gravity (GRAVITY, JUMP_SPEED, speedY, onGround, handleJump, applyGravity, landOnTile), jump sprite state, one-way landing on walkable tiles
