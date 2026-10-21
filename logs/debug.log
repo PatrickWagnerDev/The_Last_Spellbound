@@ -27,3 +27,8 @@
 2026-10-21 | world.class.js | Round draw position to whole pixels in addToMap and flipContext
 2026-10-21 | character.class.js | Jump animation frame follows the jump arc via getJumpFrame, starts at JUMP_START_FRAME 3, fps 0 disables timed frame advance
 2026-10-21 | character.class.js | Jump phases crouch/air/land (jumpPhase, phaseTicks, updateJumpPhase, getJumpFrame), movement locked during crouch and land, replaced JUMP_START_FRAME with CROUCH_TICKS, LAND_TICKS, APEX_SPEED
+2026-10-21 | movable-object.class.js | Moved GRAVITY, speedY, onGround, world, currentPath, applyGravity, landOnTile, setSprite here; added update(), moveForward(); animate runs update() and nextFrame() in one interval
+2026-10-21 | character.class.js | Removed moved members, added update() with the character tick order
+2026-10-21 | enemy.class.js | Bear uses Walk.png (6 frames), gravity, patrol with turning at platform edges and level bounds, random start direction, speed 1
+2026-10-21 | world.class.js | setWorld also assigns world to all enemies
+2026-10-21 | movable-object.class.js, enemy.class.js, world.class.js | Added spriteFacesLeft and isFlipped(); enemy sprites face left, addToMap uses isFlipped()

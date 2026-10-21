@@ -28,6 +28,7 @@ class World {
 
     setWorld(){
         this.character.world = this;
+        this.enemies.forEach(enemy => enemy.world = this);
     }
 
     draw(){
@@ -53,7 +54,7 @@ class World {
     addToMap(mo){
         let drawX = mo.x;
         this.ctx.save();
-        if(mo.otherDirection){
+        if(mo.isFlipped()){
             this.flipContext(mo);
             drawX = 0;
         }
