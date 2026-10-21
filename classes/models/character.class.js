@@ -4,23 +4,16 @@ const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
-const LEFT_WALL_X = -60;
-const RIGHT_WALL_OFFSET = 60;
-const JUMP_SPEED = 11.5;
-const REST_DELAY_TICKS = 600;
-const REST_FRAME_TICKS = 15;
-const CROUCH_TICKS = 6;
-const LAND_TICKS = 9;
-const APEX_SPEED = 3;
 
 class Character extends MovableObject{
-    width = 150;
-    height = 150;
+    settings = GAME_SETTINGS.character;
+    width = this.settings.width;
+    height = this.settings.height;
     frameCount = 7;
     hitbox = HITBOX_STANDING;
     x = TILE_SIZE;
     y = 9 * TILE_SIZE - this.height;
-    speed = 3;
+    speed = this.settings.speed;
     jumpPhase = 'none';
     phaseTicks = 0;
     idleTicks = 0;
@@ -73,8 +66,8 @@ class Character extends MovableObject{
     }
 
     limitToWall(){
-        const MAX_X = this.world.level.width - this.width + RIGHT_WALL_OFFSET;
-        this.x = Math.min(Math.max(this.x, LEFT_WALL_X), MAX_X);
+        const MAX_X = this.world.level.width - this.width + this.settings.rightWallOffset;
+        this.x = Math.min(Math.max(this.x, this.settings.leftWallX), MAX_X);
     }
 
     handleJump(){
@@ -89,7 +82,7 @@ class Character extends MovableObject{
     }
 
     launchJump(){
-        this.speedY = JUMP_SPEED;
+        this.speedY = this.settings.jumpSpeed;
         this.startPhase('air');
     }
 
@@ -97,21 +90,21 @@ class Character extends MovableObject{
         this.phaseTicks++;
         if(!this.onGround && this.jumpPhase != 'air'){
             this.startPhase('air');
-        } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= CROUCH_TICKS){
+        } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= this.settings.crouchTicks){
             this.launchJump();
         } else if(this.jumpPhase == 'air' && this.onGround){
             this.startPhase('land');
-        } else if(this.jumpPhase == 'land' && this.phaseTicks >= LAND_TICKS){
+        } else if(this.jumpPhase == 'land' && this.phaseTicks >= this.settings.landTicks){
             this.startPhase('none');
         }
     }
 
     getJumpFrame(){
         if(this.jumpPhase == 'crouch'){
-            return this.getPhaseFrame(0, CROUCH_TICKS);
+            return this.getPhaseFrame(0, this.settings.crouchTicks);
         }
         if(this.jumpPhase == 'land'){
-            return this.getPhaseFrame(6, LAND_TICKS);
+            return this.getPhaseFrame(6, this.settings.landTicks);
         }
         return this.getAirFrame();
     }
@@ -122,10 +115,10 @@ class Character extends MovableObject{
     }
 
     getAirFrame(){
-        if(this.speedY > APEX_SPEED){
+        if(this.speedY > this.settings.apexSpeed){
             return 3;
         }
-        if(this.speedY < -APEX_SPEED){
+        if(this.speedY < -this.settings.apexSpeed){
             return 5;
         }
         return 4;
@@ -140,7 +133,7 @@ class Character extends MovableObject{
     }
 
     getRestFrame(){
-        const FRAME_INDEX = Math.floor((this.idleTicks - REST_DELAY_TICKS) / REST_FRAME_TICKS);
+        const FRAME_INDEX = Math.floor((this.idleTicks - this.settings.restDelayTicks) / this.settings.restFrameTicks);
         return Math.min(FRAME_INDEX, this.frameCount - 1);
     }
 
@@ -155,12 +148,12 @@ class Character extends MovableObject{
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
         } else if(this.isWalking()){
-            this.setSprite(IMAGE_WALK, 6, 8);
-        } else if(this.idleTicks >= REST_DELAY_TICKS){
+            this.setSprite(IMAGE_WALK, 6, this.settings.walkFps);
+        } else if(this.idleTicks >= this.settings.restDelayTicks){
             this.setSprite(IMAGE_REST, 4, 0);
             this.currentFrame = this.getRestFrame();
         } else {
-            this.setSprite(IMAGE_IDLE, 7, 5);
+            this.setSprite(IMAGE_IDLE, 7, this.settings.idleFps);
         }
     }
 }

@@ -1,5 +1,3 @@
-const GRAVITY_FORCE = 0.5;
-
 class MovableObject extends DrawableObject{
     speed = 5;
     speedY = 0;
@@ -38,7 +36,7 @@ class MovableObject extends DrawableObject{
         this.y -= this.speedY;
         this.onGround = this.speedY <= 0 && this.landOnTile(PREVIOUS_FEET);
         if(!this.onGround){
-            this.speedY -= GRAVITY_FORCE;
+            this.speedY -= GAME_SETTINGS.physics.gravityForce;
         }
     }
 

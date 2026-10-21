@@ -5,7 +5,7 @@ class World {
     canvas;
     keyboard;
     cameraX = 0;
-    showHitboxes = true;
+    showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');

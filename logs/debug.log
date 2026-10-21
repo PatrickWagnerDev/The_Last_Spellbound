@@ -70,3 +70,7 @@
 2026-10-21 | movable-object.class.js | Added hitbox, getHitbox (mirrored when flipped), isColliding, drawHitbox
 2026-10-21 | character.class.js, enemy.class.js | Added hitbox values measured from the sprites
 2026-10-21 | character.class.js | Added HITBOX_STANDING (idle, jump) and HITBOX_WALKING (walk, rest); setSprite switches the hitbox by sprite
+2026-10-21 | scripts/game-settings.js | New GAME_SETTINGS object (physics, character, enemy, debug), no comments
+2026-10-21 | GAME-SETTINGS.md | New documentation table for every setting
+2026-10-21 | movable-object.class.js, character.class.js, enemy.class.js, world.class.js | Read values from GAME_SETTINGS; removed GRAVITY_FORCE, JUMP_SPEED, CROUCH_TICKS, LAND_TICKS, APEX_SPEED, REST_DELAY_TICKS, REST_FRAME_TICKS, LEFT_WALL_X, RIGHT_WALL_OFFSET constants
+2026-10-21 | index.html | Included game-settings.js before templates.js

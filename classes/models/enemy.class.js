@@ -1,13 +1,15 @@
 const IMAGE_BEAR_WALK = './assets/image/craftpix-987745-tiny-monsters-pixel-art-pack/1 Bear/Walk.png';
 
 class Enemy extends MovableObject {
-    width = 80;
-    height = 80;
+    settings = GAME_SETTINGS.enemy;
+    width = this.settings.width;
+    height = this.settings.height;
     frameWidth = 40;
     frameHeight = 40;
     frameCount = 6;
     hitbox = { offsetX: 28, offsetY: 20, width: 48, height: 60 };
-    speed = 0.5;
+    speed = this.settings.speed;
+    animationFps = this.settings.animationFps;
     spriteFacesLeft = true;
 
     constructor(column, row){
