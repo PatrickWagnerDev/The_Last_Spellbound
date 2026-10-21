@@ -63,3 +63,5 @@
 2026-10-21 | enemy.class.js | Set speed from 0.6 to 0.5
 2026-10-21 | levels/ -> classes/levels/ | Moved the levels folder into classes and updated the script path in index.html
 2026-10-21 | classes/ | Moved model classes and world/keyboard into classes/models, level.class.js into classes/levels; updated script paths in index.html
+2026-10-21 | assets/fonts/Straight pixel gothic.otf | Moved the font file from assets/image/craftpix-net-532173-straight-pixel-gothic-font to assets/fonts
+2026-10-21 | styles/fonts.css | Added @font-face for Straight Pixel Gothic (not applied to any element yet)
