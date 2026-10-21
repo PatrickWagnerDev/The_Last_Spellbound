@@ -4,8 +4,18 @@ class MovableObject{
     img;
     height = 150;
     width = 100;
+    frameWidth = 128;
+    frameHeight = 128;
+    frameCount = 7;
+    currentFrame = 0;
 
     constructor(){
+    }
+
+    animate(){
+        setInterval(() => {
+            this.currentFrame = (this.currentFrame + 1) % this.frameCount;
+        }, 1000 / 8);
     }
 
     loadImage(path){

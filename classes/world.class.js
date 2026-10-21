@@ -41,6 +41,10 @@ class World {
     }
 
     addToMap(mo){
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.height, mo.width)
+        this.ctx.drawImage(
+            mo.img,
+            mo.currentFrame * mo.frameWidth, 0, mo.frameWidth, mo.frameHeight,
+            mo.x, mo.y, mo.width, mo.height
+        );
     }
 }

@@ -1,0 +1,3 @@
+2026-10-21 | movable-object.class.js | Added frameWidth, frameHeight, frameCount, currentFrame and animate() for sprite sheet animation
+2026-10-21 | character.class.js | Constructor calls animate()
+2026-10-21 | world.class.js | addToMap draws the current sprite frame and uses correct width/height order
