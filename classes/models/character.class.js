@@ -26,6 +26,7 @@ class Character extends MovableObject{
     }
 
     updateObject(){
+        this.updateSpeed();
         this.moveByKeyboard();
         this.limitToWall();
         this.handleJump();
@@ -33,6 +34,10 @@ class Character extends MovableObject{
         this.updateJumpPhase();
         this.updateIdleTicks();
         this.updateSprite();
+    }
+
+    updateSpeed(){
+        this.speed = this.onGround ? this.settings.speed : this.settings.speed * this.settings.airSpeedFactor;
     }
 
     isWalking(){

@@ -6,6 +6,7 @@ const GAME_SETTINGS = {
         width: 150,
         height: 150,
         speed: 3,
+        airSpeedFactor: 1.25,
         jumpSpeed: 11.5,
         crouchTicks: 6,
         landTicks: 9,

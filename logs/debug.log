@@ -84,3 +84,4 @@
 2026-10-21 | assets/image/09-ui/canvas-frame.png | Replaced with a 784x544 frame composed from the frame tiles (corners 05, 06, 13, 14; wooden bars 01/03, 10/12, 09/11, 02/04; one metal plate 07, 16, 15, 08 in the middle of each side)
 2026-10-21 | style.css | .game-container now uses padding 32px and canvas-frame.png as background instead of border-image
 2026-10-21 | assets/image/09-ui/canvas-frame.png | Rebuilt the frame using only the seamless bar tiles 01, 10, 09 and 02 (tiles 03, 12, 11 and 04 have a darker plank end column that showed as lines)
+2026-10-21 | game-settings.js, character.class.js, GAME-SETTINGS.md | Added airSpeedFactor 1.25 and updateSpeed(): walking speed is multiplied while the character is in the air
