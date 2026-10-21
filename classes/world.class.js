@@ -6,7 +6,6 @@ class World {
         new Enemy(),
         new Enemy()
     ]
-    trees = [];
     backgroundObjects = [];
     ctx;
     canvas;
@@ -18,7 +17,6 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.buildBackgrounds();
-        this.buildTrees();
         this.setWorld();
         this.draw();
     }
@@ -40,13 +38,6 @@ class World {
         });
     }
 
-    buildTrees(){
-        const COPY_COUNT = Math.ceil(this.level.width / TREES_WIDTH);
-        for(let copyIndex = 0; copyIndex < COPY_COUNT; copyIndex++){
-            this.trees.push(new Trees(copyIndex * TREES_WIDTH));
-        }
-    }
-
     setWorld(){
         this.character.world = this;
         this.enemies.forEach(enemy => enemy.world = this);
@@ -61,7 +52,6 @@ class World {
     drawScrollingObjects(){
         this.ctx.save();
         this.ctx.translate(-Math.round(this.cameraX), 0);
-        this.addObjectsToMap(this.trees);
         this.addObjectsToMap(this.level.tiles);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);

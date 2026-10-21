@@ -41,3 +41,7 @@
 2026-10-21 | character.class.js | Added RIGHT_WALL_OFFSET and extended limitToWall() with a right wall at the end of the level
 2026-10-21 | background-object.class.js | Added BACKGROUND_WIDTH, BACKGROUND_LAYERS with parallax factors (trees3 0, trees2 0.25, trees1 0.5), constructor takes parallaxFactor and startX
 2026-10-21 | world.class.js | Added buildBackgrounds and drawBackgroundObjects for parallax scrolling with two copies per layer
+2026-10-21 | background-object.class.js | Added bushes.png as fourth BACKGROUND_LAYERS entry with factor 1
+2026-10-21 | trees.class.js | Removed, replaced by the bushes layer in BackgroundObject
+2026-10-21 | world.class.js | Removed trees, buildTrees and its draw call
+2026-10-21 | index.html | Removed trees.class.js script tag
