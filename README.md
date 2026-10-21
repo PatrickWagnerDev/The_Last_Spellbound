@@ -27,6 +27,24 @@ The following features are planned for the game:
 - CSS
 - Vanilla JavaScript
 
+## Credits
+
+The graphics and the font used in this project come from [Craftpix.net](https://craftpix.net). Many thanks for providing these assets.
+
+| Local folder (`assets/image/`) | Original Craftpix pack |
+|---|---|
+| `01-wizard` | Free Wizard Sprite Sheets Pixel Art (529677) |
+| `02-wizard-extras` | Wizard Pixel Art Sprites Pack 2 (902518) |
+| `03-monsters` | Tiny Monsters Pixel Art Pack (987745) |
+| `04-bosses` | Boss Monsters Pixel Art (897123) |
+| `05-mega-boss` | Mega Boss for Pixel Platformer Character Pack (809571) |
+| `06-tileset` | Platformer Pixel Art Tileset (891177) |
+| `07-forest-backgrounds` | Pixel Art Forest 2D Backgrounds (661711) |
+| `08-magic-effects` | Pixel Art Magic Sprite Effects and Icons Pack (671189) |
+| `09-ui` | Game UI Pixel Art (781165) |
+
+The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic Font (532173) from Craftpix.net.
+
 ## What I Learned
 
 The main focus of this project is learning and applying object-oriented programming (OOP) in JavaScript. Through developing the game, I aim to deepen my understanding of classes, objects, inheritance, and how they interact to create a structured and maintainable application.

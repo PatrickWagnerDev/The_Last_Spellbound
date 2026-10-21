@@ -74,3 +74,6 @@
 2026-10-21 | GAME-SETTINGS.md | New documentation table for every setting
 2026-10-21 | movable-object.class.js, character.class.js, enemy.class.js, world.class.js | Read values from GAME_SETTINGS; removed GRAVITY_FORCE, JUMP_SPEED, CROUCH_TICKS, LAND_TICKS, APEX_SPEED, REST_DELAY_TICKS, REST_FRAME_TICKS, LEFT_WALL_X, RIGHT_WALL_OFFSET constants
 2026-10-21 | index.html | Included game-settings.js before templates.js
+2026-10-21 | assets/image/ | Renamed the nine craftpix folders to 01-wizard, 02-wizard-extras, 03-monsters, 04-bosses, 05-mega-boss, 06-tileset, 07-forest-backgrounds, 08-magic-effects, 09-ui (craftpix-781165-game-ui-pixel-art was untracked and moved with mv)
+2026-10-21 | character.class.js, enemy.class.js, tile.class.js, levels/level-one.js, style.css, tile-reference.html | Updated all image paths to the new folder names
+2026-10-21 | README.md | Added a Credits section naming Craftpix.net and mapping the local folders to the original packs

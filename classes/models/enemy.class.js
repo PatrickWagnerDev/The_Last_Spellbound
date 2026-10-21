@@ -1,4 +1,4 @@
-const IMAGE_BEAR_WALK = './assets/image/craftpix-987745-tiny-monsters-pixel-art-pack/1 Bear/Walk.png';
+const IMAGE_BEAR_WALK = './assets/image/03-monsters/1 Bear/Walk.png';
 
 class Enemy extends MovableObject {
     settings = GAME_SETTINGS.enemy;

@@ -1,7 +1,7 @@
-const IMAGE_IDLE = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Idle.png';
-const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Walk.png';
-const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
-const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
+const IMAGE_IDLE = './assets/image/01-wizard/Fire Wizard/Idle.png';
+const IMAGE_WALK = './assets/image/01-wizard/Fire Wizard/Walk.png';
+const IMAGE_JUMP = './assets/image/01-wizard/Fire Wizard/Jump.png';
+const IMAGE_REST = './assets/image/02-wizard-extras/Fire Wizard/Rest.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 

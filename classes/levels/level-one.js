@@ -18,9 +18,9 @@ const LEVEL_ONE = {
         { column: 34, row: 9 }
     ],
     backgroundLayers: [
-        { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png', factor: 0 },
-        { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees2.png', factor: 0.25 },
-        { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees1.png', factor: 0.5 },
-        { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees3.png', factor: 0 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees2.png', factor: 0.25 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees1.png', factor: 0.5 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
     ]
 };
