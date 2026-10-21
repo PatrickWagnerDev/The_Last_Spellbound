@@ -46,9 +46,9 @@ simply repeating the technologies or features listed above.
 
 ## Project Status
 
-> **Current Status:** Planning
+> **Current Status:** In Progress
 
-The project concept and core features have been defined. Development has not yet started.
+The project is in creation.
 
 <!--
 PROJECT STATUS:
