@@ -4,6 +4,10 @@ body {
     justify-content: center;
     align-items: center;
     height: 100dvh;
+    background-image: url('./assets/image/07-forest-backgrounds/PNG/Forest1/Pale/Forest1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 canvas {

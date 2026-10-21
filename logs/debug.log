@@ -77,3 +77,4 @@
 2026-10-21 | assets/image/ | Renamed the nine craftpix folders to 01-wizard, 02-wizard-extras, 03-monsters, 04-bosses, 05-mega-boss, 06-tileset, 07-forest-backgrounds, 08-magic-effects, 09-ui (craftpix-781165-game-ui-pixel-art was untracked and moved with mv)
 2026-10-21 | character.class.js, enemy.class.js, tile.class.js, levels/level-one.js, style.css, tile-reference.html | Updated all image paths to the new folder names
 2026-10-21 | README.md | Added a Credits section naming Craftpix.net and mapping the local folders to the original packs
+2026-10-21 | style.css | Added the Pale Forest1.png as page background on body (cover, centered, smooth scaling)
