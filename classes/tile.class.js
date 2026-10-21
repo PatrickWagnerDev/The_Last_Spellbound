@@ -1,5 +1,6 @@
 const TILE_SIZE = 48;
 const TILE_COLUMNS = 7;
+const WALKABLE_TILE_IDS = [1, 2, 3, 4, 21, 22, 23, 24, 25, 33, 34, 36, 37, 38];
 const TILESET_IMAGE = './assets/image/craftpix-891177-platformer-pixel-art-tileset/Tiles/TileSet.png';
 
 class Tile extends MovableObject {

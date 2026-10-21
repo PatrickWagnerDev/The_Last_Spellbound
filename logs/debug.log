@@ -15,3 +15,5 @@
 2026-10-21 | world.class.js | Added level, draws level tiles, addToMap uses frameRow for source Y
 2026-10-21 | index.html | Included tile.class.js, level.class.js, level-one.js
 2026-10-21 | tile-reference.html | New reference page showing the numbered tiles of TileSet.png
+2026-10-21 | tile.class.js | Added WALKABLE_TILE_IDS (1, 2, 3, 4, 21, 22, 23, 24, 25, 33, 34, 36, 37, 38)
+2026-10-21 | level.class.js | Replaced isSolidAt with getTileIdAt and isWalkableAt

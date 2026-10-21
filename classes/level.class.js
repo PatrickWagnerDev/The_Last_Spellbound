@@ -24,9 +24,13 @@ class Level {
         });
     }
 
-    isSolidAt(x, y){
+    getTileIdAt(x, y){
         const TILE_COLUMN = Math.floor(x / TILE_SIZE);
         const TILE_ROW = Math.floor(y / TILE_SIZE);
-        return (this.mapRows[TILE_ROW]?.[TILE_COLUMN] ?? 0) > 0;
+        return this.mapRows[TILE_ROW]?.[TILE_COLUMN] ?? 0;
+    }
+
+    isWalkableAt(x, y){
+        return WALKABLE_TILE_IDS.includes(this.getTileIdAt(x, y));
     }
 }
