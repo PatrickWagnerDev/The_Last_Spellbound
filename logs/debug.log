@@ -35,3 +35,6 @@
 2026-10-21 | character.class.js | Added rest animation after 10 s without input (IMAGE_REST, REST_DELAY_TICKS, REST_FRAME_TICKS, idleTicks, updateIdleTicks, getRestFrame); plays once and holds last frame until input
 2026-10-21 | script.js | Added KeyW, KeyA, KeyS, KeyD to KEY_MAP as alternatives to the arrow keys
 2026-10-21 | character.class.js | Added LEFT_WALL_X and limitToWall() to keep the character inside the left edge of the level
+2026-10-21 | world.class.js | Added cameraX, buildTrees, updateCamera, drawScrollingObjects; background objects stay fixed, trees/tiles/character/enemies scroll
+2026-10-21 | trees.class.js | Added TREES_WIDTH and startX parameter so trees repeat across the level width
+2026-10-21 | levels/level-one.js | Extended map to 45 columns with a continuous tile 2 ground row, platforms unchanged
