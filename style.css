@@ -4,12 +4,20 @@ body {
     justify-content: center;
     align-items: center;
     height: 100dvh;
-    background-image: url('./assets/image/07-forest-backgrounds/PNG/Forest1/Pale/Forest1.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('./assets/image/07-forest-backgrounds/PNG/Forest1/Pale/Forest1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+.game-container {
+    padding: 32px;
+    background-image: url('./assets/image/09-ui/canvas-frame.png');
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
 canvas {
+    display: block;
     background-image: url('./assets/image/07-forest-backgrounds/PNG/Forest1/Bright/bg.png');
 }
