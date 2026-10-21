@@ -6,6 +6,7 @@ class Enemy extends MovableObject {
     frameWidth = 40;
     frameHeight = 40;
     frameCount = 6;
+    hitbox = { offsetX: 28, offsetY: 20, width: 48, height: 60 };
     speed = 0.5;
     spriteFacesLeft = true;
 

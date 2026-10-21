@@ -65,3 +65,8 @@
 2026-10-21 | classes/ | Moved model classes and world/keyboard into classes/models, level.class.js into classes/levels; updated script paths in index.html
 2026-10-21 | assets/fonts/Straight pixel gothic.otf | Moved the font file from assets/image/craftpix-net-532173-straight-pixel-gothic-font to assets/fonts
 2026-10-21 | styles/fonts.css | Added @font-face for Straight Pixel Gothic (not applied to any element yet)
+2026-10-21 | drawable-object.class.js | Added draw(ctx) and flipContext(ctx), objects now draw themselves
+2026-10-21 | world.class.js | Removed addToMap and flipContext; uses draw(ctx); added showHitboxes and drawHitboxes
+2026-10-21 | movable-object.class.js | Added hitbox, getHitbox (mirrored when flipped), isColliding, drawHitbox
+2026-10-21 | character.class.js, enemy.class.js | Added hitbox values measured from the sprites
+2026-10-21 | character.class.js | Added HITBOX_STANDING (idle, jump) and HITBOX_WALKING (walk, rest); setSprite switches the hitbox by sprite

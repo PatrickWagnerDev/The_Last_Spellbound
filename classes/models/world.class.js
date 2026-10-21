@@ -5,6 +5,7 @@ class World {
     canvas;
     keyboard;
     cameraX = 0;
+    showHitboxes = true;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -19,7 +20,7 @@ class World {
             const LAYER_OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
             this.ctx.save();
             this.ctx.translate(-Math.round(LAYER_OFFSET), 0);
-            this.addToMap(layer);
+            layer.draw(this.ctx);
             this.ctx.restore();
         });
     }
@@ -39,8 +40,9 @@ class World {
         this.ctx.save();
         this.ctx.translate(-Math.round(this.cameraX), 0);
         this.addObjectsToMap(this.level.tiles);
-        this.addToMap(this.character);
+        this.character.draw(this.ctx);
         this.addObjectsToMap(this.level.enemies);
+        this.drawHitboxes();
         this.ctx.restore();
     }
 
@@ -54,28 +56,16 @@ class World {
     }
 
     addObjectsToMap(objects){
-        objects.forEach(object => {
-            this.addToMap(object);
-        });
+        objects.forEach(object => object.draw(this.ctx));
     }
 
-    addToMap(drawable){
-        let drawX = drawable.x;
-        this.ctx.save();
-        if(drawable.isFlipped()){
-            this.flipContext(drawable);
-            drawX = 0;
+    drawHitboxes(){
+        if(!this.showHitboxes){
+            return;
         }
-        this.ctx.drawImage(
-            drawable.img,
-            drawable.currentFrame * drawable.frameWidth, drawable.frameRow * drawable.frameHeight, drawable.frameWidth, drawable.frameHeight,
-            Math.round(drawX), Math.round(drawable.y), drawable.width, drawable.height
-        );
-        this.ctx.restore();
-    }
-
-    flipContext(drawable){
-        this.ctx.translate(Math.round(drawable.x + drawable.width), 0);
-        this.ctx.scale(-1, 1);
+        this.character.drawHitbox(this.ctx, 'lime');
+        this.level.enemies.forEach(enemy => {
+            enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
+        });
     }
 }

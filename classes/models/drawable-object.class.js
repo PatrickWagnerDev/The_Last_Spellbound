@@ -52,4 +52,24 @@ class DrawableObject{
     isFlipped(){
         return this.otherDirection !== this.spriteFacesLeft;
     }
+
+    draw(ctx){
+        let drawX = this.x;
+        ctx.save();
+        if(this.isFlipped()){
+            this.flipContext(ctx);
+            drawX = 0;
+        }
+        ctx.drawImage(
+            this.img,
+            this.currentFrame * this.frameWidth, this.frameRow * this.frameHeight, this.frameWidth, this.frameHeight,
+            Math.round(drawX), Math.round(this.y), this.width, this.height
+        );
+        ctx.restore();
+    }
+
+    flipContext(ctx){
+        ctx.translate(Math.round(this.x + this.width), 0);
+        ctx.scale(-1, 1);
+    }
 }

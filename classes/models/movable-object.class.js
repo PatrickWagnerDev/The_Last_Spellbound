@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject{
     speedY = 0;
     onGround = false;
     world;
+    hitbox = { offsetX: 0, offsetY: 0, width: 100, height: 100 };
 
     startAnimation(){
         setInterval(() => {
@@ -51,5 +52,32 @@ class MovableObject extends DrawableObject{
         this.y = TILE_TOP - this.height;
         this.speedY = 0;
         return true;
+    }
+
+    getHitbox(){
+        const OFFSET_X = this.isFlipped()
+            ? this.width - this.hitbox.offsetX - this.hitbox.width
+            : this.hitbox.offsetX;
+        return {
+            x: this.x + OFFSET_X,
+            y: this.y + this.hitbox.offsetY,
+            width: this.hitbox.width,
+            height: this.hitbox.height
+        };
+    }
+
+    isColliding(movable){
+        const OWN_RECT = this.getHitbox();
+        const OTHER_RECT = movable.getHitbox();
+        return OWN_RECT.x < OTHER_RECT.x + OTHER_RECT.width
+            && OWN_RECT.x + OWN_RECT.width > OTHER_RECT.x
+            && OWN_RECT.y < OTHER_RECT.y + OTHER_RECT.height
+            && OWN_RECT.y + OWN_RECT.height > OTHER_RECT.y;
+    }
+
+    drawHitbox(ctx, color){
+        const HITBOX_RECT = this.getHitbox();
+        ctx.strokeStyle = color;
+        ctx.strokeRect(Math.round(HITBOX_RECT.x) + 0.5, Math.round(HITBOX_RECT.y) + 0.5, HITBOX_RECT.width, HITBOX_RECT.height);
     }
 }

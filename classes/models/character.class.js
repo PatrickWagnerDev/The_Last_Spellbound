@@ -2,6 +2,8 @@ const IMAGE_IDLE = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Walk.png';
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
 const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
+const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
+const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 const LEFT_WALL_X = -60;
 const RIGHT_WALL_OFFSET = 60;
 const JUMP_SPEED = 11.5;
@@ -15,6 +17,7 @@ class Character extends MovableObject{
     width = 150;
     height = 150;
     frameCount = 7;
+    hitbox = HITBOX_STANDING;
     x = TILE_SIZE;
     y = 9 * TILE_SIZE - this.height;
     speed = 3;
@@ -139,6 +142,12 @@ class Character extends MovableObject{
     getRestFrame(){
         const FRAME_INDEX = Math.floor((this.idleTicks - REST_DELAY_TICKS) / REST_FRAME_TICKS);
         return Math.min(FRAME_INDEX, this.frameCount - 1);
+    }
+
+    setSprite(path, count, fps){
+        super.setSprite(path, count, fps);
+        const IS_STANDING = path == IMAGE_IDLE || path == IMAGE_JUMP;
+        this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
     updateSprite(){
