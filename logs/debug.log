@@ -9,3 +9,9 @@
 2026-10-21 | movable-object.class.js | Added speed, otherDirection, imageCache, loadImages; moveRight/moveLeft change x
 2026-10-21 | character.class.js | Added movement by keyboard, idle/walk sprite switching, width/height 150
 2026-10-21 | world.class.js | Added keyboard, setWorld, fixed draw() call, mirrored drawing via flipContext
+2026-10-21 | levels/level-one.js | New empty tile map LEVEL_ONE_MAP (15 columns x 10 rows)
+2026-10-21 | tile.class.js, level.class.js | New classes Tile and Level (buildTiles, isSolidAt), TILE_SIZE 48
+2026-10-21 | movable-object.class.js | Added frameRow
+2026-10-21 | world.class.js | Added level, draws level tiles, addToMap uses frameRow for source Y
+2026-10-21 | index.html | Included tile.class.js, level.class.js, level-one.js
+2026-10-21 | tile-reference.html | New reference page showing the numbered tiles of TileSet.png

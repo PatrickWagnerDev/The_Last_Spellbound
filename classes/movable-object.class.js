@@ -8,6 +8,7 @@ class MovableObject{
     frameHeight = 128;
     frameCount = 7;
     currentFrame = 0;
+    frameRow = 0;
     speed = 5;
     otherDirection = false;
     imageCache = {};

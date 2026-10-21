@@ -1,5 +1,6 @@
 class World {
     character = new Character();
+    level = new Level(LEVEL_ONE_MAP);
     enemies = [
         new Enemy(),
         new Enemy(),
@@ -33,6 +34,7 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.addObjectsToMap(this.backgroundObjects);
         this.addObjectsToMap(this.trees);
+        this.addObjectsToMap(this.level.tiles);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
         let self = this;
@@ -56,7 +58,7 @@ class World {
         }
         this.ctx.drawImage(
             mo.img,
-            mo.currentFrame * mo.frameWidth, 0, mo.frameWidth, mo.frameHeight,
+            mo.currentFrame * mo.frameWidth, mo.frameRow * mo.frameHeight, mo.frameWidth, mo.frameHeight,
             drawX, mo.y, mo.width, mo.height
         );
         this.ctx.restore();
