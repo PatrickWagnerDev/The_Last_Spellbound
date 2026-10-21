@@ -49,3 +49,8 @@
 2026-10-21 | world.class.js | Renamed draw to drawWorld, OFFSET to LAYER_OFFSET, parameters mo/o to drawable/object; requestAnimationFrame uses an arrow function
 2026-10-21 | script.js | Renamed canvas, world, keyboard to gameCanvas, gameWorld, gameKeyboard; init() unchanged
 2026-10-21 | index.html | Renamed canvas id to game-canvas; script tags moved into the body
+2026-10-21 | drawable-object.class.js | New base class with position, size, frame fields, loadImage, loadImages, setSprite, nextFrame, isFlipped
+2026-10-21 | movable-object.class.js | Now extends DrawableObject; keeps only movement and physics, removed empty constructor
+2026-10-21 | tile.class.js, background-object.class.js | Now extend DrawableObject
+2026-10-21 | character.class.js, enemy.class.js | Added frameCount 7 and y 350 which were previously inherited defaults
+2026-10-21 | index.html | Included drawable-object.class.js before movable-object.class.js

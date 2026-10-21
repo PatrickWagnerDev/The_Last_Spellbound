@@ -1,29 +1,10 @@
 const GRAVITY_FORCE = 0.5;
 
-class MovableObject{
-    x = 120;
-    y = 350;
-    img;
-    height = 150;
-    width = 100;
-    frameWidth = 128;
-    frameHeight = 128;
-    frameCount = 7;
-    currentFrame = 0;
-    frameRow = 0;
-    animationFps = 8;
-    tickCount = 0;
+class MovableObject extends DrawableObject{
     speed = 5;
     speedY = 0;
     onGround = false;
-    otherDirection = false;
-    spriteFacesLeft = false;
-    imageCache = {};
-    currentPath;
     world;
-
-    constructor(){
-    }
 
     startAnimation(){
         setInterval(() => {
@@ -35,37 +16,12 @@ class MovableObject{
     updateObject(){
     }
 
-    nextFrame(){
-        this.tickCount++;
-        if(this.tickCount >= 60 / this.animationFps){
-            this.tickCount = 0;
-            this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-        }
-    }
-
-    loadImage(path){
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(paths){
-        paths.forEach(path => {
-            const NEW_IMAGE = new Image();
-            NEW_IMAGE.src = path;
-            this.imageCache[path] = NEW_IMAGE;
-        });
-    }
-
     moveRight(){
         this.x += this.speed;
     }
 
     moveLeft(){
         this.x -= this.speed;
-    }
-
-    isFlipped(){
-        return this.otherDirection !== this.spriteFacesLeft;
     }
 
     moveForward(){
@@ -95,17 +51,5 @@ class MovableObject{
         this.y = TILE_TOP - this.height;
         this.speedY = 0;
         return true;
-    }
-
-    setSprite(path, count, fps){
-        if(this.currentPath == path){
-            return;
-        }
-        this.img = this.imageCache[path];
-        this.frameCount = count;
-        this.animationFps = fps;
-        this.tickCount = 0;
-        this.currentFrame = 0;
-        this.currentPath = path;
     }
 }

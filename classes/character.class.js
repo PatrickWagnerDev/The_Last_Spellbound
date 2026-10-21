@@ -14,6 +14,7 @@ const APEX_SPEED = 3;
 class Character extends MovableObject{
     width = 150;
     height = 150;
+    frameCount = 7;
     x = TILE_SIZE;
     y = 9 * TILE_SIZE - this.height;
     speed = 3;

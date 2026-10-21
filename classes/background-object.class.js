@@ -6,7 +6,7 @@ const BACKGROUND_LAYERS = [
     { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
 ];
 
-class BackgroundObject extends MovableObject {
+class BackgroundObject extends DrawableObject {
     y = 0;
     height = 480;
     width = BACKGROUND_WIDTH;
