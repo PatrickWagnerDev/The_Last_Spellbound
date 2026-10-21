@@ -1,6 +1,6 @@
 class Enemy extends MovableObject {
-    width = 100;
-    height = 100;
+    width = 80;
+    height = 80;
     frameWidth = 40;
     frameHeight = 40;
     frameCount = 4;
