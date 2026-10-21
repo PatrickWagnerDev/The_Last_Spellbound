@@ -3,6 +3,7 @@ const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
 const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
 const LEFT_WALL_X = -60;
+const RIGHT_WALL_OFFSET = 60;
 const JUMP_SPEED = 11.5;
 const REST_DELAY_TICKS = 600;
 const REST_FRAME_TICKS = 15;
@@ -56,7 +57,8 @@ class Character extends MovableObject{
     }
 
     limitToWall(){
-        this.x = Math.max(this.x, LEFT_WALL_X);
+        const MAX_X = this.world.level.width - this.width + RIGHT_WALL_OFFSET;
+        this.x = Math.min(Math.max(this.x, LEFT_WALL_X), MAX_X);
     }
 
     handleJump(){

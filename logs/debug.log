@@ -38,3 +38,4 @@
 2026-10-21 | world.class.js | Added cameraX, buildTrees, updateCamera, drawScrollingObjects; background objects stay fixed, trees/tiles/character/enemies scroll
 2026-10-21 | trees.class.js | Added TREES_WIDTH and startX parameter so trees repeat across the level width
 2026-10-21 | levels/level-one.js | Extended map to 45 columns with a continuous tile 2 ground row, platforms unchanged
+2026-10-21 | character.class.js | Added RIGHT_WALL_OFFSET and extended limitToWall() with a right wall at the end of the level
