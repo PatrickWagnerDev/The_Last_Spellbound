@@ -2,3 +2,4 @@
 2026-10-21 | character.class.js | Constructor calls animate()
 2026-10-21 | world.class.js | addToMap draws the current sprite frame and uses correct width/height order
 2026-10-21 | background-object.class.js, trees.class.js | Set width 720, height 480 and frameWidth 1920, frameHeight 1080, frameCount 1 to restore the full background after the sprite sheet change
+2026-10-21 | enemy.class.js | Set width/height 100, frameWidth/frameHeight 40, frameCount 4 and call animate() for the bear idle sprite sheet
