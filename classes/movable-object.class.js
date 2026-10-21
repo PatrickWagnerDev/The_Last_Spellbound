@@ -9,6 +9,8 @@ class MovableObject{
     frameCount = 7;
     currentFrame = 0;
     frameRow = 0;
+    animationFps = 8;
+    tickCount = 0;
     speed = 5;
     otherDirection = false;
     imageCache = {};
@@ -17,9 +19,15 @@ class MovableObject{
     }
 
     animate(){
-        setInterval(() => {
+        setInterval(() => this.nextFrame(), 1000 / 60);
+    }
+
+    nextFrame(){
+        this.tickCount++;
+        if(this.tickCount >= 60 / this.animationFps){
+            this.tickCount = 0;
             this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-        }, 1000 / 8);
+        }
     }
 
     loadImage(path){

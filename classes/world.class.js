@@ -60,13 +60,13 @@ class World {
         this.ctx.drawImage(
             mo.img,
             mo.currentFrame * mo.frameWidth, mo.frameRow * mo.frameHeight, mo.frameWidth, mo.frameHeight,
-            drawX, mo.y, mo.width, mo.height
+            Math.round(drawX), Math.round(mo.y), mo.width, mo.height
         );
         this.ctx.restore();
     }
 
     flipContext(mo){
-        this.ctx.translate(mo.x + mo.width, 0);
+        this.ctx.translate(Math.round(mo.x + mo.width), 0);
         this.ctx.scale(-1, 1);
     }
 }

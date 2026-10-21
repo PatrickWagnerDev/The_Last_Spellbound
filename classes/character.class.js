@@ -1,14 +1,16 @@
 const IMAGE_IDLE = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Idle.png';
 const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Walk.png';
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
-const GRAVITY = 1;
-const JUMP_SPEED = 16;
+const GRAVITY = 0.5;
+const JUMP_SPEED = 11.5;
+const JUMP_START_FRAME = 3;
 
 class Character extends MovableObject{
     width = 150;
     height = 150;
     x = TILE_SIZE;
     y = 9 * TILE_SIZE - this.height;
+    speed = 3;
     speedY = 0;
     onGround = false;
     world;
@@ -74,23 +76,33 @@ class Character extends MovableObject{
         return true;
     }
 
+    getJumpFrame(){
+        const PROGRESS = (JUMP_SPEED - this.speedY) / (2 * JUMP_SPEED);
+        const FRAME_RANGE = this.frameCount - JUMP_START_FRAME;
+        const FRAME_INDEX = JUMP_START_FRAME + Math.floor(PROGRESS * FRAME_RANGE);
+        return Math.min(Math.max(FRAME_INDEX, JUMP_START_FRAME), this.frameCount - 1);
+    }
+
     updateSprite(){
         const IS_WALKING = this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
         if(!this.onGround){
-            this.setSprite(IMAGE_JUMP, 9);
+            this.setSprite(IMAGE_JUMP, 9, 0);
+            this.currentFrame = this.getJumpFrame();
         } else if(IS_WALKING){
-            this.setSprite(IMAGE_WALK, 6);
+            this.setSprite(IMAGE_WALK, 6, 8);
         } else {
-            this.setSprite(IMAGE_IDLE, 7);
+            this.setSprite(IMAGE_IDLE, 7, 5);
         }
     }
 
-    setSprite(path, count){
+    setSprite(path, count, fps){
         if(this.currentPath == path){
             return;
         }
         this.img = this.imageCache[path];
         this.frameCount = count;
+        this.animationFps = fps;
+        this.tickCount = 0;
         this.currentFrame = 0;
         this.currentPath = path;
     }
