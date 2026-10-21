@@ -2,6 +2,7 @@ const IMAGE_IDLE = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Walk.png';
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
 const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
+const LEFT_WALL_X = -60;
 const JUMP_SPEED = 11.5;
 const REST_DELAY_TICKS = 600;
 const REST_FRAME_TICKS = 15;
@@ -28,6 +29,7 @@ class Character extends MovableObject{
 
     update(){
         this.moveByKeyboard();
+        this.limitToWall();
         this.handleJump();
         this.applyGravity();
         this.updateJumpPhase();
@@ -51,6 +53,10 @@ class Character extends MovableObject{
             this.moveLeft();
             this.otherDirection = true;
         }
+    }
+
+    limitToWall(){
+        this.x = Math.max(this.x, LEFT_WALL_X);
     }
 
     handleJump(){
