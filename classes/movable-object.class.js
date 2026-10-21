@@ -1,4 +1,4 @@
-const GRAVITY = 0.5;
+const GRAVITY_FORCE = 0.5;
 
 class MovableObject{
     x = 120;
@@ -25,14 +25,14 @@ class MovableObject{
     constructor(){
     }
 
-    animate(){
+    startAnimation(){
         setInterval(() => {
-            this.update();
+            this.updateObject();
             this.nextFrame();
         }, 1000 / 60);
     }
 
-    update(){
+    updateObject(){
     }
 
     nextFrame(){
@@ -81,7 +81,7 @@ class MovableObject{
         this.y -= this.speedY;
         this.onGround = this.speedY <= 0 && this.landOnTile(PREVIOUS_FEET);
         if(!this.onGround){
-            this.speedY -= GRAVITY;
+            this.speedY -= GRAVITY_FORCE;
         }
     }
 

@@ -1,6 +1,6 @@
-let canvas;
-let world;
-let keyboard = new Keyboard();
+let gameCanvas;
+let gameWorld;
+let gameKeyboard = new Keyboard();
 const KEY_MAP = {
     ArrowRight: 'RIGHT',
     ArrowLeft: 'LEFT',
@@ -14,15 +14,15 @@ const KEY_MAP = {
 };
 
 function init(){
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    gameCanvas = document.getElementById('game-canvas');
+    gameWorld = new World(gameCanvas, gameKeyboard);
 }
 
 function updateKey(event, isPressed){
     const KEY_NAME = KEY_MAP[event.code];
     if(KEY_NAME){
         event.preventDefault();
-        keyboard[KEY_NAME] = isPressed;
+        gameKeyboard[KEY_NAME] = isPressed;
     }
 }
 

@@ -25,10 +25,10 @@ class Character extends MovableObject{
         super().loadImage(IMAGE_IDLE);
         this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST]);
         this.currentPath = IMAGE_IDLE;
-        this.animate();
+        this.startAnimation();
     }
 
-    update(){
+    updateObject(){
         this.moveByKeyboard();
         this.limitToWall();
         this.handleJump();
@@ -36,6 +36,18 @@ class Character extends MovableObject{
         this.updateJumpPhase();
         this.updateIdleTicks();
         this.updateSprite();
+    }
+
+    isWalking(){
+        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+    }
+
+    wantsJump(){
+        return this.world.keyboard.UP || this.world.keyboard.SPACE;
+    }
+
+    hasInput(){
+        return this.isWalking() || this.wantsJump();
     }
 
     isMovementLocked(){
@@ -62,8 +74,7 @@ class Character extends MovableObject{
     }
 
     handleJump(){
-        const WANTS_JUMP = this.world.keyboard.UP || this.world.keyboard.SPACE;
-        if(WANTS_JUMP && this.onGround && this.jumpPhase == 'none'){
+        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none'){
             this.startPhase('crouch');
         }
     }
@@ -73,7 +84,7 @@ class Character extends MovableObject{
         this.phaseTicks = 0;
     }
 
-    jump(){
+    launchJump(){
         this.speedY = JUMP_SPEED;
         this.startPhase('air');
     }
@@ -83,7 +94,7 @@ class Character extends MovableObject{
         if(!this.onGround && this.jumpPhase != 'air'){
             this.startPhase('air');
         } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= CROUCH_TICKS){
-            this.jump();
+            this.launchJump();
         } else if(this.jumpPhase == 'air' && this.onGround){
             this.startPhase('land');
         } else if(this.jumpPhase == 'land' && this.phaseTicks >= LAND_TICKS){
@@ -117,9 +128,7 @@ class Character extends MovableObject{
     }
 
     updateIdleTicks(){
-        const KEYS = this.world.keyboard;
-        const HAS_INPUT = KEYS.RIGHT || KEYS.LEFT || KEYS.UP || KEYS.SPACE;
-        if(HAS_INPUT || this.jumpPhase != 'none'){
+        if(this.hasInput() || this.jumpPhase != 'none'){
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
@@ -132,11 +141,10 @@ class Character extends MovableObject{
     }
 
     updateSprite(){
-        const IS_WALKING = this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
         if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
-        } else if(IS_WALKING){
+        } else if(this.isWalking()){
             this.setSprite(IMAGE_WALK, 6, 8);
         } else if(this.idleTicks >= REST_DELAY_TICKS){
             this.setSprite(IMAGE_REST, 4, 0);

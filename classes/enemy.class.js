@@ -13,10 +13,10 @@ class Enemy extends MovableObject {
         super().loadImage(IMAGE_BEAR_WALK);
         this.x = 200 + Math.floor(Math.random() * 500);
         this.otherDirection = Math.random() < 0.5;
-        this.animate();
+        this.startAnimation();
     }
 
-    update(){
+    updateObject(){
         this.patrol();
         this.applyGravity();
     }

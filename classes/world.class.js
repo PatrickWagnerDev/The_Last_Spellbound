@@ -18,7 +18,7 @@ class World {
         this.keyboard = keyboard;
         this.buildBackgrounds();
         this.setWorld();
-        this.draw();
+        this.drawWorld();
     }
 
     buildBackgrounds(){
@@ -30,9 +30,9 @@ class World {
 
     drawBackgroundObjects(){
         this.backgroundObjects.forEach(layer => {
-            const OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
+            const LAYER_OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
             this.ctx.save();
-            this.ctx.translate(-Math.round(OFFSET), 0);
+            this.ctx.translate(-Math.round(LAYER_OFFSET), 0);
             this.addToMap(layer);
             this.ctx.restore();
         });
@@ -58,41 +58,38 @@ class World {
         this.ctx.restore();
     }
 
-    draw(){
+    drawWorld(){
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
-        let self = this;
-        requestAnimationFrame(function(){
-            self.draw();
-        });
+        requestAnimationFrame(() => this.drawWorld());
     }
 
     addObjectsToMap(objects){
-        objects.forEach(o => {
-            this.addToMap(o);
+        objects.forEach(object => {
+            this.addToMap(object);
         });
     }
 
-    addToMap(mo){
-        let drawX = mo.x;
+    addToMap(drawable){
+        let drawX = drawable.x;
         this.ctx.save();
-        if(mo.isFlipped()){
-            this.flipContext(mo);
+        if(drawable.isFlipped()){
+            this.flipContext(drawable);
             drawX = 0;
         }
         this.ctx.drawImage(
-            mo.img,
-            mo.currentFrame * mo.frameWidth, mo.frameRow * mo.frameHeight, mo.frameWidth, mo.frameHeight,
-            Math.round(drawX), Math.round(mo.y), mo.width, mo.height
+            drawable.img,
+            drawable.currentFrame * drawable.frameWidth, drawable.frameRow * drawable.frameHeight, drawable.frameWidth, drawable.frameHeight,
+            Math.round(drawX), Math.round(drawable.y), drawable.width, drawable.height
         );
         this.ctx.restore();
     }
 
-    flipContext(mo){
-        this.ctx.translate(Math.round(mo.x + mo.width), 0);
+    flipContext(drawable){
+        this.ctx.translate(Math.round(drawable.x + drawable.width), 0);
         this.ctx.scale(-1, 1);
     }
 }
