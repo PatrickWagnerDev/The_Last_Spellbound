@@ -7,11 +7,7 @@ class World {
         new Enemy()
     ]
     trees = [];
-    backgroundObjects = [
-        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png'),
-        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees2.png'),
-        new BackgroundObject('./assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees1.png'),
-    ];
+    backgroundObjects = [];
     ctx;
     canvas;
     keyboard;
@@ -21,9 +17,27 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.buildBackgrounds();
         this.buildTrees();
         this.setWorld();
         this.draw();
+    }
+
+    buildBackgrounds(){
+        BACKGROUND_LAYERS.forEach(layer => {
+            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, 0));
+            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, BACKGROUND_WIDTH));
+        });
+    }
+
+    drawBackgroundObjects(){
+        this.backgroundObjects.forEach(layer => {
+            const OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
+            this.ctx.save();
+            this.ctx.translate(-Math.round(OFFSET), 0);
+            this.addToMap(layer);
+            this.ctx.restore();
+        });
     }
 
     buildTrees(){
@@ -58,7 +72,7 @@ class World {
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.updateCamera();
-        this.addObjectsToMap(this.backgroundObjects);
+        this.drawBackgroundObjects();
         this.drawScrollingObjects();
         let self = this;
         requestAnimationFrame(function(){
