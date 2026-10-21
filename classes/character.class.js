@@ -1,7 +1,10 @@
 const IMAGE_IDLE = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Idle.png';
 const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Walk.png';
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
+const IMAGE_REST = './assets/image/craftpix-net-902518-wizard-pixel-art-sprites-pack-2/Fire Wizard/Rest.png';
 const JUMP_SPEED = 11.5;
+const REST_DELAY_TICKS = 600;
+const REST_FRAME_TICKS = 15;
 const CROUCH_TICKS = 6;
 const LAND_TICKS = 9;
 const APEX_SPEED = 3;
@@ -14,10 +17,11 @@ class Character extends MovableObject{
     speed = 3;
     jumpPhase = 'none';
     phaseTicks = 0;
+    idleTicks = 0;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP]);
+        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST]);
         this.currentPath = IMAGE_IDLE;
         this.animate();
     }
@@ -27,6 +31,7 @@ class Character extends MovableObject{
         this.handleJump();
         this.applyGravity();
         this.updateJumpPhase();
+        this.updateIdleTicks();
         this.updateSprite();
     }
 
@@ -103,6 +108,21 @@ class Character extends MovableObject{
         return 4;
     }
 
+    updateIdleTicks(){
+        const KEYS = this.world.keyboard;
+        const HAS_INPUT = KEYS.RIGHT || KEYS.LEFT || KEYS.UP || KEYS.SPACE;
+        if(HAS_INPUT || this.jumpPhase != 'none'){
+            this.idleTicks = 0;
+        } else {
+            this.idleTicks++;
+        }
+    }
+
+    getRestFrame(){
+        const FRAME_INDEX = Math.floor((this.idleTicks - REST_DELAY_TICKS) / REST_FRAME_TICKS);
+        return Math.min(FRAME_INDEX, this.frameCount - 1);
+    }
+
     updateSprite(){
         const IS_WALKING = this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
         if(this.jumpPhase != 'none'){
@@ -110,6 +130,9 @@ class Character extends MovableObject{
             this.currentFrame = this.getJumpFrame();
         } else if(IS_WALKING){
             this.setSprite(IMAGE_WALK, 6, 8);
+        } else if(this.idleTicks >= REST_DELAY_TICKS){
+            this.setSprite(IMAGE_REST, 4, 0);
+            this.currentFrame = this.getRestFrame();
         } else {
             this.setSprite(IMAGE_IDLE, 7, 5);
         }
