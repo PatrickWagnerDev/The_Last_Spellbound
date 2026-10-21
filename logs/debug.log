@@ -26,3 +26,4 @@
 2026-10-21 | character.class.js | speed 3, GRAVITY 0.5, JUMP_SPEED 11.5, setSprite takes fps (jump 12, walk 8, idle 5)
 2026-10-21 | world.class.js | Round draw position to whole pixels in addToMap and flipContext
 2026-10-21 | character.class.js | Jump animation frame follows the jump arc via getJumpFrame, starts at JUMP_START_FRAME 3, fps 0 disables timed frame advance
+2026-10-21 | character.class.js | Jump phases crouch/air/land (jumpPhase, phaseTicks, updateJumpPhase, getJumpFrame), movement locked during crouch and land, replaced JUMP_START_FRAME with CROUCH_TICKS, LAND_TICKS, APEX_SPEED

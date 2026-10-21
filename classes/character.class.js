@@ -3,7 +3,9 @@ const IMAGE_WALK = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets
 const IMAGE_JUMP = './assets/image/craftpix-net-529677-free-wizard-sprite-sheets-pixel-art/Fire Wizard/Jump.png';
 const GRAVITY = 0.5;
 const JUMP_SPEED = 11.5;
-const JUMP_START_FRAME = 3;
+const CROUCH_TICKS = 6;
+const LAND_TICKS = 9;
+const APEX_SPEED = 3;
 
 class Character extends MovableObject{
     width = 150;
@@ -13,6 +15,8 @@ class Character extends MovableObject{
     speed = 3;
     speedY = 0;
     onGround = false;
+    jumpPhase = 'none';
+    phaseTicks = 0;
     world;
     currentPath;
 
@@ -29,11 +33,19 @@ class Character extends MovableObject{
             this.moveByKeyboard();
             this.handleJump();
             this.applyGravity();
+            this.updateJumpPhase();
             this.updateSprite();
         }, 1000 / 60);
     }
 
+    isMovementLocked(){
+        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land';
+    }
+
     moveByKeyboard(){
+        if(this.isMovementLocked()){
+            return;
+        }
         if(this.world.keyboard.RIGHT){
             this.moveRight();
             this.otherDirection = false;
@@ -46,13 +58,19 @@ class Character extends MovableObject{
 
     handleJump(){
         const WANTS_JUMP = this.world.keyboard.UP || this.world.keyboard.SPACE;
-        if(WANTS_JUMP && this.onGround){
-            this.jump();
+        if(WANTS_JUMP && this.onGround && this.jumpPhase == 'none'){
+            this.startPhase('crouch');
         }
+    }
+
+    startPhase(phaseName){
+        this.jumpPhase = phaseName;
+        this.phaseTicks = 0;
     }
 
     jump(){
         this.speedY = JUMP_SPEED;
+        this.startPhase('air');
     }
 
     applyGravity(){
@@ -76,16 +94,47 @@ class Character extends MovableObject{
         return true;
     }
 
+    updateJumpPhase(){
+        this.phaseTicks++;
+        if(!this.onGround && this.jumpPhase != 'air'){
+            this.startPhase('air');
+        } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= CROUCH_TICKS){
+            this.jump();
+        } else if(this.jumpPhase == 'air' && this.onGround){
+            this.startPhase('land');
+        } else if(this.jumpPhase == 'land' && this.phaseTicks >= LAND_TICKS){
+            this.startPhase('none');
+        }
+    }
+
     getJumpFrame(){
-        const PROGRESS = (JUMP_SPEED - this.speedY) / (2 * JUMP_SPEED);
-        const FRAME_RANGE = this.frameCount - JUMP_START_FRAME;
-        const FRAME_INDEX = JUMP_START_FRAME + Math.floor(PROGRESS * FRAME_RANGE);
-        return Math.min(Math.max(FRAME_INDEX, JUMP_START_FRAME), this.frameCount - 1);
+        if(this.jumpPhase == 'crouch'){
+            return this.getPhaseFrame(0, CROUCH_TICKS);
+        }
+        if(this.jumpPhase == 'land'){
+            return this.getPhaseFrame(6, LAND_TICKS);
+        }
+        return this.getAirFrame();
+    }
+
+    getPhaseFrame(startFrame, totalTicks){
+        const FRAME_INDEX = Math.floor(this.phaseTicks / (totalTicks / 3));
+        return startFrame + Math.min(FRAME_INDEX, 2);
+    }
+
+    getAirFrame(){
+        if(this.speedY > APEX_SPEED){
+            return 3;
+        }
+        if(this.speedY < -APEX_SPEED){
+            return 5;
+        }
+        return 4;
     }
 
     updateSprite(){
         const IS_WALKING = this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
-        if(!this.onGround){
+        if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
         } else if(IS_WALKING){
