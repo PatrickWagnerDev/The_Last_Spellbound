@@ -61,3 +61,5 @@
 2026-10-21 | world.class.js | Enemies and background objects now come from the level, removed buildBackgrounds
 2026-10-21 | enemy.class.js | Set speed from 1 to 0.6
 2026-10-21 | enemy.class.js | Set speed from 0.6 to 0.5
+2026-10-21 | levels/ -> classes/levels/ | Moved the levels folder into classes and updated the script path in index.html
+2026-10-21 | classes/ | Moved model classes and world/keyboard into classes/models, level.class.js into classes/levels; updated script paths in index.html
