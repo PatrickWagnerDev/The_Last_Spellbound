@@ -1,12 +1,6 @@
 class World {
     character = new Character();
-    level = new Level(LEVEL_ONE_MAP);
-    enemies = [
-        new Enemy(),
-        new Enemy(),
-        new Enemy()
-    ]
-    backgroundObjects = [];
+    level = new Level(LEVEL_ONE);
     ctx;
     canvas;
     keyboard;
@@ -16,20 +10,12 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.buildBackgrounds();
         this.setWorld();
         this.drawWorld();
     }
 
-    buildBackgrounds(){
-        BACKGROUND_LAYERS.forEach(layer => {
-            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, 0));
-            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, BACKGROUND_WIDTH));
-        });
-    }
-
     drawBackgroundObjects(){
-        this.backgroundObjects.forEach(layer => {
+        this.level.backgroundObjects.forEach(layer => {
             const LAYER_OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
             this.ctx.save();
             this.ctx.translate(-Math.round(LAYER_OFFSET), 0);
@@ -40,7 +26,7 @@ class World {
 
     setWorld(){
         this.character.world = this;
-        this.enemies.forEach(enemy => enemy.world = this);
+        this.level.enemies.forEach(enemy => enemy.world = this);
     }
 
     updateCamera(){
@@ -54,7 +40,7 @@ class World {
         this.ctx.translate(-Math.round(this.cameraX), 0);
         this.addObjectsToMap(this.level.tiles);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.level.enemies);
         this.ctx.restore();
     }
 

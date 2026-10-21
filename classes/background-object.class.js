@@ -1,10 +1,4 @@
 const BACKGROUND_WIDTH = 720;
-const BACKGROUND_LAYERS = [
-    { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees3.png', factor: 0 },
-    { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees2.png', factor: 0.25 },
-    { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/trees1.png', factor: 0.5 },
-    { path: './assets/image/craftpix-661711-pixel-art-forest-2d-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
-];
 
 class BackgroundObject extends DrawableObject {
     y = 0;

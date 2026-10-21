@@ -1,17 +1,21 @@
 class Level {
     mapRows;
     tiles = [];
+    enemies = [];
+    backgroundObjects = [];
     tilesetImage;
     width;
     height;
 
-    constructor(mapRows){
-        this.mapRows = mapRows;
-        this.width = mapRows[0].length * TILE_SIZE;
-        this.height = mapRows.length * TILE_SIZE;
+    constructor(levelData){
+        this.mapRows = levelData.mapRows;
+        this.width = this.mapRows[0].length * TILE_SIZE;
+        this.height = this.mapRows.length * TILE_SIZE;
         this.tilesetImage = new Image();
         this.tilesetImage.src = TILESET_IMAGE;
         this.buildTiles();
+        this.buildEnemies(levelData.enemySpawns);
+        this.buildBackgrounds(levelData.backgroundLayers);
     }
 
     buildTiles(){
@@ -21,6 +25,19 @@ class Level {
                     this.tiles.push(new Tile(tileId, column, row, this.tilesetImage));
                 }
             });
+        });
+    }
+
+    buildEnemies(enemySpawns){
+        enemySpawns.forEach(spawn => {
+            this.enemies.push(new Enemy(spawn.column, spawn.row));
+        });
+    }
+
+    buildBackgrounds(backgroundLayers){
+        backgroundLayers.forEach(layer => {
+            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, 0));
+            this.backgroundObjects.push(new BackgroundObject(layer.path, layer.factor, BACKGROUND_WIDTH));
         });
     }
 

@@ -54,3 +54,8 @@
 2026-10-21 | tile.class.js, background-object.class.js | Now extend DrawableObject
 2026-10-21 | character.class.js, enemy.class.js | Added frameCount 7 and y 350 which were previously inherited defaults
 2026-10-21 | index.html | Included drawable-object.class.js before movable-object.class.js
+2026-10-21 | levels/level-one.js | LEVEL_ONE_MAP replaced by LEVEL_ONE with mapRows, enemySpawns (one bear on the lower platform, three on the ground) and backgroundLayers
+2026-10-21 | level.class.js | Level takes levelData and builds tiles, enemies and background objects
+2026-10-21 | enemy.class.js | Constructor takes column and row; start position is derived from the tile, removed random x and y field
+2026-10-21 | background-object.class.js | Removed BACKGROUND_LAYERS (moved into the level file)
+2026-10-21 | world.class.js | Enemies and background objects now come from the level, removed buildBackgrounds

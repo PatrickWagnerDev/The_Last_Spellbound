@@ -6,13 +6,13 @@ class Enemy extends MovableObject {
     frameWidth = 40;
     frameHeight = 40;
     frameCount = 6;
-    y = 350;
     speed = 1;
     spriteFacesLeft = true;
 
-    constructor(){
+    constructor(column, row){
         super().loadImage(IMAGE_BEAR_WALK);
-        this.x = 200 + Math.floor(Math.random() * 500);
+        this.x = column * TILE_SIZE;
+        this.y = row * TILE_SIZE - this.height;
         this.otherDirection = Math.random() < 0.5;
         this.startAnimation();
     }
