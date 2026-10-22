@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Last Spellbound</title>
     <link rel="shortcut icon" href="assets/icons/Favicon.png" type="image/x-icon">
+    <link rel="preload" as="image" href="./assets/image/07-forest-backgrounds/PNG/Forest1/Pale/Forest1.png">
+    <link rel="preload" as="font" type="font/otf" href="./assets/fonts/Straight%20pixel%20gothic.otf" crossorigin>
 
     <link rel="stylesheet" href="./styles/fonts.css">
     <link rel="stylesheet" href="./styles/variable.css">
@@ -17,8 +19,10 @@
     <div id="game-container" class="game-container is-start-screen" role="region" aria-label="The Last Spellbound">
         <canvas id="game-canvas" width="720px" height="480px"></canvas>
         <button id="pause-button" class="pause-button" onclick="togglePause()"></button>
-        <div id="start-screen" class="start-screen is-open">
-            <div class="start-wizard"></div>
+        <div id="start-screen" class="start-screen is-open is-waiting">
+            <div class="start-wizard-area">
+                <div class="start-wizard"></div>
+            </div>
             <div class="start-content">
                 <h1 class="start-title">The Last<br>Spellbound</h1>
                 <div class="start-buttons">
@@ -69,6 +73,7 @@
                 </button>
             </div>
         </div>
+        <div id="screen-fade" class="screen-fade"></div>
     </div>
 
     <script src="./scripts/game-settings.js"></script>

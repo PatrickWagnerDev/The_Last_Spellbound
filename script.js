@@ -1,6 +1,8 @@
 let gameCanvas;
 let gameWorld;
 let gameKeyboard = new Keyboard();
+const START_WIZARD_IMAGE = './assets/image/01-wizard/Fire Wizard/Idle.png';
+const SCREEN_FADE_MS = 400;
 const KEY_MAP = {
     ArrowRight: 'RIGHT',
     ArrowLeft: 'LEFT',
@@ -23,9 +25,41 @@ function getStartLevelData(){
 
 function init(){
     gameCanvas = document.getElementById('game-canvas');
+    document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
+    loadStartAssets().catch(() => {}).then(playStartIntro);
+}
+
+function loadStartAssets(){
+    const WIZARD_IMAGE = createImage(START_WIZARD_IMAGE);
+    return Promise.all([document.fonts.load('24px "Straight Pixel Gothic"'), WIZARD_IMAGE.decode()]);
+}
+
+function playStartIntro(){
+    const START_SCREEN = document.getElementById('start-screen');
+    START_SCREEN.classList.remove('is-waiting', 'is-ready');
+    START_SCREEN.classList.add('is-intro');
+}
+
+function finishStartIntro(){
+    const START_SCREEN = document.getElementById('start-screen');
+    START_SCREEN.classList.remove('is-intro');
+    START_SCREEN.classList.add('is-ready');
+}
+
+function fadeThroughBlack(onBlack){
+    const SCREEN_FADE = document.getElementById('screen-fade');
+    SCREEN_FADE.classList.add('is-black');
+    setTimeout(() => {
+        onBlack();
+        SCREEN_FADE.classList.remove('is-black');
+    }, SCREEN_FADE_MS);
 }
 
 function startGame(){
+    fadeThroughBlack(finishStartGame);
+}
+
+function finishStartGame(){
     createWorld(getStartLevelData());
     updateStartScreenUi(false);
 }
@@ -42,6 +76,7 @@ function goHome(){
     updateGameOverUi(false);
     updatePauseUi();
     updateStartScreenUi(true);
+    playStartIntro();
 }
 
 function createWorld(levelData){
