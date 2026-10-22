@@ -64,10 +64,27 @@ class World {
         this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, levelData);
     }
 
+    togglePause(){
+        if(!this.transition){
+            this.isPaused = !this.isPaused;
+        }
+    }
+
+    isPauseActive(){
+        return this.isPaused && !this.transition;
+    }
+
     endTransition(){
         this.transition.stopAnimation();
         this.transition = null;
         this.isPaused = false;
+    }
+
+    drawPauseOverlay(){
+        if(this.isPauseActive()){
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${GAME_SETTINGS.ui.pauseOverlayAlpha})`;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
     }
 
     drawTransition(){
@@ -121,6 +138,7 @@ class World {
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
         this.drawStatusBars();
+        this.drawPauseOverlay();
         this.drawTransition();
         requestAnimationFrame(() => this.drawWorld());
     }

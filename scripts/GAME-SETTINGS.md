@@ -183,6 +183,7 @@ While the transition runs, the level is switched under the covered canvas. The s
 | `bossBarGap` | `0` | Space between two bars of the boss health display in px. |
 | `bossBarMargin` | `12` | Distance of the boss health display from the bottom edge of the canvas in px. |
 | `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is `mageBoss.maxHealth` divided by this value (15 / 3 = 5 bars). |
+| `pauseOverlayAlpha` | `0.5` | Opacity of the black layer over the canvas while the game is paused with the pause button or the Esc key (0 = invisible, 1 = fully black). |
 
 ## debug
 

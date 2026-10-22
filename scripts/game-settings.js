@@ -129,7 +129,8 @@ const GAME_SETTINGS = {
         bossBarScale: 1,
         bossBarGap: 0,
         bossBarMargin: 12,
-        bossBarHealthPerBar: 3
+        bossBarHealthPerBar: 3,
+        pauseOverlayAlpha: 0.5
     },
     debug: {
         startInBossLevel: true,

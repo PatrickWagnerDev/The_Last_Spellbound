@@ -11,10 +11,57 @@ body {
 }
 
 .game-container {
+    position: relative;
     padding: 32px;
     background-image: url('./assets/image/09-ui/canvas-frame.png');
     background-repeat: no-repeat;
     image-rendering: pixelated;
+}
+
+.pause-button {
+    position: absolute;
+    top: 44px;
+    right: 44px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 2px solid #ffffff;
+    background-color: rgba(0, 0, 0, 0.5);
+    clip-path: polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px);
+    cursor: pointer;
+}
+
+.pause-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.pause-button::before,
+.pause-button::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    width: 6px;
+    height: 24px;
+    background-color: #ffffff;
+    clip-path: polygon(2px 0, 4px 0, 4px 2px, 6px 2px, 6px 22px, 4px 22px, 4px 24px, 2px 24px, 2px 22px, 0 22px, 0 2px, 2px 2px);
+}
+
+.pause-button::before {
+    left: 9px;
+}
+
+.pause-button::after {
+    left: 21px;
+}
+
+.pause-button.is-paused::before {
+    left: 13px;
+    width: 12px;
+    clip-path: polygon(0 0, 4px 0, 4px 4px, 8px 4px, 8px 8px, 12px 8px, 12px 16px, 8px 16px, 8px 20px, 4px 20px, 4px 24px, 0 24px);
+}
+
+.pause-button.is-paused::after {
+    display: none;
 }
 
 canvas {

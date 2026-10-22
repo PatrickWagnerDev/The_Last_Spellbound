@@ -217,3 +217,8 @@
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added ui.bossBarScale, bossBarGap, bossBarMargin, bossBarHealthPerBar and documented them
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | ui.bossBarGap 0 so the boss health bars sit directly next to each other; default in the docs updated
 2026-10-22 | scripts/GAME-SETTINGS.md | Documented the new defaults mageBoss.fireballCooldownTicks 500 and rayCooldownTicks 1200 (changed by the user in game-settings.js)
+2026-10-22 | index.html, style.css | Added the pause button (pause-button) at the top right of the canvas: two thick white bars via CSS, a CSS triangle when paused
+2026-10-22 | script.js, classes/models/world.class.js | Added togglePause and handlePauseKey (Esc) in script.js, World.togglePause, isPauseActive (ignored while a portal transition runs) and drawPauseOverlay (dims the canvas while paused)
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added ui.pauseOverlayAlpha and documented it
+2026-10-22 | style.css | Pause button symbols made pixelated: stepped triangle and bars with notched corners via clip-path, pixel-notched button corners (no border radius)
+2026-10-22 | style.css | Added a light hover effect to the pause button (brighter background)
