@@ -56,6 +56,8 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `maxHealth` | `2` | Health points of the bear. Other enemy types will get their own values. Enemies cannot be hurt yet. |
 | `speed` | `0.5` | Walking speed in px per tick. Values below 1 look slightly jerky because drawing rounds to whole pixels. |
 | `animationFps` | `8` | Animation speed in frames per second. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). The bear stands still, is pushed away from the attacker and turns towards it. |
+| `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (48 px by default). |
 | `deathTicks` | `60` | Time from the death of an enemy until it disappears (60 ticks = 1 second). The 6 death frames are spread over it. A dead enemy does no damage and cannot be hit again. |
 
 ## ui

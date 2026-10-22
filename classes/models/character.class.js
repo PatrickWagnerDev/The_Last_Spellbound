@@ -25,8 +25,6 @@ class Character extends MovableObject{
     maxHealth = this.settings.maxHealth;
     health = this.maxHealth;
     invincibleTicks = 0;
-    hurtTicksLeft = 0;
-    knockbackDirection = 1;
     deadTicks = 0;
     rollTicksLeft = 0;
     rollCooldownLeft = 0;
@@ -90,38 +88,13 @@ class Character extends MovableObject{
         this.startHurt(source);
     }
 
-    isHurt(){
-        return this.hurtTicksLeft > 0;
-    }
-
-    updateHurt(){
-        if(!this.isHurt()){
-            return;
-        }
-        this.x += this.getKnockbackStep();
-        this.hurtTicksLeft--;
-    }
-
-    getKnockbackStep(){
-        return this.knockbackDirection * this.settings.knockbackSpeed * this.hurtTicksLeft / this.settings.hurtTicks;
-    }
-
     startHurt(source){
-        const SOURCE_RECT = source.getHitbox();
-        const OWN_RECT = this.getHitbox();
-        const IS_SOURCE_RIGHT = SOURCE_RECT.x + SOURCE_RECT.width / 2 > OWN_RECT.x + OWN_RECT.width / 2;
-        this.knockbackDirection = IS_SOURCE_RIGHT ? -1 : 1;
-        this.otherDirection = !IS_SOURCE_RIGHT;
-        this.hurtTicksLeft = this.settings.hurtTicks;
+        this.startKnockback(source);
+        this.otherDirection = this.knockbackDirection > 0;
         this.attackTicksLeft = 0;
         if(this.jumpPhase == 'crouch' || this.jumpPhase == 'land'){
             this.startPhase('none');
         }
-    }
-
-    getHurtFrame(){
-        const FRAME_INDEX = Math.floor((this.settings.hurtTicks - this.hurtTicksLeft) / (this.settings.hurtTicks / 3));
-        return Math.min(FRAME_INDEX, 2);
     }
 
     updateDeathSprite(){
@@ -227,7 +200,7 @@ class Character extends MovableObject{
         const ATTACK_RECT = this.getBoxRect(ATTACK_HITBOX);
         this.world.level.getCollidables().forEach(enemy => {
             if(!this.attackHits.includes(enemy) && enemy.isOverlapping(ATTACK_RECT)){
-                enemy.takeDamage(GAME_SETTINGS.combat.hitDamage);
+                enemy.receiveHit(GAME_SETTINGS.combat.hitDamage, this);
                 this.attackHits.push(enemy);
             }
         });
@@ -343,7 +316,7 @@ class Character extends MovableObject{
     updateSprite(){
         if(this.isHurt()){
             this.setSprite(IMAGE_HURT, 3, 0);
-            this.currentFrame = this.getHurtFrame();
+            this.currentFrame = this.getHurtFrame(3);
         } else if(this.isRolling()){
             this.setSprite(IMAGE_ROLL, 6, 0);
             this.currentFrame = this.getRollFrame();

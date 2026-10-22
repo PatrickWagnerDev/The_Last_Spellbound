@@ -120,3 +120,7 @@
 2026-10-22 | level.class.js | getCollidables skips dead enemies; added removeEnemy
 2026-10-22 | world.class.js | drawHitboxes also draws the attack box
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.attackTicks 30, attackHitStartTick 12, attackHitEndTick 18 and enemy.deathTicks 60 and documented them
+2026-10-22 | movable-object.class.js | Moved hurt and knockback logic here (hurtTicksLeft, knockbackDirection, isHurt, updateHurt, getKnockbackStep, startKnockback, getHurtFrame(frameTotal)) so Character and Enemy share it
+2026-10-22 | character.class.js | Removed the moved hurt methods and fields; startHurt uses startKnockback; hitEnemies calls enemy.receiveHit with the character as source
+2026-10-22 | enemy.class.js | Added the bear hurt animation with knockback (IMAGE_BEAR_HURT, receiveHit): no hurt on the lethal hit, the bear turns towards the attacker
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added enemy.hurtTicks 24 and knockbackSpeed 4 and documented them

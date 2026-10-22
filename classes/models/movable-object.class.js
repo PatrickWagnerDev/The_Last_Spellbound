@@ -6,6 +6,8 @@ class MovableObject extends DrawableObject{
     hitbox = { offsetX: 0, offsetY: 0, width: 100, height: 100 };
     maxHealth = 1;
     health = 1;
+    hurtTicksLeft = 0;
+    knockbackDirection = 1;
 
     startAnimation(){
         this.animationInterval = setInterval(() => {
@@ -101,5 +103,34 @@ class MovableObject extends DrawableObject{
 
     isDead(){
         return this.health <= 0;
+    }
+
+    isHurt(){
+        return this.hurtTicksLeft > 0;
+    }
+
+    updateHurt(){
+        if(!this.isHurt()){
+            return;
+        }
+        this.x += this.getKnockbackStep();
+        this.hurtTicksLeft--;
+    }
+
+    getKnockbackStep(){
+        return this.knockbackDirection * this.settings.knockbackSpeed * this.hurtTicksLeft / this.settings.hurtTicks;
+    }
+
+    startKnockback(source){
+        const SOURCE_RECT = source.getHitbox();
+        const OWN_RECT = this.getHitbox();
+        const IS_SOURCE_RIGHT = SOURCE_RECT.x + SOURCE_RECT.width / 2 > OWN_RECT.x + OWN_RECT.width / 2;
+        this.knockbackDirection = IS_SOURCE_RIGHT ? -1 : 1;
+        this.hurtTicksLeft = this.settings.hurtTicks;
+    }
+
+    getHurtFrame(frameTotal){
+        const ELAPSED = this.settings.hurtTicks - this.hurtTicksLeft;
+        return Math.min(Math.floor(ELAPSED / (this.settings.hurtTicks / frameTotal)), frameTotal - 1);
     }
 }

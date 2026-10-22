@@ -38,6 +38,8 @@ const GAME_SETTINGS = {
         maxHealth: 2,
         speed: 0.5,
         animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
         deathTicks: 60
     },
     ui: {
