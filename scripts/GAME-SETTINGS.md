@@ -106,7 +106,7 @@ These values are fixed in the code on purpose.
 | Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear and of the fireball, `FIREBALL_SPAWN` | `enemy.class.js`, `fireball.class.js` | They are measured from the sprites. |
-| Tile map with the markers for the player start (60), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
+| Tile map with the markers for the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
 | `ENEMY_MARKERS` | `enemy.class.js` | It connects a marker number with an enemy class. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |

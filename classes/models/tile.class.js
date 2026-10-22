@@ -3,7 +3,7 @@ const TILE_COLUMNS = 7;
 const EMPTY_TILE_ID = 10;
 const XX = EMPTY_TILE_ID;
 const FIRST_MARKER_ID = 60;
-const PLAYER_START_ID = 60;
+const PLAYER_START_ID = 69;
 const WALKABLE_TILE_IDS = [11, 12, 13, 14, 31, 32, 33, 34, 35, 43, 44, 46, 47, 48];
 const TILESET_IMAGE = './assets/image/06-tileset/Tiles/TileSet.png';
 
