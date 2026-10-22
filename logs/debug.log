@@ -159,3 +159,4 @@
 2026-10-22 | classes/levels/level-one.js | Player start marker 60 in row 8 column 1
 2026-10-22 | classes/levels/tile-reference.html | Marker section now lists the player start (60) and the number ranges
 2026-10-22 | scripts/GAME-SETTINGS.md | Corrected hitDamage, enemy.maxHealth and showHitboxes and rewrote the list of values that are not settings
+2026-10-22 | classes/levels/level-one.js | Moved the player start marker 60 from row 8 to row 7 so the character falls into the level at the start
