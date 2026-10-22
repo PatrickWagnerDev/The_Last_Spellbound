@@ -35,6 +35,8 @@ class Character extends MovableObject{
     castTicksLeft = 0;
     castCooldownLeft = 0;
     castKeyDown = false;
+    maxEnergy = GAME_SETTINGS.energy.maxCharges;
+    energy = GAME_SETTINGS.energy.startCharges;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
@@ -236,7 +238,7 @@ class Character extends MovableObject{
     handleCast(){
         const IS_PRESSED = this.wantsCast();
         const JUST_PRESSED = IS_PRESSED && !this.castKeyDown;
-        const CAN_CAST = !this.isCasting() && !this.isAttacking() && !this.isRolling() && !this.isHurt() && this.castCooldownLeft == 0;
+        const CAN_CAST = !this.isCasting() && !this.isAttacking() && !this.isRolling() && !this.isHurt() && this.castCooldownLeft == 0 && this.energy >= 1;
         this.castKeyDown = IS_PRESSED;
         if(this.castCooldownLeft > 0){
             this.castCooldownLeft--;
@@ -253,8 +255,13 @@ class Character extends MovableObject{
         if(this.settings.castTicks - this.castTicksLeft == this.settings.castReleaseTick){
             this.world.addProjectile(new Fireball(this));
             this.castCooldownLeft = this.settings.castCooldownTicks;
+            this.energy -= 1;
         }
         this.castTicksLeft--;
+    }
+
+    addEnergy(amount){
+        this.energy = Math.min(this.energy + amount, this.maxEnergy);
     }
 
     getCastFrame(){

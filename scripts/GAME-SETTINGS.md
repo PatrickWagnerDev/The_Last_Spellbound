@@ -73,6 +73,13 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `flightFps` | `12` | Animation speed of the flight frames (5 frames) in frames per second. |
 | `impactFps` | `14` | Animation speed of the impact frames (7 frames) in frames per second. The impact animation only plays when an enemy is hit. |
 
+## energy
+
+| Variable | Default | Effect |
+|---|---|---|
+| `maxCharges` | `5` | Number of fireball charges the character can hold. The energy bar is split into this many parts. |
+| `startCharges` | `5` | Charges at the start of the game. Every fired fireball uses one charge, at 0 charges no fireball can be fired. There is no automatic recharge, charges will come from items later. |
+
 ## ui
 
 | Variable | Default | Effect |
@@ -80,6 +87,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `statusBarScale` | `2` | Size factor of the status bars (the bar image is 96x12 px). Whole numbers keep the pixels sharp. |
 | `statusBarX` | `12` | Distance of the health bar from the left edge of the canvas in px. |
 | `statusBarY` | `12` | Distance of the health bar from the top edge of the canvas in px. |
+| `energyBarY` | `44` | Distance of the energy bar from the top edge of the canvas in px (it sits below the health bar). |
 | `blinkTicks` | `60` | How long a lost segment of a bar blinks before it stays empty (60 ticks = 1 second). |
 | `blinkIntervalTicks` | `6` | Ticks the blinking segment is visible or hidden (6 ticks = 0.1 second). |
 

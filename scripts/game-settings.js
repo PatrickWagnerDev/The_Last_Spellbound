@@ -52,10 +52,15 @@ const GAME_SETTINGS = {
         flightFps: 12,
         impactFps: 14
     },
+    energy: {
+        maxCharges: 5,
+        startCharges: 5
+    },
     ui: {
         statusBarScale: 2,
         statusBarX: 12,
         statusBarY: 12,
+        energyBarY: 44,
         blinkTicks: 60,
         blinkIntervalTicks: 6
     },

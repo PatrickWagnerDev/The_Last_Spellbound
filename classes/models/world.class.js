@@ -1,10 +1,13 @@
 const IMAGE_HEALTH_EMPTY = './assets/image/09-ui/2 Bars/Healthbar_empty.png';
 const IMAGE_HEALTH_FULL = './assets/image/09-ui/2 Bars/Healthbar_full.png';
+const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
+const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 
 class World {
     character = new Character();
     level = new Level(LEVEL_ONE);
-    healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
+    energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { segments: GAME_SETTINGS.energy.maxCharges, blink: false });
+    healthBar =new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
     canvas;
     keyboard;
@@ -90,5 +93,7 @@ class World {
     drawStatusBars(){
         this.healthBar.setValue(this.character.health, this.character.maxHealth);
         this.healthBar.draw(this.ctx);
+        this.energyBar.setValue(this.character.energy, this.character.maxEnergy);
+        this.energyBar.draw(this.ctx);
     }
 }
