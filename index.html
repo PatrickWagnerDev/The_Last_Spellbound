@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./styles/standard.css">
     <link rel="stylesheet" href="./styles/assets.css">
     <link rel="stylesheet" href="./styles/controls.css">
+    <link rel="stylesheet" href="./styles/legal.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -37,7 +38,7 @@
                     <button class="start-button" onclick="openDialog('credits-screen')">
                         <span class="menu-label">Credits</span>
                     </button>
-                    <button class="start-button">
+                    <button class="start-button" onclick="openDialog('impressum-screen')">
                         <span class="menu-label">Impressum</span>
                     </button>
                 </div>
@@ -133,6 +134,24 @@
                         <a class="credits-link" href="https://craftpix.net" target="_blank" rel="noopener noreferrer">Craftpix.net</a>.
                         Many thanks for providing these assets.
                     </p>
+                </div>
+            </div>
+        </div>
+        <div id="impressum-screen" class="dialog-screen" onclick="closeDialog(event)">
+            <div class="window-frame dialog-window">
+                <h2 class="window-title">Impressum</h2>
+                <button class="close-button" aria-label="Close"></button>
+                <div class="legal-body">
+                    <p class="legal-heading">Information according to Section 5 DDG</p>
+                    <dl class="legal-list">
+                        <dt class="legal-label">Name</dt>
+                        <dd class="legal-value">Patrick Wagner</dd>
+                        <dt class="legal-label">Address</dt>
+                        <dd class="legal-value">Steinbrechstr. 8C, 86179 Augsburg, Germany</dd>
+                        <dt class="legal-label">E-mail</dt>
+                        <dd class="legal-value">patrickwagner2607@gmail.com</dd>
+                    </dl>
+                    <p class="legal-note">This game is a student project for training purposes and has no commercial purpose.</p>
                 </div>
             </div>
         </div>
