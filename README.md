@@ -4,22 +4,22 @@ This project is a jump-and-run game built with HTML, CSS, and JavaScript as an e
 
 ## Features
 
-The following features are planned for the game:
+The game currently offers the following features:
 
-- **Character Movement** – Move and jump through a side-scrolling game world.
-- **Combat System** – Defeat enemies using melee and ranged attacks.
-- **Enemy Variety** – Encounter different enemy types and face a challenging final boss.
-- **Collectibles** – Collect coins to restore health.
-- **Status Bars** – Monitor health and charge energy for powerful attacks.
-- **Character Animations** – Experience animated movement, combat, and inactivity behavior.
-- **Single-Level Gameplay** – Complete one level and defeat the final boss.
-- **Keyboard & Touch Controls** – Play using a keyboard on desktop or touch controls on mobile devices.
-- **Game Instructions** – View the game rules and controls in an interactive help dialog.
-- **Game Menus** – Start, pause, restart, or return to the main menu.
-- **Game Screens** – View dedicated victory and game-over screens.
+- **Character Movement** – Walk, jump and roll through a side-scrolling game world.
+- **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy.
+- **Enemies** – Meet patrolling bears and the mage boss, who chases the player and attacks with a fireball and a ray.
+- **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
+- **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
+- **Status Bars** – Monitor the health, the energy and the health of the boss.
+- **Game Screens** – Use the start screen, the pause menu, the game-over screen and the victory screen, and retry or return to the start screen.
+
+The following features are planned:
+
+- **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 - **Audio Settings** – Enjoy background music and sound effects, with a mute option saved in Local Storage.
+- **Touch Controls** – Play on mobile devices in landscape mode with an orientation notice for portrait mode.
 - **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay.
-- **Mobile Landscape Support** – Play in landscape mode with an orientation notice for portrait mode.
 
 ## Technologies
 
