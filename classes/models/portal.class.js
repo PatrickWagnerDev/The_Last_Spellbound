@@ -50,7 +50,7 @@ class Portal extends MovableObject {
         const CHARACTER = this.world.character;
         if(this.isAppeared() && !this.isUsed && !CHARACTER.isDead() && this.isColliding(CHARACTER)){
             this.isUsed = true;
-            this.world.loadLevel(LEVEL_ONE_BOSS);
+            this.world.startTransition(this, LEVEL_ONE_BOSS);
         }
     }
 }

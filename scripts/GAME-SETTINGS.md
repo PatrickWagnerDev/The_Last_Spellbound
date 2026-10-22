@@ -116,6 +116,16 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `animationFps` | `8` | Speed of the turning portal in frames per second (3 images in a loop). |
 | `appearTicks` | `30` | Ticks the portal needs to grow from its centre to full size (30 ticks = 0.5 seconds). It can only be entered when it is fully grown. |
 
+## transition
+
+| Variable | Default | Effect |
+|---|---|---|
+| `expandTicks` | `30` | Ticks the portal vortex needs to grow until it covers the whole canvas (30 ticks = 0.5 seconds). The game is paused meanwhile (`world.isPaused`). |
+| `contractTicks` | `30` | Ticks the vortex needs to shrink around the character in the new level and disappear (30 ticks = 0.5 seconds). The game continues afterwards. |
+| `spinFps` | `12` | Speed of the turning vortex during the transition in frames per second (3 images in a loop). |
+
+While the transition runs, the level is switched under the covered canvas. The same pause (`world.isPaused`) is meant for the pause button later.
+
 ## energy
 
 | Variable | Default | Effect |
@@ -155,6 +165,7 @@ These values are fixed in the code on purpose.
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
 | `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy.class.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
+| `SPIRAL_RADIUS_RATIO` | `portal-transition.class.js` | The vortex image fills about 40 % of its width as a circle, the transition uses this to cover the canvas completely. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
 | Images of the status bars | `world.class.js` | They are facts of the bar images. |
 | `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |

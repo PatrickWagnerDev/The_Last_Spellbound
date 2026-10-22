@@ -14,6 +14,8 @@ class World {
     keyboard;
     cameraX = 0;
     projectiles = [];
+    isPaused = false;
+    transition = null;
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
     constructor(canvas, keyboard){
@@ -54,6 +56,23 @@ class World {
         this.setWorld();
         this.character.placeAt(this.level.playerStart);
         this.cameraX = 0;
+    }
+
+    startTransition(portal, levelData){
+        this.isPaused = true;
+        this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, levelData);
+    }
+
+    endTransition(){
+        this.transition.stopAnimation();
+        this.transition = null;
+        this.isPaused = false;
+    }
+
+    drawTransition(){
+        if(this.transition){
+            this.transition.drawObject(this.ctx);
+        }
     }
 
     createKeyIcon(){
@@ -101,6 +120,7 @@ class World {
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
         this.drawStatusBars();
+        this.drawTransition();
         requestAnimationFrame(() => this.drawWorld());
     }
 

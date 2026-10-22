@@ -185,3 +185,7 @@
 2026-10-22 | level.class.js | Added stopAll to stop the timers of enemies and items
 2026-10-22 | classes/levels/level-one-boss.js | New empty boss level LEVEL_ONE_BOSS: canvas sized (15 x 10), only the ground row, player start marker 69, backgrounds of level one
 2026-10-22 | index.html, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Included portal.class.js and level-one-boss.js; added chest.portalOffset and the portal block and documented them
+2026-10-22 | classes/models/portal-transition.class.js | New PortalTransition: the vortex grows from the portal over the whole canvas, switches to the boss level under cover, shrinks around the character at the new start and ends the pause; a dark disc grows under the vortex so the canvas is covered completely
+2026-10-22 | movable-object.class.js | startAnimation skips the tick while isFrozen() is true; isFrozen follows world.isPaused (ready for a later pause button)
+2026-10-22 | world.class.js, portal.class.js | Added isPaused, transition, startTransition, endTransition, drawTransition; the portal starts the transition instead of loading the level directly
+2026-10-22 | index.html, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Included portal-transition.class.js; added the transition block (expandTicks, contractTicks, spinFps) and documented it

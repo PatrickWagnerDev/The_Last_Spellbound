@@ -77,6 +77,11 @@ const GAME_SETTINGS = {
         animationFps: 8,
         appearTicks: 30
     },
+    transition: {
+        expandTicks: 30,
+        contractTicks: 30,
+        spinFps: 12
+    },
     energy: {
         maxCharges: 5,
         startCharges: 5

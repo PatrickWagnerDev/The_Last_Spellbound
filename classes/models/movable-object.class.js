@@ -11,9 +11,16 @@ class MovableObject extends DrawableObject{
 
     startAnimation(){
         this.animationInterval = setInterval(() => {
+            if(this.isFrozen()){
+                return;
+            }
             this.updateObject();
             this.nextFrame();
         }, 1000 / TICKS_PER_SECOND);
+    }
+
+    isFrozen(){
+        return this.world?.isPaused ?? false;
     }
 
     setupSprites(paths){
