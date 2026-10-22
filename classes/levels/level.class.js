@@ -2,6 +2,7 @@ class Level {
     mapRows;
     tiles = [];
     enemies = [];
+    items = [];
     backgroundObjects = [];
     playerStart = { column: 0, row: 0 };
     tilesetImage;
@@ -15,8 +16,21 @@ class Level {
         this.tilesetImage = createImage(TILESET_IMAGE);
         this.buildTiles();
         this.buildEnemies();
+        this.buildItems();
         this.buildPlayerStart();
         this.buildBackgrounds(levelData.backgroundLayers);
+    }
+
+    buildItems(){
+        this.forEachCell((markerId, column, row) => {
+            if(ITEM_MARKERS[markerId]){
+                this.items.push(new ITEM_MARKERS[markerId](column, row));
+            }
+        });
+    }
+
+    removeItem(item){
+        this.items = this.items.filter(other => other != item);
     }
 
     buildPlayerStart(){

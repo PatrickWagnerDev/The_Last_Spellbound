@@ -6,6 +6,7 @@ const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 class World {
     level = new Level(LEVEL_ONE);
     character = new Character();
+    keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
     healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
@@ -37,6 +38,18 @@ class World {
     setWorld(){
         this.character.world = this;
         this.level.enemies.forEach(enemy => enemy.world = this);
+        this.level.items.forEach(item => item.world = this);
+    }
+
+    createKeyIcon(){
+        const ICON = new DrawableObject();
+        ICON.loadImage(IMAGE_KEY);
+        ICON.frameWidth = 16;
+        ICON.frameHeight = 16;
+        ICON.width = 16 * GAME_SETTINGS.ui.keyIconScale;
+        ICON.height = 16 * GAME_SETTINGS.ui.keyIconScale;
+        ICON.y = GAME_SETTINGS.ui.keyIconY;
+        return ICON;
     }
 
     addProjectile(projectile){
@@ -58,6 +71,7 @@ class World {
         this.ctx.save();
         this.ctx.translate(-Math.round(this.cameraX), 0);
         this.addObjectsToMap(this.level.tiles);
+        this.addObjectsToMap(this.level.items);
         this.character.drawObject(this.ctx);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.projectiles);
@@ -96,5 +110,13 @@ class World {
         this.healthBar.drawObject(this.ctx);
         this.energyBar.setValue(this.character.energy, this.character.maxEnergy);
         this.energyBar.drawObject(this.ctx);
+        this.drawKeyIcons();
+    }
+
+    drawKeyIcons(){
+        for(let keyIndex = 0; keyIndex < this.character.keyCount; keyIndex++){
+            this.keyIcon.x = GAME_SETTINGS.ui.statusBarX + keyIndex * GAME_SETTINGS.ui.keyIconSpacing;
+            this.keyIcon.drawObject(this.ctx);
+        }
     }
 }

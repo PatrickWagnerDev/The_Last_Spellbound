@@ -52,6 +52,10 @@ const GAME_SETTINGS = {
         flightFps: 12,
         impactFps: 14
     },
+    key: {
+        animationFps: 10,
+        pickupFps: 14
+    },
     energy: {
         maxCharges: 5,
         startCharges: 5
@@ -61,6 +65,9 @@ const GAME_SETTINGS = {
         statusBarX: 12,
         statusBarY: 12,
         energyBarY: 44,
+        keyIconY: 76,
+        keyIconSpacing: 36,
+        keyIconScale: 2,
         blinkTicks: 60,
         blinkIntervalTicks: 6
     },

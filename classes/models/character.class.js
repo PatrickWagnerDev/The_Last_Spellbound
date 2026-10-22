@@ -16,6 +16,7 @@ class Character extends CharacterMovement{
     castCooldownLeft = 0;
     maxEnergy = GAME_SETTINGS.energy.maxCharges;
     energy = GAME_SETTINGS.energy.startCharges;
+    keyCount = 0;
 
     constructor(spriteSet = CHARACTER_SPRITES.fireWizard){
         super();
@@ -64,6 +65,15 @@ class Character extends CharacterMovement{
         this.updateAttack();
         this.handleCast();
         this.updateCast();
+        this.checkItems();
+    }
+
+    checkItems(){
+        this.world.level.items.forEach(item => {
+            if(item.isCollectable() && this.isColliding(item)){
+                item.collect(this);
+            }
+        });
     }
 
     updatePhysics(){
