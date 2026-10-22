@@ -59,7 +59,14 @@ const GAME_SETTINGS = {
         loseSightTicks: 60,
         sneerTicks: 60,
         searchTicks: 60,
-        lookSwitchTicks: 20
+        lookSwitchTicks: 20,
+        attackTicks: 45,
+        fireballReleaseTick: 28,
+        fireballCooldownTicks: 900,
+        fireballDamage: 1,
+        fireballScale: 3,
+        fireballLowHeight: 48,
+        fireballMaxHeight: 99
     },
     fireball: {
         damage: 3,

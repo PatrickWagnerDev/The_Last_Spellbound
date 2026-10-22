@@ -100,8 +100,12 @@ class Character extends CharacterMovement{
         }
     }
 
+    canBeHurt(){
+        return this.invincibleTicks == 0 && !this.isDead() && !this.isRolling();
+    }
+
     receiveHit(damage, source){
-        if(this.invincibleTicks > 0 || this.isDead() || this.isRolling()){
+        if(!this.canBeHurt()){
             return;
         }
         this.takeDamage(damage);

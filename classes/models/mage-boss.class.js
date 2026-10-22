@@ -2,8 +2,15 @@ const MAGE_BOSS_SPRITES = {
     idle: { path: './assets/image/04-bosses/1 Mage/Mage_boss_walk.png', frames: 6 },
     walk: { path: './assets/image/04-bosses/1 Mage/Mage_boss_run.png', frames: 6 },
     sneer: { path: './assets/image/04-bosses/1 Mage/Mage_boss_sneer.png', frames: 6 },
+    attack2: { path: './assets/image/04-bosses/1 Mage/Mage_boss_attack2.png', frames: 6 },
+    attack3: { path: './assets/image/04-bosses/1 Mage/Mage_boss_attack3.png', frames: 6 },
     hurt: { path: './assets/image/04-bosses/1 Mage/Mage_boss_hurt.png', frames: 4 },
     death: { path: './assets/image/04-bosses/1 Mage/Mage_boss_death.png', frames: 6 }
+};
+
+const BOSS_FIREBALL_SPAWN = {
+    attack2: { offsetX: 7, offsetY: 52 },
+    attack3: { offsetX: 8, offsetY: 31 }
 };
 
 class MageBoss extends Enemy {
@@ -11,6 +18,8 @@ class MageBoss extends Enemy {
     stateTicks = 0;
     vanishSide = 1;
     outOfSightTicks = 0;
+    attackVariant = 'attack2';
+    fireballCooldownLeft = 0;
 
     constructor(column, row){
         super(column, row, {
@@ -26,11 +35,13 @@ class MageBoss extends Enemy {
 
     updateBehavior(){
         this.stateTicks++;
+        this.fireballCooldownLeft = tickDown(this.fireballCooldownLeft);
         const STATE_UPDATES = {
             wait: () => this.updateWait(),
             patrol: () => this.updatePatrol(),
             sneer: () => this.updateSneer(),
             chase: () => this.updateChase(),
+            attack: () => this.updateAttack(),
             search: () => this.updateSearch()
         };
         STATE_UPDATES[this.state]();
@@ -111,10 +122,54 @@ class MageBoss extends Enemy {
             return;
         }
         this.faceCharacter();
+        if(!this.tryStartAttack()){
+            this.walkTowardCharacter();
+        }
+    }
+
+    walkTowardCharacter(){
         this.showLoopState('walk', this.settings.animationFps);
         if(Math.abs(this.getCharacterOffset()) > 4 && !this.shouldTurn()){
             this.moveForward();
         }
+    }
+
+    getAttackVariant(){
+        const BOSS_RECT = this.getHitbox();
+        const CHARACTER_RECT = this.world.character.getHitbox();
+        const FEET_HEIGHT = (BOSS_RECT.y + BOSS_RECT.height) - (CHARACTER_RECT.y + CHARACTER_RECT.height);
+        if(FEET_HEIGHT > this.settings.fireballMaxHeight){
+            return null;
+        }
+        return FEET_HEIGHT <= this.settings.fireballLowHeight ? 'attack2' : 'attack3';
+    }
+
+    tryStartAttack(){
+        const VARIANT = this.getAttackVariant();
+        if(!VARIANT || this.fireballCooldownLeft > 0 || !this.isCharacterInSight()){
+            return false;
+        }
+        this.attackVariant = VARIANT;
+        this.setState('attack');
+        return true;
+    }
+
+    updateAttack(){
+        this.showProgressState(this.attackVariant, this.stateTicks, this.settings.attackTicks);
+        if(this.stateTicks == this.settings.fireballReleaseTick){
+            this.spawnFireball();
+        }
+        if(this.stateTicks >= this.settings.attackTicks){
+            this.startChase();
+        }
+    }
+
+    spawnFireball(){
+        const SPAWN = BOSS_FIREBALL_SPAWN[this.attackVariant];
+        const SCALE_FACTOR = this.width / this.frameWidth;
+        const CENTER_X = this.x + (this.otherDirection ? SPAWN.offsetX : this.frameWidth - SPAWN.offsetX) * SCALE_FACTOR;
+        this.world.addProjectile(new BossFireball(CENTER_X, this.y + SPAWN.offsetY * SCALE_FACTOR, this.otherDirection));
+        this.fireballCooldownLeft = this.settings.fireballCooldownTicks;
     }
 
     updateSearch(){
