@@ -95,3 +95,5 @@
 2026-10-22 | level.class.js | buildTiles uses EMPTY_TILE_ID and FIRST_MARKER_ID; getTileIdAt falls back to EMPTY_TILE_ID
 2026-10-22 | enemy.class.js | ENEMY_MARKERS now maps 70 to Enemy (enemies 70-89, bosses 90-99)
 2026-10-22 | tile-reference.html | Tile numbers shown as 11-52, note that 10 is an empty cell, bear shown as 70 with the ranges 70-89 and 90-99
+2026-10-22 | tile.class.js | Added XX as an alias of EMPTY_TILE_ID for the level map
+2026-10-22 | classes/levels/level-one.js, tile-reference.html | Empty cells are written as XX instead of 10; the legend note says XX is an empty cell
