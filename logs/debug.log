@@ -280,3 +280,4 @@
 2026-10-22 | classes, script.js | All loose comparisons (== and !=) became strict (=== and !==); every changed place compares numbers with numbers, text with text or objects
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Test run setup: debug.startInBossLevel false (the game starts in level one), debug.showHitboxes false, energy.startCharges 1; defaults in the docs updated
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Back to the development values after the successful test run: debug.startInBossLevel true, debug.showHitboxes true, energy.startCharges 5; defaults in the docs updated
+2026-10-22 | index.html, styles/assets.css | Pause menu: the button label Back was replaced by Continue (class icon-back renamed to icon-continue)
