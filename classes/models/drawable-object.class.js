@@ -25,7 +25,7 @@ class DrawableObject{
     }
 
     setSprite(path, count, fps){
-        if(this.currentPath == path){
+        if(this.currentPath === path){
             return;
         }
         this.img = this.imageCache[path];

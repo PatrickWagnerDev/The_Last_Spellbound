@@ -33,7 +33,7 @@ class PortalTransition extends MovableObject {
     }
 
     getSize(){
-        if(this.phase == 'expand'){
+        if(this.phase === 'expand'){
             return this.startSize + (this.coverSize - this.startSize) * this.progress;
         }
         return this.coverSize * this.progress;
@@ -42,7 +42,7 @@ class PortalTransition extends MovableObject {
     updateObject(){
         this.totalTicks++;
         this.phaseTicks++;
-        if(this.phase == 'expand'){
+        if(this.phase === 'expand'){
             this.updateExpand();
         } else {
             this.updateContract();

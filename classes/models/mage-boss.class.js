@@ -161,7 +161,7 @@ class MageBoss extends Enemy {
     }
 
     canUseRay(){
-        return this.rayCooldownLeft == 0 && this.getCharacterFeetHeight() <= this.settings.rayMaxHeight;
+        return this.rayCooldownLeft === 0 && this.getCharacterFeetHeight() <= this.settings.rayMaxHeight;
     }
 
     tryStartAttack(){
@@ -199,7 +199,7 @@ class MageBoss extends Enemy {
             this.faceCharacter();
         }
         this.showFrameState('rayAttack', this.getRayFrame());
-        if(this.stateTicks == this.settings.rayWindupTicks){
+        if(this.stateTicks === this.settings.rayWindupTicks){
             this.spawnRay();
         }
         if(this.stateTicks >= this.settings.rayWindupTicks + this.settings.rayTicks){
@@ -215,7 +215,7 @@ class MageBoss extends Enemy {
 
     updateAttack(){
         this.showProgressState(this.attackVariant, this.stateTicks, this.settings.attackTicks);
-        if(this.stateTicks == this.settings.fireballReleaseTick){
+        if(this.stateTicks === this.settings.fireballReleaseTick){
             this.spawnFireball();
         }
         if(this.stateTicks >= this.settings.attackTicks){
@@ -245,7 +245,7 @@ class MageBoss extends Enemy {
     }
 
     lookAround(){
-        const LOOKS_TO_VANISH_SIDE = Math.floor(this.stateTicks / this.settings.lookSwitchTicks) % 2 == 0;
+        const LOOKS_TO_VANISH_SIDE = Math.floor(this.stateTicks / this.settings.lookSwitchTicks) % 2 === 0;
         this.otherDirection = LOOKS_TO_VANISH_SIDE ? this.vanishSide < 0 : this.vanishSide > 0;
     }
 

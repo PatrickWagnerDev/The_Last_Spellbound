@@ -135,7 +135,7 @@
     background-repeat: no-repeat;
     background-size: 24px 24px;
     image-rendering: pixelated;
-    clip-path: polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px);
+    clip-path: var(--shape-notch-small);
     font-size: 16px;
     line-height: 28px;
     text-align: center;

@@ -35,12 +35,12 @@ class Level {
     }
 
     removeItem(item){
-        this.items = this.items.filter(other => other != item);
+        this.items = this.items.filter(other => other !== item);
     }
 
     buildPlayerStart(){
         this.forEachCell((cellId, column, row) => {
-            if(cellId == PLAYER_START_ID){
+            if(cellId === PLAYER_START_ID){
                 this.playerStart = { column, row };
             }
         });
@@ -80,7 +80,7 @@ class Level {
     }
 
     removeEnemy(enemy){
-        this.enemies = this.enemies.filter(other => other != enemy);
+        this.enemies = this.enemies.filter(other => other !== enemy);
     }
 
     getTileIdAt(x, y){

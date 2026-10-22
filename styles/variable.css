@@ -14,4 +14,5 @@
     --color-title-light: #fff1c1;
     --color-text-muted: #a9b6d9;
     --fade-duration: 0.4s;
+    --shape-notch-small: polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px);
 }

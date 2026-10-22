@@ -25,9 +25,9 @@ class Fireball extends Projectile {
 
     updateObject(){
         this.stateTicks++;
-        if(this.state == 'flying'){
+        if(this.state === 'flying'){
             this.flyForward();
-        } else if(this.state == 'impact'){
+        } else if(this.state === 'impact'){
             this.updateImpact();
         } else {
             this.updateVanish();

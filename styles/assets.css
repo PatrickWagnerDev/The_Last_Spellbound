@@ -18,6 +18,15 @@
     image-rendering: pixelated;
 }
 
+.window-title,
+.menu-label,
+.game-over-title,
+.start-title {
+    font-family: var(--font-pixel);
+    -webkit-font-smoothing: none;
+    text-rendering: optimizeSpeed;
+}
+
 .pause-menu {
     display: none;
     position: absolute;
@@ -35,14 +44,11 @@
     left: 192px;
     width: 192px;
     margin: 0;
-    font-family: var(--font-pixel);
     font-size: 44px;
     font-weight: normal;
     line-height: 52px;
     text-align: center;
     color: var(--color-title-dark);
-    -webkit-font-smoothing: none;
-    text-rendering: optimizeSpeed;
 }
 
 .menu-buttons {
@@ -84,7 +90,11 @@
 .menu-button:hover::before,
 .start-button:hover::before,
 .page-button:hover::before,
-.close-button:hover::before {
+.close-button:hover::before,
+.menu-button:focus-visible::before,
+.start-button:focus-visible::before,
+.page-button:focus-visible::before,
+.close-button:focus-visible::before {
     background-color: var(--color-navy-hover);
 }
 
@@ -129,12 +139,9 @@
 }
 
 .menu-label {
-    font-family: var(--font-pixel);
     font-size: 24px;
     line-height: 1;
     color: #ffffff;
-    -webkit-font-smoothing: none;
-    text-rendering: optimizeSpeed;
 }
 
 .game-over-screen {
@@ -169,13 +176,10 @@
 
 .game-over-title {
     margin: 0;
-    font-family: var(--font-pixel);
     font-size: 160px;
     font-weight: normal;
     line-height: 1;
     color: #ffffff;
-    -webkit-font-smoothing: none;
-    text-rendering: optimizeSpeed;
 }
 
 .game-over-buttons {
@@ -247,15 +251,12 @@
 
 .start-title {
     margin: 0;
-    font-family: var(--font-pixel);
     font-size: 96px;
     font-weight: normal;
     line-height: 0.9;
     text-align: right;
     color: var(--color-title-light);
     text-shadow: 3px 3px 0 var(--color-title-dark), 6px 6px 0 var(--color-navy), 10px 10px 12px rgba(0, 0, 0, 0.5);
-    -webkit-font-smoothing: none;
-    text-rendering: optimizeSpeed;
 }
 
 .start-buttons {

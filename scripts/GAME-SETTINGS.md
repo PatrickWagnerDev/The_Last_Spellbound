@@ -84,12 +84,12 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `lookSwitchTicks` | `20` | Ticks the boss looks to one side while searching before it looks to the other side (20 ticks = left, right, left within one second). |
 | `attackTicks` | `45` | Duration of the fireball attack animation (45 ticks = 0.75 seconds), the 6 frames are spread over it. The boss stands still meanwhile. |
 | `fireballReleaseTick` | `28` | Tick of the attack at which the fireball leaves the hand of the boss. |
-| `fireballCooldownTicks` | `500` | Pause after a fired fireball before the boss can use it again (500 ticks = about 8.3 seconds). It starts at 0, so the first attack follows right after the first sneer. |
+| `fireballCooldownTicks` | `300` | Pause after a fired fireball before the boss can use it again (300 ticks = 5 seconds). It starts at 0, so the first attack follows right after the first sneer. |
 | `fireballDamage` | `1` | Damage of one boss fireball. The character takes no damage while rolling or during the grace time after a hit, the fireball then flies on. |
 | `fireballScale` | `3` | Size factor of the boss fireball (the image is 10x10 px). The speed is taken from `fireball.speed`, so it is as fast as the fireball of the character. The boss fireball has no range, it flies to the end of the level. |
 | `fireballLowHeight` | `48` | Up to this height of the feet of the character above the feet of the boss (in px) the boss uses the low attack (`attack2`), above it the high attack (`attack3`). |
 | `fireballMaxHeight` | `99` | If the feet of the character are higher than this above the feet of the boss, the boss does not attack and keeps chasing until the character is lower again. The cooldown is not used up. |
-| `rayCooldownTicks` | `1200` | Pause before the boss can use the ray again (1200 ticks = 20 seconds). The countdown starts when the boss sees the character for the first time and after every use, so the first ray does not come right away. The ray has priority over the fireball. |
+| `rayCooldownTicks` | `900` | Pause before the boss can use the ray again (900 ticks = 15 seconds). The countdown starts when the boss sees the character for the first time and after every use, so the first ray does not come right away. The ray has priority over the fireball. |
 | `rayWindupTicks` | `60` | Duration of the first two frames of the ray attack before the ray starts (60 ticks = 1 second), so the character can dodge. |
 | `rayTicks` | `90` | How long the ray exists (90 ticks = 1.5 seconds). It grows in length to the end of the level, gets thicker with the last four frames of the attack animation and does not vanish when it touches the character. |
 | `rayDamage` | `2` | Damage of a ray hit. The ray can hit again after the grace time while the character stays in it, rolling lets it pass. |

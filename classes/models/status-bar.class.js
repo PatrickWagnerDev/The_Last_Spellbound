@@ -33,7 +33,7 @@ class StatusBar extends DrawableObject {
 
     isBlinkVisible(){
         const BLINK_PHASE = Math.floor(this.blinkTicksLeft / GAME_SETTINGS.ui.blinkIntervalTicks);
-        return this.blinkTicksLeft > 0 && BLINK_PHASE % 2 == 0;
+        return this.blinkTicksLeft > 0 && BLINK_PHASE % 2 === 0;
     }
 
     getRatio(value){

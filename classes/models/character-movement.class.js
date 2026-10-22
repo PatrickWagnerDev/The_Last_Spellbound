@@ -37,11 +37,11 @@ class CharacterMovement extends MovableObject{
     }
 
     isMovementLocked(){
-        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land';
+        return this.jumpPhase === 'crouch' || this.jumpPhase === 'land';
     }
 
     isReadyOnGround(){
-        return this.onGround && this.jumpPhase == 'none';
+        return this.onGround && this.jumpPhase === 'none';
     }
 
     isBusy(){
@@ -85,22 +85,22 @@ class CharacterMovement extends MovableObject{
 
     updateJumpPhase(){
         this.phaseTicks++;
-        if(!this.onGround && this.jumpPhase != 'air'){
+        if(!this.onGround && this.jumpPhase !== 'air'){
             this.startPhase('air');
-        } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= this.settings.crouchTicks){
+        } else if(this.jumpPhase === 'crouch' && this.phaseTicks >= this.settings.crouchTicks){
             this.launchJump();
-        } else if(this.jumpPhase == 'air' && this.onGround){
+        } else if(this.jumpPhase === 'air' && this.onGround){
             this.startPhase('land');
-        } else if(this.jumpPhase == 'land' && this.phaseTicks >= this.settings.landTicks){
+        } else if(this.jumpPhase === 'land' && this.phaseTicks >= this.settings.landTicks){
             this.startPhase('none');
         }
     }
 
     getJumpFrame(){
-        if(this.jumpPhase == 'crouch'){
+        if(this.jumpPhase === 'crouch'){
             return this.getPhaseFrame(0, this.settings.crouchTicks);
         }
-        if(this.jumpPhase == 'land'){
+        if(this.jumpPhase === 'land'){
             return this.getPhaseFrame(6, this.settings.landTicks);
         }
         return this.getAirFrame();
@@ -121,7 +121,7 @@ class CharacterMovement extends MovableObject{
     }
 
     updateIdleTicks(){
-        if(this.hasInput() || this.jumpPhase != 'none' || this.isBusy()){
+        if(this.hasInput() || this.jumpPhase !== 'none' || this.isBusy()){
             this.idleTicks = 0;
         } else {
             this.idleTicks++;

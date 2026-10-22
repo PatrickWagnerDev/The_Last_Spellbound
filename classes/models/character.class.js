@@ -101,7 +101,7 @@ class Character extends CharacterMovement{
     }
 
     canBeHurt(){
-        return this.invincibleTicks == 0 && !this.isDead() && !this.isRolling();
+        return this.invincibleTicks === 0 && !this.isDead() && !this.isRolling();
     }
 
     receiveHit(damage, source){
@@ -118,7 +118,7 @@ class Character extends CharacterMovement{
         this.otherDirection = this.knockbackDirection > 0;
         this.attackTicksLeft = 0;
         this.castTicksLeft = 0;
-        if(this.jumpPhase == 'crouch' || this.jumpPhase == 'land'){
+        if(this.jumpPhase === 'crouch' || this.jumpPhase === 'land'){
             this.startPhase('none');
         }
     }
@@ -180,7 +180,7 @@ class Character extends CharacterMovement{
 
     handleRoll(){
         this.rollCooldownLeft = tickDown(this.rollCooldownLeft);
-        if(this.wantsRoll() && this.isReadyOnGround() && this.rollCooldownLeft == 0){
+        if(this.wantsRoll() && this.isReadyOnGround() && this.rollCooldownLeft === 0){
             this.rollTicksLeft = this.settings.rollTicks;
             this.attackTicksLeft = 0;
             this.castTicksLeft = 0;
@@ -264,7 +264,7 @@ class Character extends CharacterMovement{
 
     handleCast(){
         const JUST_PRESSED = this.isNewPress('SHOOT');
-        const CAN_CAST = this.isActionFree() && this.castCooldownLeft == 0 && this.energy >= 1;
+        const CAN_CAST = this.isActionFree() && this.castCooldownLeft === 0 && this.energy >= 1;
         this.castCooldownLeft = tickDown(this.castCooldownLeft);
         if(JUST_PRESSED && CAN_CAST){
             this.castTicksLeft = this.settings.castTicks;
@@ -275,7 +275,7 @@ class Character extends CharacterMovement{
         if(!this.isCasting()){
             return;
         }
-        if(this.getCastElapsed() == this.settings.castReleaseTick){
+        if(this.getCastElapsed() === this.settings.castReleaseTick){
             this.world.addProjectile(new Fireball(this));
             this.castCooldownLeft = this.settings.castCooldownTicks;
             this.energy -= 1;
@@ -293,7 +293,7 @@ class Character extends CharacterMovement{
             ['roll', this.isRolling()],
             ['attack', this.isAttacking()],
             ['cast', this.isCasting()],
-            ['jump', this.jumpPhase != 'none'],
+            ['jump', this.jumpPhase !== 'none'],
             ['walk', this.isWalking()],
             ['rest', this.idleTicks >= this.settings.restDelayTicks]
         ];

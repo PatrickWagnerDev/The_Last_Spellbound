@@ -181,7 +181,7 @@ class World {
     }
 
     removeProjectile(projectile){
-        this.projectiles = this.projectiles.filter(other => other != projectile);
+        this.projectiles = this.projectiles.filter(other => other !== projectile);
     }
 
     updateCamera(){
@@ -252,7 +252,7 @@ class World {
 
     drawBossBars(){
         const BOSS_ENEMY = this.findBoss();
-        if(!BOSS_ENEMY || (BOSS_ENEMY.state == 'wait' && BOSS_ENEMY.health == BOSS_ENEMY.maxHealth)){
+        if(!BOSS_ENEMY || (BOSS_ENEMY.state === 'wait' && BOSS_ENEMY.health === BOSS_ENEMY.maxHealth)){
             return;
         }
         const BAR_STEP = this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;

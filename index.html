@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div id="controls-screen" class="dialog-screen controls-screen" onclick="closeDialog(event)">
+        <div id="controls-screen" class="dialog-screen controls-screen" role="dialog" aria-modal="true" aria-label="Controls" onclick="closeDialog(event)">
             <div class="window-frame dialog-window">
                 <h2 class="window-title title-controls">Controls</h2>
                 <h2 class="window-title title-items">Collectables</h2>
@@ -124,7 +124,7 @@
                 </button>
             </div>
         </div>
-        <div id="credits-screen" class="dialog-screen credits-screen" onclick="closeDialog(event)">
+        <div id="credits-screen" class="dialog-screen credits-screen" role="dialog" aria-modal="true" aria-label="Credits" onclick="closeDialog(event)">
             <div class="window-frame dialog-window">
                 <h2 class="window-title">Credits</h2>
                 <button class="close-button" aria-label="Close"></button>
@@ -137,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <div id="impressum-screen" class="dialog-screen" onclick="closeDialog(event)">
+        <div id="impressum-screen" class="dialog-screen" role="dialog" aria-modal="true" aria-label="Impressum" onclick="closeDialog(event)">
             <div class="window-frame dialog-window">
                 <h2 class="window-title">Impressum</h2>
                 <button class="close-button" aria-label="Close"></button>
@@ -170,7 +170,7 @@
                 </div>
             </div>
         </div>
-        <div id="pause-menu" class="window-frame pause-menu">
+        <div id="pause-menu" class="window-frame pause-menu" role="dialog" aria-modal="true" aria-label="Pause">
             <h2 class="window-title">Pause</h2>
             <div class="menu-buttons">
                 <button class="menu-button" onclick="togglePause()">
@@ -223,6 +223,7 @@
     <script src="./classes/models/keyboard.class.js"></script>
     <script src="./classes/levels/level-one.js"></script>
     <script src="./classes/levels/level-one-boss.js"></script>
+    <script src="./scripts/screens.js"></script>
     <script src="./script.js"></script>
 </body>
 
