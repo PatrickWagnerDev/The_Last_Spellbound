@@ -30,12 +30,12 @@ class Portal extends MovableObject {
     }
 
     updateSize(){
-        const SIZE = this.settings.size * Math.min(this.appearTicks / this.settings.appearTicks, 1);
-        this.width = SIZE;
-        this.height = SIZE;
-        this.x = this.centerX - SIZE / 2;
-        this.y = this.centerY - SIZE / 2;
-        this.hitbox = { offsetX: SIZE * 0.2, offsetY: SIZE * 0.2, width: SIZE * 0.6, height: SIZE * 0.6 };
+        const PORTAL_SIZE = this.settings.size * Math.min(this.appearTicks / this.settings.appearTicks, 1);
+        this.width = PORTAL_SIZE;
+        this.height = PORTAL_SIZE;
+        this.x = this.centerX - PORTAL_SIZE / 2;
+        this.y = this.centerY - PORTAL_SIZE / 2;
+        this.hitbox = { offsetX: PORTAL_SIZE * 0.2, offsetY: PORTAL_SIZE * 0.2, width: PORTAL_SIZE * 0.6, height: PORTAL_SIZE * 0.6 };
     }
 
     updateObject(){
@@ -47,8 +47,8 @@ class Portal extends MovableObject {
     }
 
     checkEntering(){
-        const CHARACTER = this.world.character;
-        if(this.isAppeared() && !this.isUsed && !CHARACTER.isDead() && this.isColliding(CHARACTER)){
+        const PLAYER_CHARACTER = this.world.character;
+        if(this.isAppeared() && !this.isUsed && !PLAYER_CHARACTER.isDead() && this.isColliding(PLAYER_CHARACTER)){
             this.isUsed = true;
             this.world.startTransition(this, LEVEL_ONE_BOSS);
         }

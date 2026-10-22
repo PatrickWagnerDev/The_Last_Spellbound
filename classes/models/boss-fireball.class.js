@@ -27,11 +27,11 @@ class BossFireball extends MovableObject {
     }
 
     hitsCharacter(){
-        const CHARACTER = this.world.character;
-        if(!CHARACTER.canBeHurt() || !this.isColliding(CHARACTER)){
+        const PLAYER_CHARACTER = this.world.character;
+        if(!PLAYER_CHARACTER.canBeHurt() || !this.isColliding(PLAYER_CHARACTER)){
             return false;
         }
-        CHARACTER.receiveHit(this.settings.fireballDamage, this);
+        PLAYER_CHARACTER.receiveHit(this.settings.fireballDamage, this);
         return true;
     }
 

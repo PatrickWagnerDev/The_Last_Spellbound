@@ -117,7 +117,7 @@ class MovableObject extends DrawableObject{
         this.health = Math.max(this.health - amount, 0);
     }
 
-    heal(amount){
+    restoreHealth(amount){
         this.health = Math.min(this.health + amount, this.maxHealth);
     }
 

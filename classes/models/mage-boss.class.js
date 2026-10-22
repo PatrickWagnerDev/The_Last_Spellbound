@@ -64,14 +64,14 @@ class MageBoss extends Enemy {
 
     getSightRect(){
         const BOSS_RECT = this.getHitbox();
-        const RANGE = this.settings.sightTiles * TILE_SIZE;
-        const ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
-        return { x: BOSS_RECT.x - RANGE, y: BOSS_RECT.y - ABOVE, width: BOSS_RECT.width + 2 * RANGE, height: BOSS_RECT.height + ABOVE };
+        const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
+        const SIGHT_ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
+        return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE };
     }
 
     isCharacterInSight(){
-        const CHARACTER = this.world.character;
-        return !CHARACTER.isDead() && areRectsOverlapping(CHARACTER.getHitbox(), this.getSightRect());
+        const PLAYER_CHARACTER = this.world.character;
+        return !PLAYER_CHARACTER.isDead() && areRectsOverlapping(PLAYER_CHARACTER.getHitbox(), this.getSightRect());
     }
 
     getCharacterOffset(){
@@ -176,11 +176,11 @@ class MageBoss extends Enemy {
     }
 
     tryStartFireball(){
-        const VARIANT = this.getAttackVariant();
-        if(!VARIANT || this.fireballCooldownLeft > 0){
+        const ATTACK_VARIANT = this.getAttackVariant();
+        if(!ATTACK_VARIANT || this.fireballCooldownLeft > 0){
             return false;
         }
-        this.attackVariant = VARIANT;
+        this.attackVariant = ATTACK_VARIANT;
         this.setState('attack');
         return true;
     }
@@ -223,10 +223,10 @@ class MageBoss extends Enemy {
     }
 
     spawnFireball(){
-        const SPAWN = BOSS_FIREBALL_SPAWN[this.attackVariant];
+        const SPAWN_OFFSET = BOSS_FIREBALL_SPAWN[this.attackVariant];
         const SCALE_FACTOR = this.width / this.frameWidth;
-        const CENTER_X = this.x + (this.otherDirection ? SPAWN.offsetX : this.frameWidth - SPAWN.offsetX) * SCALE_FACTOR;
-        this.world.addProjectile(new BossFireball(CENTER_X, this.y + SPAWN.offsetY * SCALE_FACTOR, this.otherDirection));
+        const CENTER_X = this.x + (this.otherDirection ? SPAWN_OFFSET.offsetX : this.frameWidth - SPAWN_OFFSET.offsetX) * SCALE_FACTOR;
+        this.world.addProjectile(new BossFireball(CENTER_X, this.y + SPAWN_OFFSET.offsetY * SCALE_FACTOR, this.otherDirection));
         this.fireballCooldownLeft = this.settings.fireballCooldownTicks;
     }
 

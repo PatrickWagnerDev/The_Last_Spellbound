@@ -44,15 +44,15 @@ class BossRay extends MovableObject {
     }
 
     getHitbox(){
-        const ROWS = RAY_STAGE_ROWS[this.currentFrame];
+        const STAGE_ROWS = RAY_STAGE_ROWS[this.currentFrame];
         const SCALE_FACTOR = this.settings.rayScale;
-        return { x: this.x, y: this.y + ROWS[0] * SCALE_FACTOR, width: this.length, height: (ROWS[1] - ROWS[0]) * SCALE_FACTOR };
+        return { x: this.x, y: this.y + STAGE_ROWS[0] * SCALE_FACTOR, width: this.length, height: (STAGE_ROWS[1] - STAGE_ROWS[0]) * SCALE_FACTOR };
     }
 
     hitCharacter(){
-        const CHARACTER = this.world.character;
-        if(CHARACTER.canBeHurt() && areRectsOverlapping(CHARACTER.getHitbox(), this.getHitbox())){
-            CHARACTER.receiveHit(this.settings.rayDamage, this.owner);
+        const PLAYER_CHARACTER = this.world.character;
+        if(PLAYER_CHARACTER.canBeHurt() && areRectsOverlapping(PLAYER_CHARACTER.getHitbox(), this.getHitbox())){
+            PLAYER_CHARACTER.receiveHit(this.settings.rayDamage, this.owner);
         }
     }
 

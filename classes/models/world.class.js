@@ -67,7 +67,7 @@ class World {
         this.cameraX = 0;
     }
 
-    stop(){
+    stopWorld(){
         cancelAnimationFrame(this.frameRequest);
         this.level.stopAll();
         this.character.stopAnimation();
@@ -93,8 +93,8 @@ class World {
     }
 
     hasBossDefeated(){
-        const BOSS = this.level.enemies.find(enemy => enemy instanceof MageBoss);
-        return BOSS?.hasDeathFinished() ?? false;
+        const BOSS_ENEMY = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        return BOSS_ENEMY?.hasDeathFinished() ?? false;
     }
 
     endGame(isVictory){
@@ -137,14 +137,14 @@ class World {
     }
 
     createKeyIcon(){
-        const ICON = new DrawableObject();
-        ICON.loadImage(IMAGE_KEY);
-        ICON.frameWidth = 16;
-        ICON.frameHeight = 16;
-        ICON.width = 16 * GAME_SETTINGS.ui.keyIconScale;
-        ICON.height = 16 * GAME_SETTINGS.ui.keyIconScale;
-        ICON.y = GAME_SETTINGS.ui.keyIconY;
-        return ICON;
+        const KEY_ICON = new DrawableObject();
+        KEY_ICON.loadImage(IMAGE_KEY);
+        KEY_ICON.frameWidth = 16;
+        KEY_ICON.frameHeight = 16;
+        KEY_ICON.width = 16 * GAME_SETTINGS.ui.keyIconScale;
+        KEY_ICON.height = 16 * GAME_SETTINGS.ui.keyIconScale;
+        KEY_ICON.y = GAME_SETTINGS.ui.keyIconY;
+        return KEY_ICON;
     }
 
     addProjectile(projectile){
@@ -223,13 +223,13 @@ class World {
     }
 
     drawBossBars(){
-        const BOSS = this.level.enemies.find(enemy => enemy instanceof MageBoss);
-        if(!BOSS || (BOSS.state == 'wait' && BOSS.health == BOSS.maxHealth)){
+        const BOSS_ENEMY = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        if(!BOSS_ENEMY || (BOSS_ENEMY.state == 'wait' && BOSS_ENEMY.health == BOSS_ENEMY.maxHealth)){
             return;
         }
-        const STEP = this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
-        const START_X = (this.canvas.width - (this.bossBars.length * STEP - GAME_SETTINGS.ui.bossBarGap)) / 2;
-        this.bossBars.forEach((bar, barIndex) => this.drawBossBar(bar, BOSS, START_X + barIndex * STEP, barIndex));
+        const BAR_STEP = this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
+        const START_X = (this.canvas.width - (this.bossBars.length * BAR_STEP - GAME_SETTINGS.ui.bossBarGap)) / 2;
+        this.bossBars.forEach((bar, barIndex) => this.drawBossBar(bar, BOSS_ENEMY, START_X + barIndex * BAR_STEP, barIndex));
     }
 
     drawBossBar(bar, boss, barX, barIndex){

@@ -31,7 +31,7 @@ class Collectible extends MovableObject {
         return !this.isCollected && this.canCollect(character);
     }
 
-    collect(character){
+    collectItem(character){
         const CENTER_X = this.x + this.width / 2;
         const CENTER_Y = this.y + this.height / 2;
         this.applyEffect(character);

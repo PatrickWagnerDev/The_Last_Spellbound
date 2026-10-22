@@ -47,9 +47,9 @@ class Chest extends MovableObject {
     }
 
     checkOpen(){
-        const CHARACTER = this.world.character;
-        if(CHARACTER.keyCount > 0 && !CHARACTER.isDead() && this.isNearCharacter(CHARACTER)){
-            CHARACTER.keyCount--;
+        const PLAYER_CHARACTER = this.world.character;
+        if(PLAYER_CHARACTER.keyCount > 0 && !PLAYER_CHARACTER.isDead() && this.isNearCharacter(PLAYER_CHARACTER)){
+            PLAYER_CHARACTER.keyCount--;
             this.isOpen = true;
         }
     }

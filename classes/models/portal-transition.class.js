@@ -76,11 +76,11 @@ class PortalTransition extends MovableObject {
     }
 
     drawObject(ctx){
-        const SIZE = this.getSize();
+        const TRANSITION_SIZE = this.getSize();
         ctx.fillStyle = 'rgb(40, 15, 40)';
         ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, SPIRAL_RADIUS_RATIO * SIZE * this.progress, 0, Math.PI * 2);
+        ctx.arc(this.centerX, this.centerY, SPIRAL_RADIUS_RATIO * TRANSITION_SIZE * this.progress, 0, Math.PI * 2);
         ctx.fill();
-        ctx.drawImage(this.img, 0, 0, 128, 128, this.centerX - SIZE / 2, this.centerY - SIZE / 2, SIZE, SIZE);
+        ctx.drawImage(this.img, 0, 0, 128, 128, this.centerX - TRANSITION_SIZE / 2, this.centerY - TRANSITION_SIZE / 2, TRANSITION_SIZE, TRANSITION_SIZE);
     }
 }

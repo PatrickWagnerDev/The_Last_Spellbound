@@ -38,8 +38,8 @@ class Enemy extends MovableObject {
     }
 
     showLoopState(stateName, fps){
-        const SPRITE = this.sprites[stateName];
-        this.setSprite(SPRITE.path, SPRITE.frames, fps);
+        const SPRITE_DATA = this.sprites[stateName];
+        this.setSprite(SPRITE_DATA.path, SPRITE_DATA.frames, fps);
     }
 
     showFrameState(stateName, frameIndex){
@@ -48,8 +48,8 @@ class Enemy extends MovableObject {
     }
 
     showProgressState(stateName, elapsedTicks, totalTicks){
-        const SPRITE = this.sprites[stateName];
-        this.setProgressSprite(SPRITE.path, SPRITE.frames, elapsedTicks, totalTicks);
+        const SPRITE_DATA = this.sprites[stateName];
+        this.setProgressSprite(SPRITE_DATA.path, SPRITE_DATA.frames, elapsedTicks, totalTicks);
     }
 
     updateObject(){

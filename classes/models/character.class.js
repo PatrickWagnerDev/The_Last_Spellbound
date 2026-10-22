@@ -71,7 +71,7 @@ class Character extends CharacterMovement{
     checkItems(){
         this.world.level.items.forEach(item => {
             if(item.isCollectable(this) && this.isColliding(item)){
-                item.collect(this);
+                item.collectItem(this);
             }
         });
     }
@@ -130,8 +130,8 @@ class Character extends CharacterMovement{
 
     getSupportXs(){
         const CENTER_X = getRectCenterX(this.getHitbox());
-        const TOLERANCE = this.settings.edgeTolerance;
-        return [CENTER_X - TOLERANCE, CENTER_X, CENTER_X + TOLERANCE];
+        const EDGE_TOLERANCE = this.settings.edgeTolerance;
+        return [CENTER_X - EDGE_TOLERANCE, CENTER_X, CENTER_X + EDGE_TOLERANCE];
     }
 
     hasDeathFinished(){
@@ -294,15 +294,15 @@ class Character extends CharacterMovement{
     }
 
     showProgressState(stateName, elapsedTicks, totalTicks){
-        const SPRITE = this.sprites[stateName];
+        const SPRITE_DATA = this.sprites[stateName];
         this.hitbox = this.getStateHitbox(stateName);
-        this.setProgressSprite(SPRITE.path, SPRITE.frames, elapsedTicks, totalTicks);
+        this.setProgressSprite(SPRITE_DATA.path, SPRITE_DATA.frames, elapsedTicks, totalTicks);
     }
 
     showLoopState(stateName, fps){
-        const SPRITE = this.sprites[stateName];
+        const SPRITE_DATA = this.sprites[stateName];
         this.hitbox = this.getStateHitbox(stateName);
-        this.setSprite(SPRITE.path, SPRITE.frames, fps);
+        this.setSprite(SPRITE_DATA.path, SPRITE_DATA.frames, fps);
     }
 
     showFrameState(stateName, frameIndex){

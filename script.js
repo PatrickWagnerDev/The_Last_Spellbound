@@ -75,7 +75,7 @@ function goHome(){
 }
 
 function showStartScreen(){
-    gameWorld.stop();
+    gameWorld.stopWorld();
     gameWorld = null;
     updateGameOverUi(false);
     updatePauseUi();
@@ -127,7 +127,7 @@ function restartLevel(){
 
 function restartWorld(){
     const RESTART_DATA = gameWorld.restartLevelData;
-    gameWorld.stop();
+    gameWorld.stopWorld();
     createWorld(RESTART_DATA);
     updateGameOverUi(false);
     updatePauseUi();

@@ -10,6 +10,6 @@ class Pizza extends Collectible {
     }
 
     applyEffect(character){
-        character.heal(this.settings.healAmount);
+        character.restoreHealth(this.settings.healAmount);
     }
 }
