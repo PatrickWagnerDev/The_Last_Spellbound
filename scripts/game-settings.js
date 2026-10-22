@@ -115,7 +115,7 @@ const GAME_SETTINGS = {
     },
     energy: {
         maxCharges: 5,
-        startCharges: 5
+        startCharges: 1
     },
     ui: {
         statusBarScale: 2,
@@ -134,7 +134,7 @@ const GAME_SETTINGS = {
         pauseOverlayAlpha: 0.5
     },
     debug: {
-        startInBossLevel: true,
-        showHitboxes: true
+        startInBossLevel: false,
+        showHitboxes: false
     }
 };
