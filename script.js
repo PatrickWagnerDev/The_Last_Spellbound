@@ -1,6 +1,7 @@
 let gameCanvas;
 let gameWorld;
 let gameKeyboard = new Keyboard();
+const PORTRAIT_QUERY = window.matchMedia('(orientation: portrait) and (pointer: coarse)');
 const KEY_MAP = {
     ArrowRight: 'RIGHT',
     ArrowLeft: 'LEFT',
@@ -84,6 +85,12 @@ function restartWorld(){
     updatePauseUi();
 }
 
+function pauseInPortrait(event){
+    if(event.matches && gameWorld && !gameWorld.isPaused){
+        togglePause();
+    }
+}
+
 function handlePauseKey(event){
     if(event.code !== 'Escape' || event.repeat){
         return;
@@ -98,3 +105,4 @@ function handlePauseKey(event){
 window.addEventListener('keydown', (event) => updateKey(event, true));
 window.addEventListener('keydown', handlePauseKey);
 window.addEventListener('keyup', (event) => updateKey(event, false));
+PORTRAIT_QUERY.addEventListener('change', pauseInPortrait);
