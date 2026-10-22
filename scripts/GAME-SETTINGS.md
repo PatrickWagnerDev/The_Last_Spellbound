@@ -34,6 +34,9 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `attackTicks` | `30` | Duration of the melee attack (60 ticks = 1 second), the 5 attack frames are spread over it. Started with J or X by a new key press, a held key does not repeat it and key presses during a swing are ignored. Walking and jumping stay possible while attacking. |
 | `attackHitStartTick` | `12` | Tick of the attack at which the sword starts to hit (the strike frame is the third one, ticks 12 to 17). |
 | `attackHitEndTick` | `18` | Tick of the attack at which the hit window closes. Every enemy is hit at most once per swing. |
+| `castTicks` | `40` | Duration of the fireball cast animation (60 ticks = 1 second), the 8 frames are spread over it. Started with K or C by a new key press, a held key does not repeat it and key presses during the cast are ignored. Possible in the air, walking and jumping stay possible. |
+| `castReleaseTick` | `25` | Tick of the cast at which the fireball is fired (the arm is stretched out at the sixth frame). If the cast is cancelled before, no fireball is fired. |
+| `castCooldownTicks` | `60` | Pause after a fired fireball before the next one can be fired (60 ticks = 1 second). Key presses during the pause are ignored. |
 | `speed` | `3` | Walking speed in px per tick (3 = 180 px per second). |
 | `airSpeedFactor` | `1.25` | Multiplier for the walking speed while in the air. 1.25 = a jump with a direction key covers about a quarter more distance than walking for the same time. 1 = same speed as on the ground. |
 | `jumpSpeed` | `11.5` | Initial upward speed of a jump, about 138 px with the default gravity. Reaches a platform 2 tiles (96 px) up, but not 4 tiles (192 px). Raise it to jump higher. |
@@ -59,6 +62,16 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). The bear stands still, is pushed away from the attacker and turns towards it. |
 | `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (48 px by default). |
 | `deathTicks` | `60` | Time from the death of an enemy until it disappears (60 ticks = 1 second). The 6 death frames are spread over it. A dead enemy does no damage and cannot be hit again. |
+
+## fireball
+
+| Variable | Default | Effect |
+|---|---|---|
+| `damage` | `3` | Damage of one fireball hit. Health never drops below 0, so an enemy with less health than the damage simply dies. |
+| `speed` | `6` | Flight speed in px per tick (6 = 360 px per second). |
+| `range` | `420` | Distance in px after which a fireball that has hit nothing vanishes (it stops on its last flight frame and disappears without the impact animation). |
+| `flightFps` | `12` | Animation speed of the flight frames (5 frames) in frames per second. |
+| `impactFps` | `14` | Animation speed of the impact frames (7 frames) in frames per second. The impact animation only plays when an enemy is hit. |
 
 ## ui
 

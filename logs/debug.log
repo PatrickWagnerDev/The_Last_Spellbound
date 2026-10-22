@@ -124,3 +124,8 @@
 2026-10-22 | character.class.js | Removed the moved hurt methods and fields; startHurt uses startKnockback; hitEnemies calls enemy.receiveHit with the character as source
 2026-10-22 | enemy.class.js | Added the bear hurt animation with knockback (IMAGE_BEAR_HURT, receiveHit): no hurt on the lethal hit, the bear turns towards the attacker
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added enemy.hurtTicks 24 and knockbackSpeed 4 and documented them
+2026-10-22 | classes/models/fireball.class.js | New Fireball projectile (Charge.png): flies straight, hits the first living enemy for fireball.damage and plays the impact frames; without a hit it stops on flight frame 5 and vanishes at the range end or level end
+2026-10-22 | character.class.js | Added the fireball cast (IMAGE_CAST, handleCast with a new key press and a cooldown after the shot, updateCast, getCastFrame); possible in the air, no movement lock, excludes the melee attack, cancelled by a hit or a roll
+2026-10-22 | world.class.js | Added projectiles, addProjectile, removeProjectile; projectiles are drawn and their hitboxes shown in the debug mode
+2026-10-22 | keyboard.class.js, script.js, index.html | Added SHOOT (KeyK, KeyC) and included fireball.class.js
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.castTicks 40, castReleaseTick 25, castCooldownTicks 60 and the fireball block (damage 3, speed 6, range 420, flightFps 12, impactFps 14) and documented them

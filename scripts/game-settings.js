@@ -19,6 +19,9 @@ const GAME_SETTINGS = {
         attackTicks: 30,
         attackHitStartTick: 12,
         attackHitEndTick: 18,
+        castTicks: 40,
+        castReleaseTick: 25,
+        castCooldownTicks: 60,
         speed: 3,
         airSpeedFactor: 1.25,
         jumpSpeed: 11.5,
@@ -41,6 +44,13 @@ const GAME_SETTINGS = {
         hurtTicks: 24,
         knockbackSpeed: 4,
         deathTicks: 60
+    },
+    fireball: {
+        damage: 3,
+        speed: 6,
+        range: 420,
+        flightFps: 12,
+        impactFps: 14
     },
     ui: {
         statusBarScale: 2,

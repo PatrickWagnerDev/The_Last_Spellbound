@@ -6,6 +6,7 @@ const IMAGE_HURT = './assets/image/01-wizard/Fire Wizard/Hurt.png';
 const IMAGE_DEAD = './assets/image/01-wizard/Fire Wizard/Dead.png';
 const IMAGE_ROLL = './assets/image/02-wizard-extras/Fire Wizard/Roll.png';
 const IMAGE_ATTACK = './assets/image/02-wizard-extras/Fire Wizard/Attack_1.png';
+const IMAGE_CAST = './assets/image/01-wizard/Fire Wizard/Fireball.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 const ATTACK_HITBOX = { offsetX: 79, offsetY: 65, width: 51, height: 50 };
@@ -31,10 +32,13 @@ class Character extends MovableObject{
     attackTicksLeft = 0;
     attackHits = [];
     attackKeyDown = false;
+    castTicksLeft = 0;
+    castCooldownLeft = 0;
+    castKeyDown = false;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK]);
+        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK, IMAGE_CAST]);
         this.currentPath = IMAGE_IDLE;
         this.startAnimation();
     }
@@ -57,6 +61,8 @@ class Character extends MovableObject{
         this.handleRoll();
         this.handleAttack();
         this.updateAttack();
+        this.handleCast();
+        this.updateCast();
         this.applyGravity();
         this.updateJumpPhase();
         this.updateIdleTicks();
@@ -92,6 +98,7 @@ class Character extends MovableObject{
         this.startKnockback(source);
         this.otherDirection = this.knockbackDirection > 0;
         this.attackTicksLeft = 0;
+        this.castTicksLeft = 0;
         if(this.jumpPhase == 'crouch' || this.jumpPhase == 'land'){
             this.startPhase('none');
         }
@@ -120,7 +127,7 @@ class Character extends MovableObject{
     }
 
     hasInput(){
-        return this.isWalking() || this.wantsJump() || this.wantsRoll() || this.wantsAttack();
+        return this.isWalking() || this.wantsJump() || this.wantsRoll() || this.wantsAttack() || this.wantsCast();
     }
 
     isRolling(){
@@ -139,6 +146,7 @@ class Character extends MovableObject{
         if(this.wantsRoll() && CAN_ROLL && this.rollCooldownLeft == 0){
             this.rollTicksLeft = this.settings.rollTicks;
             this.attackTicksLeft = 0;
+            this.castTicksLeft = 0;
         }
     }
 
@@ -169,7 +177,7 @@ class Character extends MovableObject{
     handleAttack(){
         const IS_PRESSED = this.wantsAttack();
         const JUST_PRESSED = IS_PRESSED && !this.attackKeyDown;
-        const CAN_ATTACK = !this.isAttacking() && !this.isRolling() && !this.isHurt();
+        const CAN_ATTACK = !this.isAttacking() && !this.isCasting() && !this.isRolling() && !this.isHurt();
         this.attackKeyDown = IS_PRESSED;
         if(JUST_PRESSED && CAN_ATTACK){
             this.attackTicksLeft = this.settings.attackTicks;
@@ -215,6 +223,43 @@ class Character extends MovableObject{
         if(this.isAttackActive()){
             this.drawRect(ctx, this.getBoxRect(ATTACK_HITBOX), 'orange');
         }
+    }
+
+    isCasting(){
+        return this.castTicksLeft > 0;
+    }
+
+    wantsCast(){
+        return this.world.keyboard.SHOOT;
+    }
+
+    handleCast(){
+        const IS_PRESSED = this.wantsCast();
+        const JUST_PRESSED = IS_PRESSED && !this.castKeyDown;
+        const CAN_CAST = !this.isCasting() && !this.isAttacking() && !this.isRolling() && !this.isHurt() && this.castCooldownLeft == 0;
+        this.castKeyDown = IS_PRESSED;
+        if(this.castCooldownLeft > 0){
+            this.castCooldownLeft--;
+        }
+        if(JUST_PRESSED && CAN_CAST){
+            this.castTicksLeft = this.settings.castTicks;
+        }
+    }
+
+    updateCast(){
+        if(!this.isCasting()){
+            return;
+        }
+        if(this.settings.castTicks - this.castTicksLeft == this.settings.castReleaseTick){
+            this.world.addProjectile(new Fireball(this));
+            this.castCooldownLeft = this.settings.castCooldownTicks;
+        }
+        this.castTicksLeft--;
+    }
+
+    getCastFrame(){
+        const ELAPSED = this.settings.castTicks - this.castTicksLeft;
+        return Math.min(Math.floor(ELAPSED / (this.settings.castTicks / 8)), 7);
     }
 
     isMovementLocked(){
@@ -295,7 +340,7 @@ class Character extends MovableObject{
     }
 
     updateIdleTicks(){
-        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling() || this.isAttacking()){
+        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling() || this.isAttacking() || this.isCasting()){
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
@@ -309,7 +354,7 @@ class Character extends MovableObject{
 
     setSprite(path, count, fps){
         super.setSprite(path, count, fps);
-        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD, IMAGE_ATTACK].includes(path);
+        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD, IMAGE_ATTACK, IMAGE_CAST].includes(path);
         this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
@@ -323,6 +368,9 @@ class Character extends MovableObject{
         } else if(this.isAttacking()){
             this.setSprite(IMAGE_ATTACK, 5, 0);
             this.currentFrame = this.getAttackFrame();
+        } else if(this.isCasting()){
+            this.setSprite(IMAGE_CAST, 8, 0);
+            this.currentFrame = this.getCastFrame();
         } else if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();

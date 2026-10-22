@@ -12,7 +12,9 @@ const KEY_MAP = {
     KeyS: 'DOWN',
     Space: 'SPACE',
     KeyJ: 'ATTACK',
-    KeyX: 'ATTACK'
+    KeyX: 'ATTACK',
+    KeyK: 'SHOOT',
+    KeyC: 'SHOOT'
 };
 
 function init(){

@@ -9,6 +9,7 @@ class World {
     canvas;
     keyboard;
     cameraX = 0;
+    projectiles = [];
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
     constructor(canvas, keyboard){
@@ -34,6 +35,15 @@ class World {
         this.level.enemies.forEach(enemy => enemy.world = this);
     }
 
+    addProjectile(projectile){
+        projectile.world = this;
+        this.projectiles.push(projectile);
+    }
+
+    removeProjectile(projectile){
+        this.projectiles = this.projectiles.filter(other => other != projectile);
+    }
+
     updateCamera(){
         const TARGET_X = this.character.x + this.character.width / 2 - this.canvas.width / 2;
         const MAX_CAMERA_X = Math.max(this.level.width - this.canvas.width, 0);
@@ -46,6 +56,7 @@ class World {
         this.addObjectsToMap(this.level.tiles);
         this.character.draw(this.ctx);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.projectiles);
         this.drawHitboxes();
         this.ctx.restore();
     }
@@ -73,6 +84,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
         });
+        this.projectiles.forEach(projectile => projectile.drawHitbox(this.ctx, 'orange'));
     }
 
     drawStatusBars(){
