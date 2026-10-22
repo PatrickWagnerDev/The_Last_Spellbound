@@ -4,6 +4,7 @@ const MAGE_BOSS_SPRITES = {
     sneer: { path: './assets/image/04-bosses/1 Mage/Mage_boss_sneer.png', frames: 6 },
     attack2: { path: './assets/image/04-bosses/1 Mage/Mage_boss_attack2.png', frames: 6 },
     attack3: { path: './assets/image/04-bosses/1 Mage/Mage_boss_attack3.png', frames: 6 },
+    rayAttack: { path: './assets/image/04-bosses/1 Mage/Mage_boss_attack4.png', frames: 6 },
     hurt: { path: './assets/image/04-bosses/1 Mage/Mage_boss_hurt.png', frames: 4 },
     death: { path: './assets/image/04-bosses/1 Mage/Mage_boss_death.png', frames: 6 }
 };
@@ -13,6 +14,8 @@ const BOSS_FIREBALL_SPAWN = {
     attack3: { offsetX: 8, offsetY: 31 }
 };
 
+const BOSS_RAY_SPAWN = { offsetX: 11, offsetY: 45.5 };
+
 class MageBoss extends Enemy {
     state = 'wait';
     stateTicks = 0;
@@ -20,6 +23,7 @@ class MageBoss extends Enemy {
     outOfSightTicks = 0;
     attackVariant = 'attack2';
     fireballCooldownLeft = 0;
+    rayCooldownLeft = 0;
 
     constructor(column, row){
         super(column, row, {
@@ -35,16 +39,22 @@ class MageBoss extends Enemy {
 
     updateBehavior(){
         this.stateTicks++;
-        this.fireballCooldownLeft = tickDown(this.fireballCooldownLeft);
+        this.updateCooldowns();
         const STATE_UPDATES = {
             wait: () => this.updateWait(),
             patrol: () => this.updatePatrol(),
             sneer: () => this.updateSneer(),
             chase: () => this.updateChase(),
             attack: () => this.updateAttack(),
+            ray: () => this.updateRayAttack(),
             search: () => this.updateSearch()
         };
         STATE_UPDATES[this.state]();
+    }
+
+    updateCooldowns(){
+        this.fireballCooldownLeft = tickDown(this.fireballCooldownLeft);
+        this.rayCooldownLeft = tickDown(this.rayCooldownLeft);
     }
 
     setState(stateName){
@@ -75,6 +85,7 @@ class MageBoss extends Enemy {
     updateWait(){
         this.showLoopState('idle', this.settings.animationFps);
         if(this.isCharacterInSight()){
+            this.rayCooldownLeft = this.settings.rayCooldownTicks;
             this.startSneer();
         }
     }
@@ -134,24 +145,71 @@ class MageBoss extends Enemy {
         }
     }
 
-    getAttackVariant(){
+    getCharacterFeetHeight(){
         const BOSS_RECT = this.getHitbox();
         const CHARACTER_RECT = this.world.character.getHitbox();
-        const FEET_HEIGHT = (BOSS_RECT.y + BOSS_RECT.height) - (CHARACTER_RECT.y + CHARACTER_RECT.height);
+        return (BOSS_RECT.y + BOSS_RECT.height) - (CHARACTER_RECT.y + CHARACTER_RECT.height);
+    }
+
+    getAttackVariant(){
+        const FEET_HEIGHT = this.getCharacterFeetHeight();
         if(FEET_HEIGHT > this.settings.fireballMaxHeight){
             return null;
         }
         return FEET_HEIGHT <= this.settings.fireballLowHeight ? 'attack2' : 'attack3';
     }
 
+    canUseRay(){
+        return this.rayCooldownLeft == 0 && this.getCharacterFeetHeight() <= this.settings.rayMaxHeight;
+    }
+
     tryStartAttack(){
+        if(!this.isCharacterInSight()){
+            return false;
+        }
+        if(this.canUseRay()){
+            this.rayCooldownLeft = this.settings.rayCooldownTicks;
+            this.setState('ray');
+            return true;
+        }
+        return this.tryStartFireball();
+    }
+
+    tryStartFireball(){
         const VARIANT = this.getAttackVariant();
-        if(!VARIANT || this.fireballCooldownLeft > 0 || !this.isCharacterInSight()){
+        if(!VARIANT || this.fireballCooldownLeft > 0){
             return false;
         }
         this.attackVariant = VARIANT;
         this.setState('attack');
         return true;
+    }
+
+    getRayFrame(){
+        const WINDUP_TICKS = this.settings.rayWindupTicks;
+        if(this.stateTicks < WINDUP_TICKS){
+            return getProgressFrame(this.stateTicks, WINDUP_TICKS, 2);
+        }
+        return 2 + getProgressFrame(this.stateTicks - WINDUP_TICKS, this.settings.rayTicks, 4);
+    }
+
+    updateRayAttack(){
+        if(this.stateTicks < this.settings.rayWindupTicks){
+            this.faceCharacter();
+        }
+        this.showFrameState('rayAttack', this.getRayFrame());
+        if(this.stateTicks == this.settings.rayWindupTicks){
+            this.spawnRay();
+        }
+        if(this.stateTicks >= this.settings.rayWindupTicks + this.settings.rayTicks){
+            this.startChase();
+        }
+    }
+
+    spawnRay(){
+        const SCALE_FACTOR = this.width / this.frameWidth;
+        const ORIGIN_X = this.x + (this.otherDirection ? BOSS_RAY_SPAWN.offsetX : this.frameWidth - BOSS_RAY_SPAWN.offsetX) * SCALE_FACTOR;
+        this.world.addProjectile(new BossRay(this, ORIGIN_X, this.y + BOSS_RAY_SPAWN.offsetY * SCALE_FACTOR));
     }
 
     updateAttack(){

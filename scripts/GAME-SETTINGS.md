@@ -88,6 +88,13 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `fireballScale` | `3` | Size factor of the boss fireball (the image is 10x10 px). The speed is taken from `fireball.speed`, so it is as fast as the fireball of the character. The boss fireball has no range, it flies to the end of the level. |
 | `fireballLowHeight` | `48` | Up to this height of the feet of the character above the feet of the boss (in px) the boss uses the low attack (`attack2`), above it the high attack (`attack3`). |
 | `fireballMaxHeight` | `99` | If the feet of the character are higher than this above the feet of the boss, the boss does not attack and keeps chasing until the character is lower again. The cooldown is not used up. |
+| `rayCooldownTicks` | `1800` | Pause before the boss can use the ray again (1800 ticks = 30 seconds). The countdown starts when the boss sees the character for the first time and after every use, so the first ray does not come right away. The ray has priority over the fireball. |
+| `rayWindupTicks` | `60` | Duration of the first two frames of the ray attack before the ray starts (60 ticks = 1 second), so the character can dodge. |
+| `rayTicks` | `90` | How long the ray exists (90 ticks = 1.5 seconds). It grows in length to the end of the level, gets thicker with the last four frames of the attack animation and does not vanish when it touches the character. |
+| `rayDamage` | `2` | Damage of a ray hit. The ray can hit again after the grace time while the character stays in it, rolling lets it pass. |
+| `raySpeedFactor` | `2` | The front of the ray grows this many times as fast as the fireball of the character (`fireball.speed`). |
+| `rayScale` | `3` | Size factor of the ray (the image is 14x14 px, so the full ray is 42 px thick). |
+| `rayMaxHeight` | `48` | The boss only uses the ray when the feet of the character are at most this high above the feet of the boss (in px), so only on the ground. |
 
 ## fireball
 
@@ -186,9 +193,9 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
-| Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
+| Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
 | `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy-markers.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |

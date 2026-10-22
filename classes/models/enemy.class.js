@@ -42,6 +42,11 @@ class Enemy extends MovableObject {
         this.setSprite(SPRITE.path, SPRITE.frames, fps);
     }
 
+    showFrameState(stateName, frameIndex){
+        this.showLoopState(stateName, 0);
+        this.currentFrame = frameIndex;
+    }
+
     showProgressState(stateName, elapsedTicks, totalTicks){
         const SPRITE = this.sprites[stateName];
         this.setProgressSprite(SPRITE.path, SPRITE.frames, elapsedTicks, totalTicks);

@@ -66,7 +66,14 @@ const GAME_SETTINGS = {
         fireballDamage: 1,
         fireballScale: 3,
         fireballLowHeight: 48,
-        fireballMaxHeight: 99
+        fireballMaxHeight: 99,
+        rayCooldownTicks: 1800,
+        rayWindupTicks: 60,
+        rayTicks: 90,
+        rayDamage: 2,
+        raySpeedFactor: 2,
+        rayScale: 3,
+        rayMaxHeight: 48
     },
     fireball: {
         damage: 3,
