@@ -45,6 +45,10 @@ class Level {
         });
     }
 
+    getCollidables(){
+        return [...this.enemies];
+    }
+
     getTileIdAt(x, y){
         const TILE_COLUMN = Math.floor(x / TILE_SIZE);
         const TILE_ROW = Math.floor(y / TILE_SIZE);

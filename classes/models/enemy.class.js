@@ -10,6 +10,8 @@ class Enemy extends MovableObject {
     hitbox = { offsetX: 28, offsetY: 20, width: 48, height: 60 };
     speed = this.settings.speed;
     animationFps = this.settings.animationFps;
+    maxHealth = this.settings.maxHealth;
+    health = this.maxHealth;
     spriteFacesLeft = true;
 
     constructor(column, row){

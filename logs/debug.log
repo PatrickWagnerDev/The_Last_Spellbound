@@ -99,3 +99,9 @@
 2026-10-22 | classes/levels/level-one.js, tile-reference.html | Empty cells are written as XX instead of 10; the legend note says XX is an empty cell
 2026-10-22 | tile-reference.html -> classes/levels/tile-reference.html | Moved next to the level data; image paths now start with ../../assets/
 2026-10-22 | GAME-SETTINGS.md -> scripts/GAME-SETTINGS.md | Moved next to game-settings.js
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added combat.hitDamage 1, combat.invincibleTicks 60, character.maxHealth 3, enemy.maxHealth 2 and documented them
+2026-10-22 | movable-object.class.js | Added maxHealth, health, takeDamage, isDead
+2026-10-22 | character.class.js | Added health, invincibleTicks, updateInvincibility, checkCollisions, handleCollision (instanceof Enemy), receiveHit; a dead character only falls and ignores input
+2026-10-22 | enemy.class.js | Added maxHealth and health from the settings
+2026-10-22 | level.class.js | Added getCollidables returning the enemies
+2026-10-22 | world.class.js | Added drawDebugHealth (shown while showHitboxes is true)

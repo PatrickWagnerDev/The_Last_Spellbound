@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject{
     onGround = false;
     world;
     hitbox = { offsetX: 0, offsetY: 0, width: 100, height: 100 };
+    maxHealth = 1;
+    health = 1;
 
     startAnimation(){
         setInterval(() => {
@@ -77,5 +79,13 @@ class MovableObject extends DrawableObject{
         const HITBOX_RECT = this.getHitbox();
         ctx.strokeStyle = color;
         ctx.strokeRect(Math.round(HITBOX_RECT.x) + 0.5, Math.round(HITBOX_RECT.y) + 0.5, HITBOX_RECT.width, HITBOX_RECT.height);
+    }
+
+    takeDamage(amount){
+        this.health = Math.max(this.health - amount, 0);
+    }
+
+    isDead(){
+        return this.health <= 0;
     }
 }

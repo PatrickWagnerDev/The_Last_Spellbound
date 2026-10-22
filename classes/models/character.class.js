@@ -17,6 +17,9 @@ class Character extends MovableObject{
     jumpPhase = 'none';
     phaseTicks = 0;
     idleTicks = 0;
+    maxHealth = this.settings.maxHealth;
+    health = this.maxHealth;
+    invincibleTicks = 0;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
@@ -26,6 +29,12 @@ class Character extends MovableObject{
     }
 
     updateObject(){
+        this.updateInvincibility();
+        this.checkCollisions();
+        if(this.isDead()){
+            this.applyGravity();
+            return;
+        }
         this.updateSpeed();
         this.moveByKeyboard();
         this.limitToWall();
@@ -34,6 +43,30 @@ class Character extends MovableObject{
         this.updateJumpPhase();
         this.updateIdleTicks();
         this.updateSprite();
+    }
+
+    updateInvincibility(){
+        if(this.invincibleTicks > 0){
+            this.invincibleTicks--;
+        }
+    }
+
+    checkCollisions(){
+        this.world.level.getCollidables().forEach(object => this.handleCollision(object));
+    }
+
+    handleCollision(object){
+        if(this.isColliding(object) && object instanceof Enemy){
+            this.receiveHit(GAME_SETTINGS.combat.hitDamage);
+        }
+    }
+
+    receiveHit(damage){
+        if(this.invincibleTicks > 0 || this.isDead()){
+            return;
+        }
+        this.takeDamage(damage);
+        this.invincibleTicks = GAME_SETTINGS.combat.invincibleTicks;
     }
 
     updateSpeed(){

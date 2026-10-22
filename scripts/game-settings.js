@@ -2,9 +2,14 @@ const GAME_SETTINGS = {
     physics: {
         gravityForce: 0.5
     },
+    combat: {
+        hitDamage: 1,
+        invincibleTicks: 60
+    },
     character: {
         width: 150,
         height: 150,
+        maxHealth: 3,
         speed: 3,
         airSpeedFactor: 1.25,
         jumpSpeed: 11.5,
@@ -21,6 +26,7 @@ const GAME_SETTINGS = {
     enemy: {
         width: 80,
         height: 80,
+        maxHealth: 2,
         speed: 0.5,
         animationFps: 8
     },

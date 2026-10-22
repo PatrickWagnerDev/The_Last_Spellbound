@@ -11,12 +11,20 @@ The game runs at 60 ticks per second, all speeds are given per tick.
 
 Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpSpeed / 2`.
 
+## combat
+
+| Variable | Default | Effect |
+|---|---|---|
+| `hitDamage` | `1` | Damage of every single hit, the same for all attackers. |
+| `invincibleTicks` | `60` | Ticks the character cannot be hurt again after a hit (60 ticks = 1 second). Without it, an enemy would drain all health within a few ticks because the hitboxes overlap every tick. |
+
 ## character
 
 | Variable | Default | Effect |
 |---|---|---|
 | `width` | `150` | Drawn width in px (the sprite frame is 128x128). If you change the size, also adjust `HITBOX_STANDING` and `HITBOX_WALKING` at the top of `character.class.js`. |
 | `height` | `150` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `3` | Health points of the character at the start. Each hit costs `combat.hitDamage`. At 0 the character is dead and cannot be controlled any more. |
 | `speed` | `3` | Walking speed in px per tick (3 = 180 px per second). |
 | `airSpeedFactor` | `1.25` | Multiplier for the walking speed while in the air. 1.25 = a jump with a direction key covers about a quarter more distance than walking for the same time. 1 = same speed as on the ground. |
 | `jumpSpeed` | `11.5` | Initial upward speed of a jump, about 138 px with the default gravity. Reaches a platform 2 tiles (96 px) up, but not 4 tiles (192 px). Raise it to jump higher. |
@@ -36,6 +44,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 |---|---|---|
 | `width` | `80` | Drawn width in px. The sprite frame is 40x40, multiples of 40 keep the pixels even. If you change it, also adjust the hitbox in `enemy.class.js`. |
 | `height` | `80` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `2` | Health points of the bear. Other enemy types will get their own values. Enemies cannot be hurt yet. |
 | `speed` | `0.5` | Walking speed in px per tick. Values below 1 look slightly jerky because drawing rounds to whole pixels. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 

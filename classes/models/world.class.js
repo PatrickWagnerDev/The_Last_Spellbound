@@ -52,6 +52,7 @@ class World {
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
+        this.drawDebugHealth();
         requestAnimationFrame(() => this.drawWorld());
     }
 
@@ -67,5 +68,14 @@ class World {
         this.level.enemies.forEach(enemy => {
             enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
         });
+    }
+
+    drawDebugHealth(){
+        if(!this.showHitboxes){
+            return;
+        }
+        this.ctx.fillStyle = 'white';
+        this.ctx.font = '16px sans-serif';
+        this.ctx.fillText('HP ' + this.character.health, 12, 24);
     }
 }
