@@ -79,6 +79,11 @@
             background-size: 512px 64px;
         }
 
+        .boss-image {
+            background-image: url('../../assets/image/04-bosses/1 Mage/Mage_boss.png');
+            background-size: 64px 64px;
+        }
+
         .marker-note {
             margin-bottom: 16px;
             max-width: 560px;
@@ -264,7 +269,7 @@
         <h2>Markers</h2>
         <p class="marker-note">
             Enter the number in the map where the figure stands. It stands with its feet on the bottom edge of that cell.
-            Numbers 60 to 68 are items (60 is the key, 61 is the pizza, 62 is the donut, 63 is the chest), number 69 is the start of the player, normal enemies use the numbers 70 to 89, boss enemies use the numbers 90 to 99.
+            Numbers 60 to 68 are items (60 is the key, 61 is the pizza, 62 is the donut, 63 is the chest), number 69 is the start of the player, normal enemies use the numbers 70 to 89, boss enemies use the numbers 90 to 99 (90 is the mage boss).
         </p>
         <div class="tile-grid">
             <div class="tile-cell">
@@ -286,6 +291,11 @@
                 <div class="marker-image chest-image"></div>
                 <span class="tile-number">63</span>
                 <span>Chest (opens with a key)</span>
+            </div>
+            <div class="tile-cell">
+                <div class="marker-image boss-image"></div>
+                <span class="tile-number">90</span>
+                <span>Mage boss</span>
             </div>
             <div class="tile-cell">
                 <div class="marker-image player-image"></div>

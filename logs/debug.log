@@ -190,3 +190,9 @@
 2026-10-22 | world.class.js, portal.class.js | Added isPaused, transition, startTransition, endTransition, drawTransition; the portal starts the transition instead of loading the level directly
 2026-10-22 | index.html, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Included portal-transition.class.js; added the transition block (expandTicks, contractTicks, spinFps) and documented it
 2026-10-22 | classes/levels/level-one-boss.js | Boss level doubled in width: 30 columns x 10 rows (1440 x 480 px), ground row, player start 69 in row 8 column 1, the camera now scrolls in the boss level
+2026-10-22 | classes/models/enemy.class.js | Enemy is now a generic base class (config with settings, sprites, frame size, hitbox, facing); hurt, knockback, death and removal for all enemies; hook updateBehavior
+2026-10-22 | classes/models/bear.class.js, mage-boss.class.js, enemy-markers.js | New Bear (patrol code moved from Enemy), new MageBoss (idle from Mage_boss_walk.png, walk from Mage_boss_run.png, hurt, death, faces the character, 15 HP, contact damage through instanceof Enemy), ENEMY_MARKERS { 70: Bear, 90: MageBoss }
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Renamed enemy to bear, added mageBoss, added debug.startInBossLevel and documented the changes
+2026-10-22 | world.class.js | The first level is LEVEL_ONE_BOSS when debug.startInBossLevel is true
+2026-10-22 | classes/levels/level-one-boss.js, tile-reference.html, index.html | Boss marker 90 in row 8 column 24, legend entry, included the new scripts
+2026-10-22 | enemy.class.js | Split the Enemy constructor into applyConfig and applyStats to stay under 14 lines

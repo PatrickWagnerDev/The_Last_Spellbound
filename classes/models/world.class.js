@@ -4,7 +4,7 @@ const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
 const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 
 class World {
-    level = new Level(LEVEL_ONE);
+    level = new Level(GAME_SETTINGS.debug.startInBossLevel ? LEVEL_ONE_BOSS : LEVEL_ONE);
     character = new Character();
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });

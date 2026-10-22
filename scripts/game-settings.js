@@ -35,7 +35,7 @@ const GAME_SETTINGS = {
         leftWallX: -60,
         rightWallOffset: 60
     },
-    enemy: {
+    bear: {
         width: 80,
         height: 80,
         maxHealth: 2,
@@ -44,6 +44,16 @@ const GAME_SETTINGS = {
         hurtTicks: 24,
         knockbackSpeed: 4,
         deathTicks: 60
+    },
+    mageBoss: {
+        width: 192,
+        height: 192,
+        maxHealth: 15,
+        speed: 1,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 1,
+        deathTicks: 90
     },
     fireball: {
         damage: 3,
@@ -98,6 +108,7 @@ const GAME_SETTINGS = {
         blinkIntervalTicks: 6
     },
     debug: {
+        startInBossLevel: true,
         showHitboxes: true
     }
 };

@@ -1,29 +1,32 @@
-const IMAGE_BEAR_WALK = './assets/image/03-monsters/1 Bear/Walk.png';
-const IMAGE_BEAR_DEATH = './assets/image/03-monsters/1 Bear/Death.png';
-const IMAGE_BEAR_HURT = './assets/image/03-monsters/1 Bear/Hurt.png';
-
 class Enemy extends MovableObject {
-    settings = GAME_SETTINGS.enemy;
-    width = this.settings.width;
-    height = this.settings.height;
-    frameWidth = 40;
-    frameHeight = 40;
-    frameCount = 6;
-    hitbox = { offsetX: 28, offsetY: 20, width: 48, height: 60 };
-    speed = this.settings.speed;
-    animationFps = this.settings.animationFps;
-    maxHealth = this.settings.maxHealth;
-    health = this.maxHealth;
-    spriteFacesLeft = true;
     deadTicks = 0;
 
-    constructor(column, row){
+    constructor(column, row, config){
         super();
-        this.setupSprites([IMAGE_BEAR_WALK, IMAGE_BEAR_DEATH, IMAGE_BEAR_HURT]);
+        this.applyConfig(config);
+        this.applyStats();
+        this.frameCount = Object.values(this.sprites)[0].frames;
+        this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
         this.x = column * TILE_SIZE;
         this.y = (row + 1) * TILE_SIZE - this.height;
-        this.otherDirection = Math.random() < 0.5;
-        this.startAnimation();
+    }
+
+    applyConfig(config){
+        this.settings = config.settings;
+        this.sprites = config.sprites;
+        this.width = this.settings.width;
+        this.height = this.settings.height;
+        this.frameWidth = config.frameSize;
+        this.frameHeight = config.frameSize;
+        this.hitbox = config.hitbox;
+        this.spriteFacesLeft = config.spriteFacesLeft;
+    }
+
+    applyStats(){
+        this.speed = this.settings.speed;
+        this.animationFps = this.settings.animationFps;
+        this.maxHealth = this.settings.maxHealth;
+        this.health = this.maxHealth;
     }
 
     receiveHit(damage, source){
@@ -34,6 +37,16 @@ class Enemy extends MovableObject {
         }
     }
 
+    showLoopState(stateName, fps){
+        const SPRITE = this.sprites[stateName];
+        this.setSprite(SPRITE.path, SPRITE.frames, fps);
+    }
+
+    showProgressState(stateName, elapsedTicks, totalTicks){
+        const SPRITE = this.sprites[stateName];
+        this.setProgressSprite(SPRITE.path, SPRITE.frames, elapsedTicks, totalTicks);
+    }
+
     updateObject(){
         if(this.isDead()){
             this.updateDeath();
@@ -42,40 +55,22 @@ class Enemy extends MovableObject {
         this.updateHurt();
         this.applyGravity();
         if(this.isHurt()){
-            this.setProgressSprite(IMAGE_BEAR_HURT, 4, this.getHurtElapsed(), this.settings.hurtTicks);
+            this.showProgressState('hurt', this.getHurtElapsed(), this.settings.hurtTicks);
             return;
         }
-        this.setSprite(IMAGE_BEAR_WALK, 6, this.settings.animationFps);
-        this.patrolPlatform();
+        this.updateBehavior();
+    }
+
+    updateBehavior(){
     }
 
     updateDeath(){
         this.applyGravity();
         this.deadTicks++;
-        this.setProgressSprite(IMAGE_BEAR_DEATH, 6, this.deadTicks, this.settings.deathTicks);
+        this.showProgressState('death', this.deadTicks, this.settings.deathTicks);
         if(this.deadTicks >= this.settings.deathTicks){
             this.stopAnimation();
             this.world.level.removeEnemy(this);
         }
     }
-
-    patrolPlatform(){
-        if(!this.onGround){
-            return;
-        }
-        if(this.shouldTurn()){
-            this.otherDirection = !this.otherDirection;
-        }
-        this.moveForward();
-    }
-
-    shouldTurn(){
-        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
-        const PROBE_X = this.x + this.width / 2 + STEP_DIRECTION * this.width / 2;
-        const PROBE_Y = this.y + this.height + 1;
-        const IS_OUT_OF_BOUNDS = PROBE_X < 0 || PROBE_X > this.world.level.width;
-        return IS_OUT_OF_BOUNDS || !this.world.level.isWalkableAt(PROBE_X, PROBE_Y);
-    }
 }
-
-const ENEMY_MARKERS = { 70: Enemy };

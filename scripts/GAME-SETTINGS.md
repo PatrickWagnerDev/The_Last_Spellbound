@@ -50,18 +50,31 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `leftWallX` | `-60` | Smallest allowed x of the character box. `0` stops the box at the level start, a negative value lets the figure walk closer to the edge (`-60` matches the figure inside the sprite). |
 | `rightWallOffset` | `60` | How many px the character box may reach past the level end. Counterpart to `leftWallX`. |
 
-## enemy
+## bear
 
 | Variable | Default | Effect |
 |---|---|---|
-| `width` | `80` | Drawn width in px. The sprite frame is 40x40, multiples of 40 keep the pixels even. If you change it, also adjust the hitbox in `enemy.class.js`. |
+| `width` | `80` | Drawn width in px. The sprite frame is 40x40, multiples of 40 keep the pixels even. If you change it, also adjust the hitbox in `bear.class.js`. |
 | `height` | `80` | Drawn height in px. Same note as `width`. |
-| `maxHealth` | `2` | Health points of the bear. Other enemy types will get their own values. Each hit costs the damage of the attacker, at 0 the enemy dies. |
+| `maxHealth` | `2` | Health points of the bear. Each hit costs the damage of the attacker, at 0 the enemy dies. |
 | `speed` | `0.5` | Walking speed in px per tick. Values below 1 look slightly jerky because drawing rounds to whole pixels. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). The bear stands still, is pushed away from the attacker and turns towards it. |
 | `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (48 px by default). |
 | `deathTicks` | `60` | Time from the death of an enemy until it disappears (60 ticks = 1 second). The 6 death frames are spread over it. A dead enemy does no damage and cannot be hit again. |
+
+## mageBoss
+
+| Variable | Default | Effect |
+|---|---|---|
+| `width` | `192` | Drawn width in px. The sprite frame is 64x64, multiples of 64 keep the pixels even. If you change it, also adjust the hitbox in `mage-boss.class.js`. |
+| `height` | `192` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `15` | Health points of the mage boss. Each hit costs the damage of the attacker (sword 1, fireball 3). |
+| `speed` | `1` | Walking speed in px per tick. Not used yet, it is meant for the chase of the character. |
+| `animationFps` | `8` | Animation speed in frames per second. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
+| `knockbackSpeed` | `1` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (12 px by default). |
+| `deathTicks` | `90` | Time from the death of the boss until it disappears (90 ticks = 1.5 seconds). The 6 death frames are spread over it. |
 
 ## fireball
 
@@ -151,6 +164,7 @@ While the transition runs, the level is switched under the covered canvas. The s
 
 | Variable | Default | Effect |
 |---|---|---|
+| `startInBossLevel` | `true` | Starts the game directly in the boss level to test the boss. Set to `false` for release. |
 | `showHitboxes` | `true` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 
 ## Not part of the settings
@@ -159,12 +173,12 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
-| Hitbox of the bear, the fireball, the key and the chest, `FIREBALL_SPAWN` | `enemy.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
+| Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
-| `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy.class.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
+| `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy-markers.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
 | `SPIRAL_RADIUS_RATIO` | `portal-transition.class.js` | The vortex image fills about 40 % of its width as a circle, the transition uses this to cover the canvas completely. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
 | Images of the status bars | `world.class.js` | They are facts of the bar images. |
