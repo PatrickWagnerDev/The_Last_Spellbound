@@ -13,7 +13,13 @@ class MovableObject extends DrawableObject{
         this.animationInterval = setInterval(() => {
             this.updateObject();
             this.nextFrame();
-        }, 1000 / 60);
+        }, 1000 / TICKS_PER_SECOND);
+    }
+
+    setupSprites(paths){
+        this.loadImage(paths[0]);
+        this.loadImages(paths);
+        this.currentPath = paths[0];
     }
 
     stopAnimation(){
@@ -77,11 +83,7 @@ class MovableObject extends DrawableObject{
     }
 
     isOverlapping(rect){
-        const OWN_RECT = this.getHitbox();
-        return OWN_RECT.x < rect.x + rect.width
-            && OWN_RECT.x + OWN_RECT.width > rect.x
-            && OWN_RECT.y < rect.y + rect.height
-            && OWN_RECT.y + OWN_RECT.height > rect.y;
+        return areRectsOverlapping(this.getHitbox(), rect);
     }
 
     isColliding(movable){
@@ -114,7 +116,7 @@ class MovableObject extends DrawableObject{
             return;
         }
         this.x += this.getKnockbackStep();
-        this.hurtTicksLeft--;
+        this.hurtTicksLeft = tickDown(this.hurtTicksLeft);
     }
 
     getKnockbackStep(){
@@ -122,14 +124,12 @@ class MovableObject extends DrawableObject{
     }
 
     startKnockback(source){
-        const SOURCE_RECT = source.getHitbox();
-        const OWN_RECT = this.getHitbox();
-        const IS_SOURCE_RIGHT = SOURCE_RECT.x + SOURCE_RECT.width / 2 > OWN_RECT.x + OWN_RECT.width / 2;
+        const IS_SOURCE_RIGHT = getRectCenterX(source.getHitbox()) > getRectCenterX(this.getHitbox());
         this.knockbackDirection = IS_SOURCE_RIGHT ? -1 : 1;
         this.hurtTicksLeft = this.settings.hurtTicks;
     }
 
-    getHurtFrame(frameTotal){
-        return this.getProgressFrame(this.settings.hurtTicks - this.hurtTicksLeft, this.settings.hurtTicks, frameTotal);
+    getHurtElapsed(){
+        return this.settings.hurtTicks - this.hurtTicksLeft;
     }
 }

@@ -37,7 +37,7 @@ class Fireball extends MovableObject {
     flyForward(){
         this.moveForward();
         this.distance += this.speed;
-        this.currentFrame = Math.floor(this.stateTicks / (60 / this.settings.flightFps)) % 5;
+        this.currentFrame = Math.floor(this.stateTicks / getTicksPerFrame(this.settings.flightFps)) % 5;
         this.checkImpact();
     }
 
@@ -57,7 +57,7 @@ class Fireball extends MovableObject {
     }
 
     updateImpact(){
-        const FRAME_INDEX = Math.floor(this.stateTicks / (60 / this.settings.impactFps));
+        const FRAME_INDEX = Math.floor(this.stateTicks / getTicksPerFrame(this.settings.impactFps));
         if(FRAME_INDEX > 6){
             this.removeSelf();
             return;
@@ -67,7 +67,7 @@ class Fireball extends MovableObject {
 
     updateVanish(){
         this.currentFrame = 4;
-        if(this.stateTicks >= 60 / this.settings.flightFps){
+        if(this.stateTicks >= getTicksPerFrame(this.settings.flightFps)){
             this.removeSelf();
         }
     }

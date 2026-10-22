@@ -11,30 +11,31 @@ class Level {
         this.mapRows = levelData.mapRows;
         this.width = this.mapRows[0].length * TILE_SIZE;
         this.height = this.mapRows.length * TILE_SIZE;
-        this.tilesetImage = new Image();
-        this.tilesetImage.src = TILESET_IMAGE;
+        this.tilesetImage = createImage(TILESET_IMAGE);
         this.buildTiles();
         this.buildEnemies();
         this.buildBackgrounds(levelData.backgroundLayers);
     }
 
-    buildTiles(){
+    forEachCell(callback){
         this.mapRows.forEach((rowIds, row) => {
-            rowIds.forEach((tileId, column) => {
-                if(tileId > EMPTY_TILE_ID && tileId < FIRST_MARKER_ID){
-                    this.tiles.push(new Tile(tileId, column, row, this.tilesetImage));
-                }
-            });
+            rowIds.forEach((cellId, column) => callback(cellId, column, row));
+        });
+    }
+
+    buildTiles(){
+        this.forEachCell((tileId, column, row) => {
+            if(tileId > EMPTY_TILE_ID && tileId < FIRST_MARKER_ID){
+                this.tiles.push(new Tile(tileId, column, row, this.tilesetImage));
+            }
         });
     }
 
     buildEnemies(){
-        this.mapRows.forEach((rowIds, row) => {
-            rowIds.forEach((markerId, column) => {
-                if(ENEMY_MARKERS[markerId]){
-                    this.enemies.push(new ENEMY_MARKERS[markerId](column, row));
-                }
-            });
+        this.forEachCell((markerId, column, row) => {
+            if(ENEMY_MARKERS[markerId]){
+                this.enemies.push(new ENEMY_MARKERS[markerId](column, row));
+            }
         });
     }
 

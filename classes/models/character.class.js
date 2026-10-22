@@ -31,17 +31,15 @@ class Character extends MovableObject{
     rollCooldownLeft = 0;
     attackTicksLeft = 0;
     attackHits = [];
-    attackKeyDown = false;
+    previousKeys = {};
     castTicksLeft = 0;
     castCooldownLeft = 0;
-    castKeyDown = false;
     maxEnergy = GAME_SETTINGS.energy.maxCharges;
     energy = GAME_SETTINGS.energy.startCharges;
 
     constructor(){
-        super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK, IMAGE_CAST]);
-        this.currentPath = IMAGE_IDLE;
+        super();
+        this.setupSprites([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK, IMAGE_CAST]);
         this.startAnimation();
     }
 
@@ -72,9 +70,7 @@ class Character extends MovableObject{
     }
 
     updateInvincibility(){
-        if(this.invincibleTicks > 0){
-            this.invincibleTicks--;
-        }
+        this.invincibleTicks = tickDown(this.invincibleTicks);
     }
 
     checkCollisions(){
@@ -108,8 +104,7 @@ class Character extends MovableObject{
 
     updateDeathSprite(){
         this.deadTicks++;
-        this.setSprite(IMAGE_DEAD, 6, 0);
-        this.currentFrame = this.getProgressFrame(this.deadTicks, this.settings.deadFrameTicks * 6, 6);
+        this.setProgressSprite(IMAGE_DEAD, 6, this.deadTicks, this.settings.deadFrameTicks * 6);
     }
 
     updateSpeed(){
@@ -141,9 +136,7 @@ class Character extends MovableObject{
     }
 
     handleRoll(){
-        if(this.rollCooldownLeft > 0){
-            this.rollCooldownLeft--;
-        }
+        this.rollCooldownLeft = tickDown(this.rollCooldownLeft);
         const CAN_ROLL = this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling();
         if(this.wantsRoll() && CAN_ROLL && this.rollCooldownLeft == 0){
             this.rollTicksLeft = this.settings.rollTicks;
@@ -163,8 +156,11 @@ class Character extends MovableObject{
         }
     }
 
-    getRollFrame(){
-        return this.getProgressFrame(this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks, 6);
+    isNewPress(keyName){
+        const IS_PRESSED = this.world.keyboard[keyName];
+        const IS_NEW = IS_PRESSED && !this.previousKeys[keyName];
+        this.previousKeys[keyName] = IS_PRESSED;
+        return IS_NEW;
     }
 
     isAttacking(){
@@ -176,10 +172,8 @@ class Character extends MovableObject{
     }
 
     handleAttack(){
-        const IS_PRESSED = this.wantsAttack();
-        const JUST_PRESSED = IS_PRESSED && !this.attackKeyDown;
+        const JUST_PRESSED = this.isNewPress('ATTACK');
         const CAN_ATTACK = !this.isAttacking() && !this.isCasting() && !this.isRolling() && !this.isHurt();
-        this.attackKeyDown = IS_PRESSED;
         if(JUST_PRESSED && CAN_ATTACK){
             this.attackTicksLeft = this.settings.attackTicks;
             this.attackHits = [];
@@ -215,10 +209,6 @@ class Character extends MovableObject{
         });
     }
 
-    getAttackFrame(){
-        return this.getProgressFrame(this.getAttackElapsed(), this.settings.attackTicks, 5);
-    }
-
     drawAttackBox(ctx){
         if(this.isAttackActive()){
             this.drawRect(ctx, this.getBoxRect(ATTACK_HITBOX), 'orange');
@@ -234,13 +224,9 @@ class Character extends MovableObject{
     }
 
     handleCast(){
-        const IS_PRESSED = this.wantsCast();
-        const JUST_PRESSED = IS_PRESSED && !this.castKeyDown;
+        const JUST_PRESSED = this.isNewPress('SHOOT');
         const CAN_CAST = !this.isCasting() && !this.isAttacking() && !this.isRolling() && !this.isHurt() && this.castCooldownLeft == 0 && this.energy >= 1;
-        this.castKeyDown = IS_PRESSED;
-        if(this.castCooldownLeft > 0){
-            this.castCooldownLeft--;
-        }
+        this.castCooldownLeft = tickDown(this.castCooldownLeft);
         if(JUST_PRESSED && CAN_CAST){
             this.castTicksLeft = this.settings.castTicks;
         }
@@ -260,10 +246,6 @@ class Character extends MovableObject{
 
     addEnergy(amount){
         this.energy = Math.min(this.energy + amount, this.maxEnergy);
-    }
-
-    getCastFrame(){
-        return this.getProgressFrame(this.settings.castTicks - this.castTicksLeft, this.settings.castTicks, 8);
     }
 
     isMovementLocked(){
@@ -286,7 +268,7 @@ class Character extends MovableObject{
 
     limitToWall(){
         const MAX_X = this.world.level.width - this.width + this.settings.rightWallOffset;
-        this.x = Math.min(Math.max(this.x, this.settings.leftWallX), MAX_X);
+        this.x = clampValue(this.x, this.settings.leftWallX, MAX_X);
     }
 
     handleJump(){
@@ -329,7 +311,7 @@ class Character extends MovableObject{
     }
 
     getPhaseFrame(startFrame, totalTicks){
-        return startFrame + this.getProgressFrame(this.phaseTicks, totalTicks, 3);
+        return startFrame + getProgressFrame(this.phaseTicks, totalTicks, 3);
     }
 
     getAirFrame(){
@@ -350,10 +332,6 @@ class Character extends MovableObject{
         }
     }
 
-    getRestFrame(){
-        return this.getProgressFrame(this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * this.frameCount, this.frameCount);
-    }
-
     setSprite(path, count, fps){
         super.setSprite(path, count, fps);
         const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD, IMAGE_ATTACK, IMAGE_CAST].includes(path);
@@ -362,25 +340,20 @@ class Character extends MovableObject{
 
     updateSprite(){
         if(this.isHurt()){
-            this.setSprite(IMAGE_HURT, 3, 0);
-            this.currentFrame = this.getHurtFrame(3);
+            this.setProgressSprite(IMAGE_HURT, 3, this.getHurtElapsed(), this.settings.hurtTicks);
         } else if(this.isRolling()){
-            this.setSprite(IMAGE_ROLL, 6, 0);
-            this.currentFrame = this.getRollFrame();
+            this.setProgressSprite(IMAGE_ROLL, 6, this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks);
         } else if(this.isAttacking()){
-            this.setSprite(IMAGE_ATTACK, 5, 0);
-            this.currentFrame = this.getAttackFrame();
+            this.setProgressSprite(IMAGE_ATTACK, 5, this.getAttackElapsed(), this.settings.attackTicks);
         } else if(this.isCasting()){
-            this.setSprite(IMAGE_CAST, 8, 0);
-            this.currentFrame = this.getCastFrame();
+            this.setProgressSprite(IMAGE_CAST, 8, this.settings.castTicks - this.castTicksLeft, this.settings.castTicks);
         } else if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
         } else if(this.isWalking()){
             this.setSprite(IMAGE_WALK, 6, this.settings.walkFps);
         } else if(this.idleTicks >= this.settings.restDelayTicks){
-            this.setSprite(IMAGE_REST, 4, 0);
-            this.currentFrame = this.getRestFrame();
+            this.setProgressSprite(IMAGE_REST, 4, this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * 4);
         } else {
             this.setSprite(IMAGE_IDLE, 7, this.settings.idleFps);
         }

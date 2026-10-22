@@ -10,13 +10,12 @@ class StatusBar extends DrawableObject {
         super();
         this.blinkEnabled = options.blink ?? true;
         this.loadImage(emptyPath);
-        this.fullImage = new Image();
-        this.fullImage.src = fullPath;
+        this.fullImage = createImage(fullPath);
         this.x = x;
         this.y = y;
         this.width = this.frameWidth * GAME_SETTINGS.ui.statusBarScale;
         this.height = this.frameHeight * GAME_SETTINGS.ui.statusBarScale;
-        setInterval(() => this.updateBlink(), 1000 / 60);
+        setInterval(() => this.updateBlink(), 1000 / TICKS_PER_SECOND);
     }
 
     setValue(current, max){
@@ -29,9 +28,7 @@ class StatusBar extends DrawableObject {
     }
 
     updateBlink(){
-        if(this.blinkTicksLeft > 0){
-            this.blinkTicksLeft--;
-        }
+        this.blinkTicksLeft = tickDown(this.blinkTicksLeft);
     }
 
     isBlinkVisible(){

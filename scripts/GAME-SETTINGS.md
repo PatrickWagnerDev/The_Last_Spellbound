@@ -105,3 +105,4 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | Hitbox offsets | `character.class.js`, `enemy.class.js` | They are measured from the sprites. |
 | Parallax factors, enemy spawns, tile map | `classes/levels/level-one.js` | They belong to the level. |
 | `TILE_SIZE`, `WALKABLE_TILE_IDS` | `tile.class.js` | They depend on the tileset. |
+| `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |

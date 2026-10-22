@@ -50,7 +50,7 @@ class World {
     updateCamera(){
         const TARGET_X = this.character.x + this.character.width / 2 - this.canvas.width / 2;
         const MAX_CAMERA_X = Math.max(this.level.width - this.canvas.width, 0);
-        this.cameraX = Math.min(Math.max(TARGET_X, 0), MAX_CAMERA_X);
+        this.cameraX = clampValue(TARGET_X, 0, MAX_CAMERA_X);
     }
 
     drawScrollingObjects(){

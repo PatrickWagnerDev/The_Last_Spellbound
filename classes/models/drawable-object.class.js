@@ -17,16 +17,11 @@ class DrawableObject{
     currentPath;
 
     loadImage(path){
-        this.img = new Image();
-        this.img.src = path;
+        this.img = createImage(path);
     }
 
     loadImages(paths){
-        paths.forEach(path => {
-            const NEW_IMAGE = new Image();
-            NEW_IMAGE.src = path;
-            this.imageCache[path] = NEW_IMAGE;
-        });
+        paths.forEach(path => this.imageCache[path] = createImage(path));
     }
 
     setSprite(path, count, fps){
@@ -43,14 +38,15 @@ class DrawableObject{
 
     nextFrame(){
         this.tickCount++;
-        if(this.tickCount >= 60 / this.animationFps){
+        if(this.tickCount >= getTicksPerFrame(this.animationFps)){
             this.tickCount = 0;
             this.currentFrame = (this.currentFrame + 1) % this.frameCount;
         }
     }
 
-    getProgressFrame(elapsedTicks, totalTicks, frameTotal){
-        return Math.min(Math.floor(elapsedTicks / (totalTicks / frameTotal)), frameTotal - 1);
+    setProgressSprite(path, frameTotal, elapsedTicks, totalTicks){
+        this.setSprite(path, frameTotal, 0);
+        this.currentFrame = getProgressFrame(elapsedTicks, totalTicks, frameTotal);
     }
 
     isFlipped(){

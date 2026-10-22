@@ -140,3 +140,10 @@
 2026-10-22 | world.class.js | Fixed the missing space in the healthBar field
 2026-10-22 | drawable-object.class.js | Added getProgressFrame(elapsedTicks, totalTicks, frameTotal) as the one place that maps elapsed time to a frame
 2026-10-22 | movable-object.class.js, character.class.js, enemy.class.js | getHurtFrame, getRollFrame, getAttackFrame, getCastFrame, getPhaseFrame, getRestFrame, the death frame of the character and the death frame of the bear use getProgressFrame
+2026-10-22 | scripts/helper-functions.js | New file with TICKS_PER_SECOND, createImage, tickDown, clampValue, getTicksPerFrame, getProgressFrame, getRectCenterX, areRectsOverlapping; loaded after game-settings.js in index.html
+2026-10-22 | drawable-object.class.js | loadImage and loadImages use createImage, nextFrame uses getTicksPerFrame, getProgressFrame moved to the helpers, added setProgressSprite
+2026-10-22 | movable-object.class.js | Added setupSprites; uses TICKS_PER_SECOND, areRectsOverlapping, getRectCenterX and tickDown; getHurtFrame replaced by getHurtElapsed
+2026-10-22 | character.class.js | Removed getRollFrame, getAttackFrame, getCastFrame, getRestFrame; updateSprite and updateDeathSprite use setProgressSprite; isNewPress replaces attackKeyDown and castKeyDown; tickDown for invincibility and cooldowns; clampValue in limitToWall; setupSprites in the constructor
+2026-10-22 | enemy.class.js | setupSprites in the constructor; hurt and death use setProgressSprite
+2026-10-22 | fireball.class.js, status-bar.class.js, level.class.js, world.class.js | Use getTicksPerFrame, TICKS_PER_SECOND, createImage, tickDown, clampValue; Level got forEachCell for buildTiles and buildEnemies
+2026-10-22 | scripts/GAME-SETTINGS.md | Added TICKS_PER_SECOND to the list of values that are not settings

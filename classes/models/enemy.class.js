@@ -18,9 +18,8 @@ class Enemy extends MovableObject {
     deadTicks = 0;
 
     constructor(column, row){
-        super().loadImage(IMAGE_BEAR_WALK);
-        this.loadImages([IMAGE_BEAR_WALK, IMAGE_BEAR_DEATH, IMAGE_BEAR_HURT]);
-        this.currentPath = IMAGE_BEAR_WALK;
+        super();
+        this.setupSprites([IMAGE_BEAR_WALK, IMAGE_BEAR_DEATH, IMAGE_BEAR_HURT]);
         this.x = column * TILE_SIZE;
         this.y = (row + 1) * TILE_SIZE - this.height;
         this.otherDirection = Math.random() < 0.5;
@@ -43,8 +42,7 @@ class Enemy extends MovableObject {
         this.updateHurt();
         this.applyGravity();
         if(this.isHurt()){
-            this.setSprite(IMAGE_BEAR_HURT, 4, 0);
-            this.currentFrame = this.getHurtFrame(4);
+            this.setProgressSprite(IMAGE_BEAR_HURT, 4, this.getHurtElapsed(), this.settings.hurtTicks);
             return;
         }
         this.setSprite(IMAGE_BEAR_WALK, 6, this.settings.animationFps);
@@ -54,8 +52,7 @@ class Enemy extends MovableObject {
     updateDeath(){
         this.applyGravity();
         this.deadTicks++;
-        this.setSprite(IMAGE_BEAR_DEATH, 6, 0);
-        this.currentFrame = this.getProgressFrame(this.deadTicks, this.settings.deathTicks, 6);
+        this.setProgressSprite(IMAGE_BEAR_DEATH, 6, this.deadTicks, this.settings.deathTicks);
         if(this.deadTicks >= this.settings.deathTicks){
             this.stopAnimation();
             this.world.level.removeEnemy(this);
