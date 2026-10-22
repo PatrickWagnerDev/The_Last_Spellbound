@@ -117,6 +117,10 @@ function togglePause(){
 }
 
 function restartLevel(){
+    fadeThroughBlack(restartWorld);
+}
+
+function restartWorld(){
     const RESTART_DATA = gameWorld.restartLevelData;
     gameWorld.stop();
     createWorld(RESTART_DATA);
