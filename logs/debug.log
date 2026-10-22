@@ -111,3 +111,5 @@
 2026-10-22 | world.class.js | Added IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, healthBar and drawStatusBars; removed drawDebugHealth
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added the ui block (statusBarScale, statusBarX, statusBarY, blinkTicks, blinkIntervalTicks) and documented it
 2026-10-22 | index.html | Included status-bar.class.js after drawable-object.class.js
+2026-10-22 | character.class.js | Added the roll (IMAGE_ROLL, rollTicksLeft, rollCooldownLeft, isRolling, wantsRoll, handleRoll, updateRoll, getRollFrame): S or down arrow on the ground, not cancellable, no jump or turn while rolling, no damage while rolling
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.rollTicks 36, rollSpeed 5, rollCooldownTicks 30 and documented them

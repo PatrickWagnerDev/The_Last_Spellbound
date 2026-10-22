@@ -28,6 +28,9 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `hurtTicks` | `24` | Ticks of the hurt animation after a hit (60 ticks = 1 second). Walking and jumping are locked meanwhile and the character is pushed away from the enemy. |
 | `knockbackSpeed` | `5` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (60 px by default). |
 | `deadFrameTicks` | `10` | Ticks per frame of the death animation (6 frames, 10 = 1 second in total). The animation plays once and stays on the last frame. |
+| `rollTicks` | `36` | Duration of the roll (60 ticks = 1 second). The roll starts with S or the down arrow on the ground, cannot be cancelled and cannot be started in the air. The character cannot be hurt while rolling. |
+| `rollSpeed` | `5` | Speed of the roll in px per tick. Distance in px is `rollSpeed * rollTicks` (180 px by default). |
+| `rollCooldownTicks` | `30` | Pause after a roll before the next one is possible (30 ticks = 0.5 seconds). Without it, holding the key would make the character invulnerable all the time. `0` turns the pause off. |
 | `speed` | `3` | Walking speed in px per tick (3 = 180 px per second). |
 | `airSpeedFactor` | `1.25` | Multiplier for the walking speed while in the air. 1.25 = a jump with a direction key covers about a quarter more distance than walking for the same time. 1 = same speed as on the ground. |
 | `jumpSpeed` | `11.5` | Initial upward speed of a jump, about 138 px with the default gravity. Reaches a platform 2 tiles (96 px) up, but not 4 tiles (192 px). Raise it to jump higher. |

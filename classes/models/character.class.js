@@ -4,6 +4,7 @@ const IMAGE_JUMP = './assets/image/01-wizard/Fire Wizard/Jump.png';
 const IMAGE_REST = './assets/image/02-wizard-extras/Fire Wizard/Rest.png';
 const IMAGE_HURT = './assets/image/01-wizard/Fire Wizard/Hurt.png';
 const IMAGE_DEAD = './assets/image/01-wizard/Fire Wizard/Dead.png';
+const IMAGE_ROLL = './assets/image/02-wizard-extras/Fire Wizard/Roll.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 
@@ -25,10 +26,12 @@ class Character extends MovableObject{
     hurtTicksLeft = 0;
     knockbackDirection = 1;
     deadTicks = 0;
+    rollTicksLeft = 0;
+    rollCooldownLeft = 0;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD]);
+        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL]);
         this.currentPath = IMAGE_IDLE;
         this.startAnimation();
     }
@@ -45,8 +48,10 @@ class Character extends MovableObject{
         }
         this.updateSpeed();
         this.moveByKeyboard();
+        this.updateRoll();
         this.limitToWall();
         this.handleJump();
+        this.handleRoll();
         this.applyGravity();
         this.updateJumpPhase();
         this.updateIdleTicks();
@@ -70,7 +75,7 @@ class Character extends MovableObject{
     }
 
     receiveHit(damage, source){
-        if(this.invincibleTicks > 0 || this.isDead()){
+        if(this.invincibleTicks > 0 || this.isDead() || this.isRolling()){
             return;
         }
         this.takeDamage(damage);
@@ -118,6 +123,10 @@ class Character extends MovableObject{
     }
 
     updateSpeed(){
+        if(this.isRolling()){
+            this.speed = this.settings.rollSpeed;
+            return;
+        }
         this.speed = this.onGround ? this.settings.speed : this.settings.speed * this.settings.airSpeedFactor;
     }
 
@@ -130,11 +139,45 @@ class Character extends MovableObject{
     }
 
     hasInput(){
-        return this.isWalking() || this.wantsJump();
+        return this.isWalking() || this.wantsJump() || this.wantsRoll();
+    }
+
+    isRolling(){
+        return this.rollTicksLeft > 0;
+    }
+
+    wantsRoll(){
+        return this.world.keyboard.DOWN;
+    }
+
+    handleRoll(){
+        if(this.rollCooldownLeft > 0){
+            this.rollCooldownLeft--;
+        }
+        const CAN_ROLL = this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling();
+        if(this.wantsRoll() && CAN_ROLL && this.rollCooldownLeft == 0){
+            this.rollTicksLeft = this.settings.rollTicks;
+        }
+    }
+
+    updateRoll(){
+        if(!this.isRolling()){
+            return;
+        }
+        this.moveForward();
+        this.rollTicksLeft--;
+        if(!this.isRolling()){
+            this.rollCooldownLeft = this.settings.rollCooldownTicks;
+        }
+    }
+
+    getRollFrame(){
+        const FRAME_INDEX = Math.floor((this.settings.rollTicks - this.rollTicksLeft) / (this.settings.rollTicks / 6));
+        return Math.min(FRAME_INDEX, 5);
     }
 
     isMovementLocked(){
-        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land' || this.isHurt();
+        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land' || this.isHurt() || this.isRolling();
     }
 
     moveByKeyboard(){
@@ -157,7 +200,7 @@ class Character extends MovableObject{
     }
 
     handleJump(){
-        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none' && !this.isHurt()){
+        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling()){
             this.startPhase('crouch');
         }
     }
@@ -211,7 +254,7 @@ class Character extends MovableObject{
     }
 
     updateIdleTicks(){
-        if(this.hasInput() || this.jumpPhase != 'none'){
+        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling()){
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
@@ -233,6 +276,9 @@ class Character extends MovableObject{
         if(this.isHurt()){
             this.setSprite(IMAGE_HURT, 3, 0);
             this.currentFrame = this.getHurtFrame();
+        } else if(this.isRolling()){
+            this.setSprite(IMAGE_ROLL, 6, 0);
+            this.currentFrame = this.getRollFrame();
         } else if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
