@@ -2,6 +2,8 @@ const IMAGE_IDLE = './assets/image/01-wizard/Fire Wizard/Idle.png';
 const IMAGE_WALK = './assets/image/01-wizard/Fire Wizard/Walk.png';
 const IMAGE_JUMP = './assets/image/01-wizard/Fire Wizard/Jump.png';
 const IMAGE_REST = './assets/image/02-wizard-extras/Fire Wizard/Rest.png';
+const IMAGE_HURT = './assets/image/01-wizard/Fire Wizard/Hurt.png';
+const IMAGE_DEAD = './assets/image/01-wizard/Fire Wizard/Dead.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 
@@ -20,19 +22,25 @@ class Character extends MovableObject{
     maxHealth = this.settings.maxHealth;
     health = this.maxHealth;
     invincibleTicks = 0;
+    hurtTicksLeft = 0;
+    knockbackDirection = 1;
+    deadTicks = 0;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST]);
+        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD]);
         this.currentPath = IMAGE_IDLE;
         this.startAnimation();
     }
 
     updateObject(){
         this.updateInvincibility();
+        this.updateHurt();
         this.checkCollisions();
         if(this.isDead()){
             this.applyGravity();
+            this.limitToWall();
+            this.updateDeathSprite();
             return;
         }
         this.updateSpeed();
@@ -57,16 +65,56 @@ class Character extends MovableObject{
 
     handleCollision(object){
         if(this.isColliding(object) && object instanceof Enemy){
-            this.receiveHit(GAME_SETTINGS.combat.hitDamage);
+            this.receiveHit(GAME_SETTINGS.combat.hitDamage, object);
         }
     }
 
-    receiveHit(damage){
+    receiveHit(damage, source){
         if(this.invincibleTicks > 0 || this.isDead()){
             return;
         }
         this.takeDamage(damage);
         this.invincibleTicks = GAME_SETTINGS.combat.invincibleTicks;
+        this.startHurt(source);
+    }
+
+    isHurt(){
+        return this.hurtTicksLeft > 0;
+    }
+
+    updateHurt(){
+        if(!this.isHurt()){
+            return;
+        }
+        this.x += this.getKnockbackStep();
+        this.hurtTicksLeft--;
+    }
+
+    getKnockbackStep(){
+        return this.knockbackDirection * this.settings.knockbackSpeed * this.hurtTicksLeft / this.settings.hurtTicks;
+    }
+
+    startHurt(source){
+        const SOURCE_RECT = source.getHitbox();
+        const OWN_RECT = this.getHitbox();
+        const IS_SOURCE_RIGHT = SOURCE_RECT.x + SOURCE_RECT.width / 2 > OWN_RECT.x + OWN_RECT.width / 2;
+        this.knockbackDirection = IS_SOURCE_RIGHT ? -1 : 1;
+        this.otherDirection = !IS_SOURCE_RIGHT;
+        this.hurtTicksLeft = this.settings.hurtTicks;
+        if(this.jumpPhase == 'crouch' || this.jumpPhase == 'land'){
+            this.startPhase('none');
+        }
+    }
+
+    getHurtFrame(){
+        const FRAME_INDEX = Math.floor((this.settings.hurtTicks - this.hurtTicksLeft) / (this.settings.hurtTicks / 3));
+        return Math.min(FRAME_INDEX, 2);
+    }
+
+    updateDeathSprite(){
+        this.deadTicks++;
+        this.setSprite(IMAGE_DEAD, 6, 0);
+        this.currentFrame = Math.min(Math.floor(this.deadTicks / this.settings.deadFrameTicks), this.frameCount - 1);
     }
 
     updateSpeed(){
@@ -86,7 +134,7 @@ class Character extends MovableObject{
     }
 
     isMovementLocked(){
-        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land';
+        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land' || this.isHurt();
     }
 
     moveByKeyboard(){
@@ -109,7 +157,7 @@ class Character extends MovableObject{
     }
 
     handleJump(){
-        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none'){
+        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none' && !this.isHurt()){
             this.startPhase('crouch');
         }
     }
@@ -177,12 +225,15 @@ class Character extends MovableObject{
 
     setSprite(path, count, fps){
         super.setSprite(path, count, fps);
-        const IS_STANDING = path == IMAGE_IDLE || path == IMAGE_JUMP;
+        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD].includes(path);
         this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
     updateSprite(){
-        if(this.jumpPhase != 'none'){
+        if(this.isHurt()){
+            this.setSprite(IMAGE_HURT, 3, 0);
+            this.currentFrame = this.getHurtFrame();
+        } else if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();
         } else if(this.isWalking()){

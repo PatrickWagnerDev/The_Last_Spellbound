@@ -105,3 +105,5 @@
 2026-10-22 | enemy.class.js | Added maxHealth and health from the settings
 2026-10-22 | level.class.js | Added getCollidables returning the enemies
 2026-10-22 | world.class.js | Added drawDebugHealth (shown while showHitboxes is true)
+2026-10-22 | character.class.js | Added hurt and death animation with knockback away from the enemy (IMAGE_HURT, IMAGE_DEAD, hurtTicksLeft, knockbackDirection, deadTicks, isHurt, updateHurt, getKnockbackStep, startHurt, getHurtFrame, updateDeathSprite); movement and jump are locked while hurt; receiveHit passes the source
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.hurtTicks 24, knockbackSpeed 5, deadFrameTicks 10 and documented them
