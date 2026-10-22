@@ -103,24 +103,18 @@ body {
     gap: 32px;
 }
 
-.menu-button {
+.menu-button,
+.start-button {
     position: relative;
     z-index: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
-    width: 112px;
-    height: 96px;
-    padding: 11px 4px 9px;
     border: none;
     background-color: #667291;
     clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
     cursor: pointer;
 }
 
-.menu-button::before {
+.menu-button::before,
+.start-button::before {
     content: '';
     position: absolute;
     inset: 4px;
@@ -129,8 +123,29 @@ body {
     clip-path: polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 4px 4px);
 }
 
-.menu-button:hover::before {
+.menu-button:hover::before,
+.start-button:hover::before {
     background-color: #5a678d;
+}
+
+.menu-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    width: 112px;
+    height: 96px;
+    padding: 11px 4px 9px;
+}
+
+.start-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    height: 48px;
+    padding: 0 4px;
 }
 
 .menu-icon {
@@ -213,8 +228,78 @@ body {
     gap: 32px;
 }
 
-.game-container.is-game-over .pause-button {
+.game-container.is-game-over .pause-button,
+.game-container.is-start-screen .pause-button {
     display: none;
+}
+
+.start-screen {
+    display: none;
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 720px;
+    height: 480px;
+    overflow: hidden;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('./assets/image/07-forest-backgrounds/PNG/Forest1/Pale/Forest1.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.start-screen.is-open {
+    display: block;
+}
+
+.start-wizard {
+    position: absolute;
+    left: -207px;
+    bottom: 0;
+    width: 896px;
+    height: 896px;
+    background-image: url('./assets/image/01-wizard/Fire Wizard/Idle.png');
+    background-size: 6272px 896px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    animation: wizard-idle 1.4s steps(7) infinite;
+}
+
+@keyframes wizard-idle {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -6272px 0;
+    }
+}
+
+.start-content {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 24px;
+}
+
+.start-title {
+    margin: 0;
+    font-family: 'Straight Pixel Gothic', sans-serif;
+    font-size: 96px;
+    font-weight: normal;
+    line-height: 0.9;
+    text-align: right;
+    color: #fff1c1;
+    text-shadow: 3px 3px 0 #2a304e, 6px 6px 0 #1b1b30, 10px 10px 12px rgba(0, 0, 0, 0.5);
+    -webkit-font-smoothing: none;
+    text-rendering: optimizeSpeed;
+}
+
+.start-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 canvas {

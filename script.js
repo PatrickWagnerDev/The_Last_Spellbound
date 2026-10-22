@@ -23,7 +23,25 @@ function getStartLevelData(){
 
 function init(){
     gameCanvas = document.getElementById('game-canvas');
+}
+
+function startGame(){
     createWorld(getStartLevelData());
+    updateStartScreenUi(false);
+}
+
+function updateStartScreenUi(isOpen){
+    document.getElementById('game-container').classList.toggle('is-start-screen', isOpen);
+    document.getElementById('start-screen').classList.toggle('is-open', isOpen);
+    document.activeElement?.blur();
+}
+
+function goHome(){
+    gameWorld.stop();
+    gameWorld = null;
+    updateGameOverUi(false);
+    updatePauseUi();
+    updateStartScreenUi(true);
 }
 
 function createWorld(levelData){
@@ -49,13 +67,16 @@ function updateKey(event, isPressed){
 }
 
 function updatePauseUi(){
-    const IS_PAUSED = gameWorld.isPauseActive();
+    const IS_PAUSED = gameWorld?.isPauseActive() ?? false;
     document.getElementById('pause-button').classList.toggle('is-paused', IS_PAUSED);
     document.getElementById('pause-menu').classList.toggle('is-open', IS_PAUSED);
     document.activeElement?.blur();
 }
 
 function togglePause(){
+    if(!gameWorld){
+        return;
+    }
     gameWorld.togglePause();
     updatePauseUi();
 }

@@ -14,10 +14,29 @@
 </head>
 
 <body onload="init()">
-    <h1>The Last Spellbound</h1>
-    <div id="game-container" class="game-container">
+    <div id="game-container" class="game-container is-start-screen" role="region" aria-label="The Last Spellbound">
         <canvas id="game-canvas" width="720px" height="480px"></canvas>
         <button id="pause-button" class="pause-button" onclick="togglePause()"></button>
+        <div id="start-screen" class="start-screen is-open">
+            <div class="start-wizard"></div>
+            <div class="start-content">
+                <h1 class="start-title">The Last<br>Spellbound</h1>
+                <div class="start-buttons">
+                    <button class="start-button" onclick="startGame()">
+                        <span class="menu-label">Start Game</span>
+                    </button>
+                    <button class="start-button">
+                        <span class="menu-label">Controls</span>
+                    </button>
+                    <button class="start-button">
+                        <span class="menu-label">Credits</span>
+                    </button>
+                    <button class="start-button">
+                        <span class="menu-label">Impressum</span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div id="game-over-screen" class="game-over-screen">
             <div class="game-over-content">
                 <h2 class="game-over-title">GAME OVER</h2>
@@ -26,7 +45,7 @@
                         <span class="menu-icon icon-retry"></span>
                         <span class="menu-label">Retry</span>
                     </button>
-                    <button class="menu-button">
+                    <button class="menu-button" onclick="goHome()">
                         <span class="menu-icon icon-home"></span>
                         <span class="menu-label">Home</span>
                     </button>
@@ -44,7 +63,7 @@
                     <span class="menu-icon icon-retry"></span>
                     <span class="menu-label">Retry</span>
                 </button>
-                <button class="menu-button">
+                <button class="menu-button" onclick="goHome()">
                     <span class="menu-icon icon-home"></span>
                     <span class="menu-label">Home</span>
                 </button>
