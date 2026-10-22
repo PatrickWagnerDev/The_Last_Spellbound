@@ -3,21 +3,21 @@ const IMAGE_PICKUP = './assets/image/06-tileset/Objects_Animated/Pickup.png';
 
 class Key extends MovableObject {
     settings = GAME_SETTINGS.key;
-    width = TILE_SIZE;
-    height = TILE_SIZE;
+    width = 16 * this.settings.scale;
+    height = 16 * this.settings.scale;
     frameWidth = 16;
     frameHeight = 16;
     frameCount = 12;
     animationFps = this.settings.animationFps;
-    hitbox = { offsetX: 6, offsetY: 6, width: 36, height: 36 };
+    hitbox = { offsetX: 0, offsetY: 0, width: this.width, height: this.height };
     isCollected = false;
     collectTicks = 0;
 
     constructor(column, row){
         super();
         this.setupSprites([IMAGE_KEY, IMAGE_PICKUP]);
-        this.x = column * TILE_SIZE;
-        this.y = row * TILE_SIZE;
+        this.x = column * TILE_SIZE + (TILE_SIZE - this.width) / 2;
+        this.y = row * TILE_SIZE + (TILE_SIZE - this.height) / 2;
         this.startAnimation();
     }
 
@@ -26,14 +26,16 @@ class Key extends MovableObject {
     }
 
     collect(character){
+        const CENTER_X = this.x + this.width / 2;
+        const CENTER_Y = this.y + this.height / 2;
         character.keyCount++;
         this.isCollected = true;
         this.frameWidth = 32;
         this.frameHeight = 32;
-        this.width = 96;
-        this.height = 96;
-        this.x -= 24;
-        this.y -= 24;
+        this.width = 32 * this.settings.scale;
+        this.height = 32 * this.settings.scale;
+        this.x = CENTER_X - this.width / 2;
+        this.y = CENTER_Y - this.height / 2;
         this.setSprite(IMAGE_PICKUP, 6, this.settings.pickupFps);
     }
 

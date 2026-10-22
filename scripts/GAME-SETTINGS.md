@@ -77,6 +77,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 
 | Variable | Default | Effect |
 |---|---|---|
+| `scale` | `2` | Size factor of the key on the playing field (the key image is 16x16 px, the pickup effect 32x32 px). Whole numbers keep the pixels sharp. The key sits in the middle of its map cell. |
 | `animationFps` | `10` | Animation speed of the turning key in frames per second (12 frames). |
 | `pickupFps` | `14` | Animation speed of the pickup effect that plays once when the key is collected (6 frames). |
 

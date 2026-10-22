@@ -53,6 +53,7 @@ const GAME_SETTINGS = {
         impactFps: 14
     },
     key: {
+        scale: 2,
         animationFps: 10,
         pickupFps: 14
     },

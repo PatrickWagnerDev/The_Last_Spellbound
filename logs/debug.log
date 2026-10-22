@@ -167,3 +167,4 @@
 2026-10-22 | world.class.js | Draws the items, sets the world on the items, shows one key icon per collected key below the energy bar (createKeyIcon, drawKeyIcons)
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added key.animationFps, key.pickupFps and ui.keyIconY, keyIconSpacing, keyIconScale and documented them
 2026-10-22 | classes/levels/level-one.js, tile-reference.html, index.html | Key marker 60 in row 4 column 9, legend entry for the key, included key.class.js
+2026-10-22 | key.class.js, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Key size is now 16 * key.scale (2 = 32 px) centered in its cell, the pickup effect is 32 * scale and centered on the key, the hitbox covers the drawn key
