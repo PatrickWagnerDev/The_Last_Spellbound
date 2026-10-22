@@ -85,3 +85,8 @@
 2026-10-21 | style.css | .game-container now uses padding 32px and canvas-frame.png as background instead of border-image
 2026-10-21 | assets/image/09-ui/canvas-frame.png | Rebuilt the frame using only the seamless bar tiles 01, 10, 09 and 02 (tiles 03, 12, 11 and 04 have a darker plank end column that showed as lines)
 2026-10-21 | game-settings.js, character.class.js, GAME-SETTINGS.md | Added airSpeedFactor 1.25 and updateSpeed(): walking speed is multiplied while the character is in the air
+2026-10-22 | classes/levels/level-one.js | Enemies are now entered in mapRows as marker 50 (bear); removed enemySpawns; the four bears keep their positions (row 6 column 6, row 8 columns 14, 24, 34)
+2026-10-22 | level.class.js | buildTiles skips ids from FIRST_MARKER_ID; buildEnemies reads the markers from mapRows via ENEMY_MARKERS
+2026-10-22 | tile.class.js | Added FIRST_MARKER_ID 50
+2026-10-22 | enemy.class.js | Added ENEMY_MARKERS { 50: Enemy }; the enemy now stands on the bottom edge of its marker cell
+2026-10-22 | tile-reference.html | Added an Enemy Markers legend (50 = Bear, 50-79 enemies, 80-99 bosses)

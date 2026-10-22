@@ -39,6 +39,25 @@
             font-size: 16px;
             font-weight: bold;
         }
+
+        .marker-section {
+            margin-top: 32px;
+        }
+
+        .marker-image {
+            width: 64px;
+            height: 64px;
+            background-image: url('./assets/image/03-monsters/1 Bear/Idle.png');
+            background-size: 256px 64px;
+            background-position: 0 0;
+            image-rendering: pixelated;
+            outline: 1px solid #555555;
+        }
+
+        .marker-note {
+            margin-bottom: 16px;
+            max-width: 560px;
+        }
     </style>
 </head>
 
@@ -212,6 +231,21 @@
         <div class="tile-cell">
             <div class="tile-image" style="background-position: -384px -320px;"></div>
             <span class="tile-number">42</span>
+        </div>
+    </div>
+
+    <div class="marker-section">
+        <h2>Enemy Markers</h2>
+        <p class="marker-note">
+            Enter the number in the map where the enemy stands. The enemy stands with its feet on the bottom edge of that cell.
+            Normal enemies use the numbers 50 to 79, boss enemies use the numbers 80 to 99.
+        </p>
+        <div class="tile-grid">
+            <div class="tile-cell">
+                <div class="marker-image"></div>
+                <span class="tile-number">50</span>
+                <span>Bear</span>
+            </div>
         </div>
     </div>
 </body>

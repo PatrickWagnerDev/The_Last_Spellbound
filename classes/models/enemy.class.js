@@ -15,7 +15,7 @@ class Enemy extends MovableObject {
     constructor(column, row){
         super().loadImage(IMAGE_BEAR_WALK);
         this.x = column * TILE_SIZE;
-        this.y = row * TILE_SIZE - this.height;
+        this.y = (row + 1) * TILE_SIZE - this.height;
         this.otherDirection = Math.random() < 0.5;
         this.startAnimation();
     }
@@ -43,3 +43,5 @@ class Enemy extends MovableObject {
         return IS_OUT_OF_BOUNDS || !this.world.level.isWalkableAt(PROBE_X, PROBE_Y);
     }
 }
+
+const ENEMY_MARKERS = { 50: Enemy };

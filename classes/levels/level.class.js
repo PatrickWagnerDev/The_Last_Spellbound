@@ -14,23 +14,27 @@ class Level {
         this.tilesetImage = new Image();
         this.tilesetImage.src = TILESET_IMAGE;
         this.buildTiles();
-        this.buildEnemies(levelData.enemySpawns);
+        this.buildEnemies();
         this.buildBackgrounds(levelData.backgroundLayers);
     }
 
     buildTiles(){
         this.mapRows.forEach((rowIds, row) => {
             rowIds.forEach((tileId, column) => {
-                if(tileId > 0){
+                if(tileId > 0 && tileId < FIRST_MARKER_ID){
                     this.tiles.push(new Tile(tileId, column, row, this.tilesetImage));
                 }
             });
         });
     }
 
-    buildEnemies(enemySpawns){
-        enemySpawns.forEach(spawn => {
-            this.enemies.push(new Enemy(spawn.column, spawn.row));
+    buildEnemies(){
+        this.mapRows.forEach((rowIds, row) => {
+            rowIds.forEach((markerId, column) => {
+                if(ENEMY_MARKERS[markerId]){
+                    this.enemies.push(new ENEMY_MARKERS[markerId](column, row));
+                }
+            });
         });
     }
 
