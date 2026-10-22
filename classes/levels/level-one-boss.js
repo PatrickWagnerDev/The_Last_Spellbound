@@ -11,5 +11,6 @@ const LEVEL_ONE_BOSS = {
         [XX, 69, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 90, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
     ],
-    backgroundLayers: LEVEL_ONE.backgroundLayers
+    backgroundLayers: LEVEL_ONE.backgroundLayers,
+    restartLevel: LEVEL_ONE
 };

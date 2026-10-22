@@ -17,9 +17,13 @@ const KEY_MAP = {
     KeyC: 'SHOOT'
 };
 
+function getStartLevelData(){
+    return GAME_SETTINGS.debug.startInBossLevel ? LEVEL_ONE_BOSS : LEVEL_ONE;
+}
+
 function init(){
     gameCanvas = document.getElementById('game-canvas');
-    gameWorld = new World(gameCanvas, gameKeyboard);
+    gameWorld = new World(gameCanvas, gameKeyboard, getStartLevelData());
 }
 
 function updateKey(event, isPressed){
@@ -30,11 +34,23 @@ function updateKey(event, isPressed){
     }
 }
 
+function updatePauseUi(){
+    const IS_PAUSED = gameWorld.isPauseActive();
+    document.getElementById('pause-button').classList.toggle('is-paused', IS_PAUSED);
+    document.getElementById('pause-menu').classList.toggle('is-open', IS_PAUSED);
+    document.activeElement?.blur();
+}
+
 function togglePause(){
-    const PAUSE_BUTTON = document.getElementById('pause-button');
     gameWorld.togglePause();
-    PAUSE_BUTTON.classList.toggle('is-paused', gameWorld.isPauseActive());
-    PAUSE_BUTTON.blur();
+    updatePauseUi();
+}
+
+function restartLevel(){
+    const RESTART_DATA = gameWorld.restartLevelData;
+    gameWorld.stop();
+    gameWorld = new World(gameCanvas, gameKeyboard, RESTART_DATA);
+    updatePauseUi();
 }
 
 function handlePauseKey(event){

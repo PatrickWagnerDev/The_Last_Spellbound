@@ -18,6 +18,23 @@
     <div class="game-container">
         <canvas id="game-canvas" width="720px" height="480px"></canvas>
         <button id="pause-button" class="pause-button" onclick="togglePause()"></button>
+        <div id="pause-menu" class="pause-menu">
+            <h2 class="pause-title">Pause</h2>
+            <div class="menu-buttons">
+                <button class="menu-button" onclick="togglePause()">
+                    <span class="menu-icon icon-back"></span>
+                    <span class="menu-label">Back</span>
+                </button>
+                <button class="menu-button" onclick="restartLevel()">
+                    <span class="menu-icon icon-retry"></span>
+                    <span class="menu-label">Retry</span>
+                </button>
+                <button class="menu-button">
+                    <span class="menu-icon icon-home"></span>
+                    <span class="menu-label">Home</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="./scripts/game-settings.js"></script>

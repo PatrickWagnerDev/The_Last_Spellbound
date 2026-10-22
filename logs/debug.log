@@ -222,3 +222,10 @@
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added ui.pauseOverlayAlpha and documented it
 2026-10-22 | style.css | Pause button symbols made pixelated: stepped triangle and bars with notched corners via clip-path, pixel-notched button corners (no border radius)
 2026-10-22 | style.css | Added a light hover effect to the pause button (brighter background)
+2026-10-22 | index.html, style.css | Added the pause menu (pause-menu): first frame of Window.png at factor 2 over the canvas, title "Pause" on the top plate, buttons Back, Retry and Home in a row with the icons Icons_25, Icons_45 and Icons_01, pixel-notched button style and pixelated font rendering; Home has no function yet (start screen follows)
+2026-10-22 | script.js | Added getStartLevelData, updatePauseUi (button and menu state, removes the focus) and restartLevel; init and restart create the World with the level data
+2026-10-22 | classes/models/world.class.js, status-bar.class.js | World gets the level data as constructor parameter, restartLevelData (levelData.restartLevel or the level itself, kept in loadLevel) and stop (cancels the draw loop, stops level, character, projectiles, transition and the blink timers of the bars); StatusBar gets stopBlink
+2026-10-22 | classes/levels/level-one-boss.js | Added restartLevel: LEVEL_ONE so Retry in the boss level restarts level one
+2026-10-22 | style.css | Pause menu: smaller buttons (112x96) with less space around icon and label, larger title (44px), the pause button is hidden while the menu is open (the CSS triangle was removed)
+2026-10-22 | style.css | Pause menu buttons: equal visible space above the icon and below the label (padding 7px 0 5px, label line-height 1), calculated from the icon glyph bounds (1px margin in the 24px icons) and the font metrics
+2026-10-22 | style.css | Pause menu buttons: rounder pixel corners (two 4px steps on the outer shape, one step on the inner fill) with a 4px border built from the button background and a ::before layer, hover changes only the fill

@@ -4,7 +4,9 @@ const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
 const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 
 class World {
-    level = new Level(GAME_SETTINGS.debug.startInBossLevel ? LEVEL_ONE_BOSS : LEVEL_ONE);
+    level;
+    restartLevelData;
+    frameRequest;
     character = new Character();
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
@@ -19,7 +21,9 @@ class World {
     transition = null;
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
-    constructor(canvas, keyboard){
+    constructor(canvas, keyboard, levelData){
+        this.level = new Level(levelData);
+        this.restartLevelData = levelData.restartLevel ?? levelData;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -54,9 +58,19 @@ class World {
         this.projectiles.forEach(projectile => projectile.stopAnimation());
         this.projectiles = [];
         this.level = new Level(levelData);
+        this.restartLevelData = levelData.restartLevel ?? levelData;
         this.setWorld();
         this.character.placeAt(this.level.playerStart);
         this.cameraX = 0;
+    }
+
+    stop(){
+        cancelAnimationFrame(this.frameRequest);
+        this.level.stopAll();
+        this.character.stopAnimation();
+        this.projectiles.forEach(projectile => projectile.stopAnimation());
+        this.transition?.stopAnimation();
+        [this.healthBar, this.energyBar, ...this.bossBars].forEach(bar => bar.stopBlink());
     }
 
     startTransition(portal, levelData){
@@ -140,7 +154,7 @@ class World {
         this.drawStatusBars();
         this.drawPauseOverlay();
         this.drawTransition();
-        requestAnimationFrame(() => this.drawWorld());
+        this.frameRequest = requestAnimationFrame(() => this.drawWorld());
     }
 
     addObjectsToMap(objects){
