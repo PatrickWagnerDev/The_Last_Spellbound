@@ -90,3 +90,8 @@
 2026-10-22 | tile.class.js | Added FIRST_MARKER_ID 50
 2026-10-22 | enemy.class.js | Added ENEMY_MARKERS { 50: Enemy }; the enemy now stands on the bottom edge of its marker cell
 2026-10-22 | tile-reference.html | Added an Enemy Markers legend (50 = Bear, 50-79 enemies, 80-99 bosses)
+2026-10-22 | classes/levels/level-one.js | Converted mapRows to the two-digit numbering: 10 empty, 11-52 tiles (old id + 10), bear marker 70
+2026-10-22 | tile.class.js | Added EMPTY_TILE_ID 10, FIRST_MARKER_ID 70, shifted WALKABLE_TILE_IDS by 10, Tile computes the sheet index as tileId - EMPTY_TILE_ID - 1
+2026-10-22 | level.class.js | buildTiles uses EMPTY_TILE_ID and FIRST_MARKER_ID; getTileIdAt falls back to EMPTY_TILE_ID
+2026-10-22 | enemy.class.js | ENEMY_MARKERS now maps 70 to Enemy (enemies 70-89, bosses 90-99)
+2026-10-22 | tile-reference.html | Tile numbers shown as 11-52, note that 10 is an empty cell, bear shown as 70 with the ranges 70-89 and 90-99

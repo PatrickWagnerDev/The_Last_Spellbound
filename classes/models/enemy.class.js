@@ -44,4 +44,4 @@ class Enemy extends MovableObject {
     }
 }
 
-const ENEMY_MARKERS = { 50: Enemy };
+const ENEMY_MARKERS = { 70: Enemy };

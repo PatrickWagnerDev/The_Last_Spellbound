@@ -21,7 +21,7 @@ class Level {
     buildTiles(){
         this.mapRows.forEach((rowIds, row) => {
             rowIds.forEach((tileId, column) => {
-                if(tileId > 0 && tileId < FIRST_MARKER_ID){
+                if(tileId > EMPTY_TILE_ID && tileId < FIRST_MARKER_ID){
                     this.tiles.push(new Tile(tileId, column, row, this.tilesetImage));
                 }
             });
@@ -48,7 +48,7 @@ class Level {
     getTileIdAt(x, y){
         const TILE_COLUMN = Math.floor(x / TILE_SIZE);
         const TILE_ROW = Math.floor(y / TILE_SIZE);
-        return this.mapRows[TILE_ROW]?.[TILE_COLUMN] ?? 0;
+        return this.mapRows[TILE_ROW]?.[TILE_COLUMN] ?? EMPTY_TILE_ID;
     }
 
     isWalkableAt(x, y){
