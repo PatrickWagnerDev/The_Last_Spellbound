@@ -133,10 +133,10 @@ function restartWorld(){
     updatePauseUi();
 }
 
-function openControls(){
-    const CONTROLS_SCREEN = document.getElementById('controls-screen');
-    CONTROLS_SCREEN.classList.remove('is-second-page');
-    CONTROLS_SCREEN.classList.add('is-open');
+function openDialog(dialogId){
+    const DIALOG_SCREEN = document.getElementById(dialogId);
+    DIALOG_SCREEN.classList.remove('is-second-page');
+    DIALOG_SCREEN.classList.add('is-open');
     document.activeElement?.blur();
 }
 
@@ -145,26 +145,26 @@ function toggleControlsPage(){
     document.activeElement?.blur();
 }
 
-function hideControls(){
-    document.getElementById('controls-screen').classList.remove('is-open');
+function hideDialogs(){
+    document.querySelectorAll('.dialog-screen.is-open').forEach(dialog => dialog.classList.remove('is-open'));
 }
 
-function closeControls(event){
+function closeDialog(event){
     if(event.target === event.currentTarget || event.target.closest('.close-button')){
-        hideControls();
+        hideDialogs();
     }
 }
 
-function isControlsOpen(){
-    return document.getElementById('controls-screen').classList.contains('is-open');
+function isDialogOpen(){
+    return document.querySelector('.dialog-screen.is-open') !== null;
 }
 
 function handlePauseKey(event){
     if(event.code != 'Escape' || event.repeat){
         return;
     }
-    if(isControlsOpen()){
-        hideControls();
+    if(isDialogOpen()){
+        hideDialogs();
     } else {
         togglePause();
     }

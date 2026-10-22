@@ -31,10 +31,10 @@
                     <button class="start-button" onclick="startGame()">
                         <span class="menu-label">Start Game</span>
                     </button>
-                    <button class="start-button" onclick="openControls()">
+                    <button class="start-button" onclick="openDialog('controls-screen')">
                         <span class="menu-label">Controls</span>
                     </button>
-                    <button class="start-button">
+                    <button class="start-button" onclick="openDialog('credits-screen')">
                         <span class="menu-label">Credits</span>
                     </button>
                     <button class="start-button">
@@ -43,8 +43,8 @@
                 </div>
             </div>
         </div>
-        <div id="controls-screen" class="controls-screen" onclick="closeControls(event)">
-            <div class="window-frame controls-window">
+        <div id="controls-screen" class="dialog-screen controls-screen" onclick="closeDialog(event)">
+            <div class="window-frame dialog-window">
                 <h2 class="window-title title-controls">Controls</h2>
                 <h2 class="window-title title-items">Collectables</h2>
                 <button class="close-button" aria-label="Close"></button>
@@ -121,6 +121,19 @@
                 <button class="page-button" aria-label="Switch page" onclick="toggleControlsPage()">
                     <span class="page-icon"></span>
                 </button>
+            </div>
+        </div>
+        <div id="credits-screen" class="dialog-screen credits-screen" onclick="closeDialog(event)">
+            <div class="window-frame dialog-window">
+                <h2 class="window-title">Credits</h2>
+                <button class="close-button" aria-label="Close"></button>
+                <div class="credits-body">
+                    <p class="credits-text">
+                        The graphics and the font used in this project come from
+                        <a class="credits-link" href="https://craftpix.net" target="_blank" rel="noopener noreferrer">Craftpix.net</a>.
+                        Many thanks for providing these assets.
+                    </p>
+                </div>
             </div>
         </div>
         <div id="game-over-screen" class="game-over-screen">
