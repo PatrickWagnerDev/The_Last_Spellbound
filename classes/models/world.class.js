@@ -136,6 +136,7 @@ class World {
         this.character.drawAttackBox(this.ctx);
         this.level.enemies.forEach(enemy => {
             enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
+            enemy.drawDebugArea(this.ctx);
         });
         this.projectiles.forEach(projectile => projectile.drawHitbox(this.ctx, 'orange'));
     }

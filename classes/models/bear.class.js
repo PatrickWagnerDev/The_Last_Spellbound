@@ -21,22 +21,4 @@ class Bear extends Enemy {
         this.showLoopState('walk', this.settings.animationFps);
         this.patrolPlatform();
     }
-
-    patrolPlatform(){
-        if(!this.onGround){
-            return;
-        }
-        if(this.shouldTurn()){
-            this.otherDirection = !this.otherDirection;
-        }
-        this.moveForward();
-    }
-
-    shouldTurn(){
-        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
-        const PROBE_X = this.x + this.width / 2 + STEP_DIRECTION * this.width / 2;
-        const PROBE_Y = this.y + this.height + 1;
-        const IS_OUT_OF_BOUNDS = PROBE_X < 0 || PROBE_X > this.world.level.width;
-        return IS_OUT_OF_BOUNDS || !this.world.level.isWalkableAt(PROBE_X, PROBE_Y);
-    }
 }

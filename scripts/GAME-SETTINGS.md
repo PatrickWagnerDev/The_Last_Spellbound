@@ -70,11 +70,16 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `width` | `192` | Drawn width in px. The sprite frame is 64x64, multiples of 64 keep the pixels even. If you change it, also adjust the hitbox in `mage-boss.class.js`. |
 | `height` | `192` | Drawn height in px. Same note as `width`. |
 | `maxHealth` | `15` | Health points of the mage boss. Each hit costs the damage of the attacker (sword 1, fireball 3). |
-| `speed` | `1` | Walking speed in px per tick. Not used yet, it is meant for the chase of the character. |
+| `speed` | `0.5` | Walking speed in px per tick, the same as the bear. Used for the patrol and for the chase of the character. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
 | `knockbackSpeed` | `1` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (12 px by default). |
 | `deathTicks` | `90` | Time from the death of the boss until it disappears (90 ticks = 1.5 seconds). The 6 death frames are spread over it. |
+| `sightTiles` | `7` | How far the boss notices the character to the left and to the right of its hitbox, in tiles (7 tiles = 336 px). |
+| `sightAboveTiles` | `3` | How far above its hitbox the boss notices the character, in tiles. Below it the area reaches down to the ground. The area is drawn as a yellow frame while `debug.showHitboxes` is on. |
+| `sneerTicks` | `60` | Duration of the sneer animation when the boss notices the character (60 ticks = 1 second). Afterwards it chases the character. |
+| `searchTicks` | `60` | How long the boss stands still and looks around after the character left the area (60 ticks = 1 second). Then it walks away from the side where the character vanished and patrols like the bears. |
+| `lookSwitchTicks` | `20` | Ticks the boss looks to one side while searching before it looks to the other side (20 ticks = left, right, left within one second). |
 
 ## fireball
 

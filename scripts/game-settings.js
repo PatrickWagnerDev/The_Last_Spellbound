@@ -49,11 +49,16 @@ const GAME_SETTINGS = {
         width: 192,
         height: 192,
         maxHealth: 15,
-        speed: 1,
+        speed: 0.5,
         animationFps: 8,
         hurtTicks: 24,
         knockbackSpeed: 1,
-        deathTicks: 90
+        deathTicks: 90,
+        sightTiles: 7,
+        sightAboveTiles: 3,
+        sneerTicks: 60,
+        searchTicks: 60,
+        lookSwitchTicks: 20
     },
     fireball: {
         damage: 3,

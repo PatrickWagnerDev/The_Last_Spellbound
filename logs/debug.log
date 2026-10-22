@@ -196,3 +196,7 @@
 2026-10-22 | world.class.js | The first level is LEVEL_ONE_BOSS when debug.startInBossLevel is true
 2026-10-22 | classes/levels/level-one-boss.js, tile-reference.html, index.html | Boss marker 90 in row 8 column 24, legend entry, included the new scripts
 2026-10-22 | enemy.class.js | Split the Enemy constructor into applyConfig and applyStats to stay under 14 lines
+2026-10-22 | classes/models/enemy.class.js, bear.class.js | patrolPlatform and shouldTurn moved from Bear into Enemy; added the empty hook drawDebugArea
+2026-10-22 | classes/models/mage-boss.class.js | Boss behaviour with the states patrol, sneer, chase and search (sight area of 7 tiles left and right and 3 tiles above, sneer animation, chase at the bear speed, 1 second search with looking around, then walking away from the side the character vanished and patrolling); debug draws the sight area
+2026-10-22 | world.class.js | drawHitboxes also calls enemy.drawDebugArea
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | mageBoss.speed now 0.5; added sightTiles, sightAboveTiles, sneerTicks, searchTicks, lookSwitchTicks and documented them
