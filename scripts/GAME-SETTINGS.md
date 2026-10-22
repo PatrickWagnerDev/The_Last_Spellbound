@@ -76,8 +76,9 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `knockbackSpeed` | `1` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (12 px by default). |
 | `deathTicks` | `90` | Time from the death of the boss until it disappears (90 ticks = 1.5 seconds). The 6 death frames are spread over it. |
 | `sightTiles` | `7` | How far the boss notices the character to the left and to the right of its hitbox, in tiles (7 tiles = 336 px). |
-| `sightAboveTiles` | `3` | How far above its hitbox the boss notices the character, in tiles. Below it the area reaches down to the ground. The area is drawn as a yellow frame while `debug.showHitboxes` is on. |
-| `sneerTicks` | `60` | Duration of the sneer animation when the boss notices the character (60 ticks = 1 second). Afterwards it chases the character. |
+| `sightAboveTiles` | `2` | How far above its hitbox the boss notices the character, in tiles. Below it the area reaches down to the ground. The character is seen as soon as its hitbox touches the area. The area is drawn as a yellow frame while `debug.showHitboxes` is on. |
+| `loseSightTicks` | `60` | How long the character has to stay outside the area while the boss chases it before the boss gives up and starts to search (60 ticks = 1 second). The boss keeps chasing during that time. |
+| `sneerTicks` | `60` | Duration of the sneer animation when the boss notices the character (60 ticks = 1 second). Afterwards it chases the character. Before the character enters the area for the first time the boss only stands (idle animation, looking left). |
 | `searchTicks` | `60` | How long the boss stands still and looks around after the character left the area (60 ticks = 1 second). Then it walks away from the side where the character vanished and patrols like the bears. |
 | `lookSwitchTicks` | `20` | Ticks the boss looks to one side while searching before it looks to the other side (20 ticks = left, right, left within one second). |
 

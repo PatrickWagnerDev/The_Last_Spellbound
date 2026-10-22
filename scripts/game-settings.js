@@ -55,7 +55,8 @@ const GAME_SETTINGS = {
         knockbackSpeed: 1,
         deathTicks: 90,
         sightTiles: 7,
-        sightAboveTiles: 3,
+        sightAboveTiles: 2,
+        loseSightTicks: 60,
         sneerTicks: 60,
         searchTicks: 60,
         lookSwitchTicks: 20

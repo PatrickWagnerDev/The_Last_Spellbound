@@ -7,9 +7,10 @@ const MAGE_BOSS_SPRITES = {
 };
 
 class MageBoss extends Enemy {
-    state = 'patrol';
+    state = 'wait';
     stateTicks = 0;
     vanishSide = 1;
+    outOfSightTicks = 0;
 
     constructor(column, row){
         super(column, row, {
@@ -19,13 +20,14 @@ class MageBoss extends Enemy {
             hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
             spriteFacesLeft: true
         });
-        this.otherDirection = Math.random() < 0.5;
+        this.otherDirection = true;
         this.startAnimation();
     }
 
     updateBehavior(){
         this.stateTicks++;
         const STATE_UPDATES = {
+            wait: () => this.updateWait(),
             patrol: () => this.updatePatrol(),
             sneer: () => this.updateSneer(),
             chase: () => this.updateChase(),
@@ -59,6 +61,13 @@ class MageBoss extends Enemy {
         this.otherDirection = this.getCharacterOffset() < 0;
     }
 
+    updateWait(){
+        this.showLoopState('idle', this.settings.animationFps);
+        if(this.isCharacterInSight()){
+            this.startSneer();
+        }
+    }
+
     updatePatrol(){
         if(this.isCharacterInSight()){
             this.startSneer();
@@ -77,13 +86,28 @@ class MageBoss extends Enemy {
         this.faceCharacter();
         this.showProgressState('sneer', this.stateTicks, this.settings.sneerTicks);
         if(this.stateTicks >= this.settings.sneerTicks){
-            this.setState('chase');
+            this.startChase();
+        }
+    }
+
+    startChase(){
+        this.outOfSightTicks = 0;
+        this.setState('chase');
+    }
+
+    trackSight(){
+        if(this.isCharacterInSight()){
+            this.outOfSightTicks = 0;
+            this.vanishSide = this.getCharacterOffset() >= 0 ? 1 : -1;
+        } else {
+            this.outOfSightTicks++;
         }
     }
 
     updateChase(){
-        if(!this.isCharacterInSight()){
-            this.startSearch();
+        this.trackSight();
+        if(this.outOfSightTicks >= this.settings.loseSightTicks){
+            this.setState('search');
             return;
         }
         this.faceCharacter();
@@ -91,11 +115,6 @@ class MageBoss extends Enemy {
         if(Math.abs(this.getCharacterOffset()) > 4 && !this.shouldTurn()){
             this.moveForward();
         }
-    }
-
-    startSearch(){
-        this.vanishSide = this.getCharacterOffset() >= 0 ? 1 : -1;
-        this.setState('search');
     }
 
     updateSearch(){

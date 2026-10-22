@@ -200,3 +200,5 @@
 2026-10-22 | classes/models/mage-boss.class.js | Boss behaviour with the states patrol, sneer, chase and search (sight area of 7 tiles left and right and 3 tiles above, sneer animation, chase at the bear speed, 1 second search with looking around, then walking away from the side the character vanished and patrolling); debug draws the sight area
 2026-10-22 | world.class.js | drawHitboxes also calls enemy.drawDebugArea
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | mageBoss.speed now 0.5; added sightTiles, sightAboveTiles, sneerTicks, searchTicks, lookSwitchTicks and documented them
+2026-10-22 | classes/models/mage-boss.class.js | The boss starts in the new state wait (only idle, looking left) until the character enters the area for the first time; while chasing it gives up only after the character was outside the area for loseSightTicks; vanishSide is the side where the character was last seen; removed startSearch
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | mageBoss.sightAboveTiles 3 -> 2, added loseSightTicks 60 and documented the changes
