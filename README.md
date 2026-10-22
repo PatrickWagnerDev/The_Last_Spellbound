@@ -13,10 +13,10 @@ The game currently offers the following features:
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
 - **Game Screens** – Use the start screen, the pause menu, the game-over screen and the victory screen, and retry or return to the start screen.
+- **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 
 The following features are planned:
 
-- **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 - **Audio Settings** – Enjoy background music and sound effects, with a mute option saved in Local Storage.
 - **Touch Controls** – Play on mobile devices in landscape mode with an orientation notice for portrait mode.
 - **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay.
@@ -72,9 +72,9 @@ simply repeating the technologies or features listed above.
 
 ## Project Status
 
-> **Current Status:** In Progress
+> **Current Status:** In Development
 
-The project is in creation.
+The project is currently being developed. The gameplay, the menus and the dialogs are finished, audio, touch controls and the final cleanup are still open.
 
 <!--
 PROJECT STATUS:
@@ -101,7 +101,7 @@ The project has been completed successfully.
 Clone the repository:
 
 ```bash
-git clone https://github.com/PatrickWagnerDev/Wizard_Game.git
+git clone https://github.com/PatrickWagnerDev/The_Last_Spellbound.git
 ```
 
 Open the project in **Visual Studio Code** and start `index.html` using the **Live Server** extension.
