@@ -47,6 +47,12 @@ The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic F
 
 The font `assets/fonts/Planes_ValMore.ttf` is part of the Game UI Pixel Art pack (781165) from Craftpix.net.
 
+## AI Assistance
+
+This project was developed with the support of an AI assistant (Claude Code by Anthropic). The use of AI is officially approved by my educational institution.
+
+The assistant helped with planning, writing and refactoring the code and with the documentation. Every step was shown first, then reviewed, tested in the browser and approved by me before it was committed, and every change is documented in `logs/debug.log`. The game idea, the design decisions and the responsibility for the project are mine.
+
 ## What I Learned
 
 The main focus of this project is learning and applying object-oriented programming (OOP) in JavaScript. Through developing the game, I aim to deepen my understanding of classes, objects, inheritance, and how they interact to create a structured and maintainable application.
