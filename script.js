@@ -71,6 +71,10 @@ function updateStartScreenUi(isOpen){
 }
 
 function goHome(){
+    fadeThroughBlack(showStartScreen);
+}
+
+function showStartScreen(){
     gameWorld.stop();
     gameWorld = null;
     updateGameOverUi(false);
