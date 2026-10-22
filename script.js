@@ -84,7 +84,7 @@ function showStartScreen(){
 }
 
 function createWorld(levelData){
-    gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameOver);
+    gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameEnd);
 }
 
 function updateGameOverUi(isGameOver){
@@ -93,7 +93,8 @@ function updateGameOverUi(isGameOver){
     document.activeElement?.blur();
 }
 
-function showGameOver(){
+function showGameEnd(isVictory){
+    document.getElementById('game-over-title').textContent = isVictory ? 'VICTORY' : 'GAME OVER';
     updateGameOverUi(true);
 }
 

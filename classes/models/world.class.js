@@ -7,8 +7,8 @@ class World {
     level;
     restartLevelData;
     frameRequest;
-    onGameOver;
-    isGameOver = false;
+    onGameEnd;
+    isGameEnded = false;
     character = new Character();
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
@@ -23,8 +23,8 @@ class World {
     transition = null;
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
-    constructor(canvas, keyboard, levelData, onGameOver){
-        this.onGameOver = onGameOver;
+    constructor(canvas, keyboard, levelData, onGameEnd){
+        this.onGameEnd = onGameEnd;
         this.level = new Level(levelData);
         this.restartLevelData = levelData.restartLevel ?? levelData;
         this.ctx = canvas.getContext('2d');
@@ -81,21 +81,40 @@ class World {
         this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, levelData);
     }
 
-    checkGameOver(){
-        if(!this.isGameOver && this.character.hasDeathFinished()){
-            this.isGameOver = true;
-            this.onGameOver?.();
+    checkGameEnd(){
+        if(this.isGameEnded){
+            return;
+        }
+        if(this.character.hasDeathFinished()){
+            this.endGame(false);
+        } else if(this.hasBossDefeated()){
+            this.endGame(true);
         }
     }
 
+    hasBossDefeated(){
+        const BOSS = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        return BOSS?.hasDeathFinished() ?? false;
+    }
+
+    endGame(isVictory){
+        this.isGameEnded = true;
+        if(isVictory){
+            this.projectiles.forEach(projectile => projectile.stopAnimation());
+            this.projectiles = [];
+            this.keyboard = new Keyboard();
+        }
+        this.onGameEnd?.(isVictory);
+    }
+
     togglePause(){
-        if(!this.transition && !this.isGameOver){
+        if(!this.transition && !this.isGameEnded){
             this.isPaused = !this.isPaused;
         }
     }
 
     isPauseActive(){
-        return this.isPaused && !this.transition;
+        return this.isPaused && !this.transition && !this.isGameEnded;
     }
 
     endTransition(){
@@ -158,7 +177,7 @@ class World {
     drawWorld(){
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.checkGameOver();
+        this.checkGameEnd();
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
@@ -186,7 +205,7 @@ class World {
     }
 
     drawStatusBars(){
-        if(this.isGameOver){
+        if(this.isGameEnded){
             return;
         }
         this.healthBar.setValue(this.character.health, this.character.maxHealth);

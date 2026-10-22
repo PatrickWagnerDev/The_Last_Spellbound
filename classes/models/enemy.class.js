@@ -94,9 +94,17 @@ class Enemy extends MovableObject {
         this.applyGravity();
         this.deadTicks++;
         this.showProgressState('death', this.deadTicks, this.settings.deathTicks);
-        if(this.deadTicks >= this.settings.deathTicks){
-            this.stopAnimation();
-            this.world.level.removeEnemy(this);
+        if(this.hasDeathFinished()){
+            this.finishDeath();
         }
+    }
+
+    hasDeathFinished(){
+        return this.isDead() && this.deadTicks >= this.settings.deathTicks;
+    }
+
+    finishDeath(){
+        this.stopAnimation();
+        this.world.level.removeEnemy(this);
     }
 }

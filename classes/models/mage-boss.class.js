@@ -248,6 +248,10 @@ class MageBoss extends Enemy {
         this.otherDirection = LOOKS_TO_VANISH_SIDE ? this.vanishSide < 0 : this.vanishSide > 0;
     }
 
+    finishDeath(){
+        this.stopAnimation();
+    }
+
     drawDebugArea(ctx){
         this.drawRect(ctx, this.getSightRect(), 'yellow');
     }
