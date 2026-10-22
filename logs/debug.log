@@ -210,3 +210,4 @@
 2026-10-22 | classes/models/mage-boss.class.js | Added the ray attack state with Mage_boss_attack4 (2 windup frames for rayWindupTicks, then 4 frames while the ray exists), ray cooldown starting at the first sight, priority over the fireball, only when the character is on the ground; refactored tryStartAttack, added updateCooldowns
 2026-10-22 | enemy.class.js | Added showFrameState
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md, index.html | Added rayCooldownTicks, rayWindupTicks, rayTicks, rayDamage, raySpeedFactor, rayScale, rayMaxHeight to mageBoss, included boss-ray.class.js and documented the values
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Playtest setup: debug.showHitboxes false, debug.startInBossLevel false (the game starts in level one again), energy.startCharges 1; defaults in the docs updated
