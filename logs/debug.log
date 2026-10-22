@@ -176,3 +176,6 @@
 2026-10-22 | classes/models/donut.class.js | New Donut collectible: refills the energy bar completely, only collected below full energy, only by the character
 2026-10-22 | item-markers.js, index.html, level-one.js, tile-reference.html | ITEM_MARKERS now has 62: Donut; donut marker 62 in row 8 column 12; legend entry; included donut.class.js
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added donut.scale and documented it
+2026-10-22 | classes/models/chest.class.js | New Chest (Golden_Chest_Open.png): opens automatically when the living character has a key and stands within chest.openDistance, uses up one key, plays the 8 frame opening once and stays open (isOpen); not collectable
+2026-10-22 | item-markers.js, index.html, level-one.js, tile-reference.html | ITEM_MARKERS now has 63: Chest; chest marker 63 in row 8 column 40; legend entry; included chest.class.js
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added chest.scale, openDistance, openFps and documented them

@@ -66,6 +66,11 @@ const GAME_SETTINGS = {
     donut: {
         scale: 2
     },
+    chest: {
+        scale: 2,
+        openDistance: 48,
+        openFps: 8
+    },
     energy: {
         maxCharges: 5,
         startCharges: 5
