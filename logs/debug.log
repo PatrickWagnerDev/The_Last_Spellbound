@@ -213,3 +213,5 @@
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Playtest setup: debug.showHitboxes false, debug.startInBossLevel false (the game starts in level one again), energy.startCharges 1; defaults in the docs updated
 2026-10-22 | game-guide.html | New simple page in the main folder describing the controls and the collectibles (key, pizza, donut) with sprite images, styled like tile-reference.html
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Reset to the test mode: debug.startInBossLevel true, debug.showHitboxes true, energy.startCharges 5; defaults in the docs updated
+2026-10-22 | status-bar.class.js, world.class.js | StatusBar accepts options.scale; World shows the boss health as bossBars (5 small health bars in a row at the bottom center, 3 HP each, per-bar blink) once the boss has seen the character or lost health, hidden when the boss is removed
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added ui.bossBarScale, bossBarGap, bossBarMargin, bossBarHealthPerBar and documented them

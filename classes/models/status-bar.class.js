@@ -13,8 +13,9 @@ class StatusBar extends DrawableObject {
         this.fullImage = createImage(fullPath);
         this.x = x;
         this.y = y;
-        this.width = this.frameWidth * GAME_SETTINGS.ui.statusBarScale;
-        this.height = this.frameHeight * GAME_SETTINGS.ui.statusBarScale;
+        const SCALE_FACTOR = options.scale ?? GAME_SETTINGS.ui.statusBarScale;
+        this.width = this.frameWidth * SCALE_FACTOR;
+        this.height = this.frameHeight * SCALE_FACTOR;
         setInterval(() => this.updateBlink(), 1000 / TICKS_PER_SECOND);
     }
 

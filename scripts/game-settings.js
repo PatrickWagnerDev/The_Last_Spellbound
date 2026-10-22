@@ -125,7 +125,11 @@ const GAME_SETTINGS = {
         keyIconSpacing: 36,
         keyIconScale: 2,
         blinkTicks: 60,
-        blinkIntervalTicks: 6
+        blinkIntervalTicks: 6,
+        bossBarScale: 1,
+        bossBarGap: 4,
+        bossBarMargin: 12,
+        bossBarHealthPerBar: 3
     },
     debug: {
         startInBossLevel: true,

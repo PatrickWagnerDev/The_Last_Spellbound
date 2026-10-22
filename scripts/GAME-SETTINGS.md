@@ -179,6 +179,10 @@ While the transition runs, the level is switched under the covered canvas. The s
 | `keyIconScale` | `2` | Size factor of the key icons (the key image is 16x16 px). Whole numbers keep the pixels sharp. |
 | `blinkTicks` | `60` | How long a lost segment of a bar blinks before it stays empty (60 ticks = 1 second). |
 | `blinkIntervalTicks` | `6` | Ticks the blinking segment is visible or hidden (6 ticks = 0.1 second). |
+| `bossBarScale` | `1` | Size factor of one bar of the boss health display (the bar image is 96x12 px). The boss health is shown as several of these bars in a row at the bottom center of the canvas. It appears when the boss has seen the character for the first time. |
+| `bossBarGap` | `4` | Space between two bars of the boss health display in px. |
+| `bossBarMargin` | `12` | Distance of the boss health display from the bottom edge of the canvas in px. |
+| `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is `mageBoss.maxHealth` divided by this value (15 / 3 = 5 bars). |
 
 ## debug
 

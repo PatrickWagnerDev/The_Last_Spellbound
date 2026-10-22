@@ -9,6 +9,7 @@ class World {
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
     healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
+    bossBars = this.createBossBars();
     ctx;
     canvas;
     keyboard;
@@ -147,6 +148,31 @@ class World {
         this.energyBar.setValue(this.character.energy, this.character.maxEnergy);
         this.energyBar.drawObject(this.ctx);
         this.drawKeyIcons();
+        this.drawBossBars();
+    }
+
+    createBossBars(){
+        const BAR_COUNT = GAME_SETTINGS.mageBoss.maxHealth / GAME_SETTINGS.ui.bossBarHealthPerBar;
+        const BAR_OPTIONS = { scale: GAME_SETTINGS.ui.bossBarScale };
+        return Array.from({ length: BAR_COUNT }, () => new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, 0, 0, BAR_OPTIONS));
+    }
+
+    drawBossBars(){
+        const BOSS = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        if(!BOSS || (BOSS.state == 'wait' && BOSS.health == BOSS.maxHealth)){
+            return;
+        }
+        const STEP = this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
+        const START_X = (this.canvas.width - (this.bossBars.length * STEP - GAME_SETTINGS.ui.bossBarGap)) / 2;
+        this.bossBars.forEach((bar, barIndex) => this.drawBossBar(bar, BOSS, START_X + barIndex * STEP, barIndex));
+    }
+
+    drawBossBar(bar, boss, barX, barIndex){
+        const HEALTH_PER_BAR = GAME_SETTINGS.ui.bossBarHealthPerBar;
+        bar.x = barX;
+        bar.y = this.canvas.height - bar.height - GAME_SETTINGS.ui.bossBarMargin;
+        bar.setValue(clampValue(boss.health - barIndex * HEALTH_PER_BAR, 0, HEALTH_PER_BAR), HEALTH_PER_BAR);
+        bar.drawObject(this.ctx);
     }
 
     drawKeyIcons(){
