@@ -41,6 +41,21 @@ class World {
         this.level.items.forEach(item => item.world = this);
     }
 
+    addItem(item){
+        item.world = this;
+        this.level.items.push(item);
+    }
+
+    loadLevel(levelData){
+        this.level.stopAll();
+        this.projectiles.forEach(projectile => projectile.stopAnimation());
+        this.projectiles = [];
+        this.level = new Level(levelData);
+        this.setWorld();
+        this.character.placeAt(this.level.playerStart);
+        this.cameraX = 0;
+    }
+
     createKeyIcon(){
         const ICON = new DrawableObject();
         ICON.loadImage(IMAGE_KEY);

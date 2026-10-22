@@ -106,6 +106,15 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `scale` | `2` | Size factor of the chest on the playing field (the image is 32x32 px). Whole numbers keep the pixels sharp. The chest stands on the bottom edge of its map cell. |
 | `openDistance` | `48` | How close the character has to be to open the chest, in px measured from the sides of the chest (48 = one tile). The character needs a key, one key is used up when the chest opens. |
 | `openFps` | `8` | Animation speed of the opening in frames per second (8 frames, plays once and stays open). |
+| `portalOffset` | `2` | How many map cells to the right of the chest the portal appears once the chest is fully open. |
+
+## portal
+
+| Variable | Default | Effect |
+|---|---|---|
+| `size` | `96` | Size of the portal in px (the images are 128x128 px). It stands on the bottom edge of its map cell. Touching its centre starts the boss level. |
+| `animationFps` | `8` | Speed of the turning portal in frames per second (3 images in a loop). |
+| `appearTicks` | `30` | Ticks the portal needs to grow from its centre to full size (30 ticks = 0.5 seconds). It can only be entered when it is fully grown. |
 
 ## energy
 
@@ -140,10 +149,10 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the fireball, the key and the chest, `FIREBALL_SPAWN` | `enemy.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
-| Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
+| Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
 | `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy.class.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |

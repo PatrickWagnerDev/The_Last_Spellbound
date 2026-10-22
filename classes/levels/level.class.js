@@ -29,6 +29,11 @@ class Level {
         });
     }
 
+    stopAll(){
+        this.enemies.forEach(enemy => enemy.stopAnimation());
+        this.items.forEach(item => item.stopAnimation());
+    }
+
     removeItem(item){
         this.items = this.items.filter(other => other != item);
     }

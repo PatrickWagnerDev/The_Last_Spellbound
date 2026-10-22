@@ -11,9 +11,12 @@ class Chest extends MovableObject {
     hitbox = { offsetX: 0, offsetY: 15 * this.settings.scale, width: 26 * this.settings.scale, height: 17 * this.settings.scale };
     isOpen = false;
     openTicks = 0;
+    hasSpawnedPortal = false;
 
     constructor(column, row){
         super();
+        this.column = column;
+        this.row = row;
         this.setupSprites([IMAGE_CHEST]);
         this.x = column * TILE_SIZE + (TILE_SIZE - 26 * this.settings.scale) / 2;
         this.y = (row + 1) * TILE_SIZE - this.height;
@@ -53,6 +56,11 @@ class Chest extends MovableObject {
 
     updateOpening(){
         this.openTicks++;
-        this.currentFrame = getProgressFrame(this.openTicks, getTicksPerFrame(this.settings.openFps) * 8, 8);
+        const TOTAL_TICKS = getTicksPerFrame(this.settings.openFps) * 8;
+        this.currentFrame = getProgressFrame(this.openTicks, TOTAL_TICKS, 8);
+        if(this.openTicks >= TOTAL_TICKS && !this.hasSpawnedPortal){
+            this.hasSpawnedPortal = true;
+            this.world.addItem(new Portal(this.column + this.settings.portalOffset, this.row));
+        }
     }
 }

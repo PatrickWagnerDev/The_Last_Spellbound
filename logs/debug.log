@@ -179,3 +179,9 @@
 2026-10-22 | classes/models/chest.class.js | New Chest (Golden_Chest_Open.png): opens automatically when the living character has a key and stands within chest.openDistance, uses up one key, plays the 8 frame opening once and stays open (isOpen); not collectable
 2026-10-22 | item-markers.js, index.html, level-one.js, tile-reference.html | ITEM_MARKERS now has 63: Chest; chest marker 63 in row 8 column 40; legend entry; included chest.class.js
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added chest.scale, openDistance, openFps and documented them
+2026-10-22 | classes/models/portal.class.js | New Portal (Spiral1-3.png): grows from its centre, turns in a loop, loads LEVEL_ONE_BOSS when the living character touches its centre once it has fully appeared
+2026-10-22 | chest.class.js | Remembers column and row and spawns the Portal chest.portalOffset cells to the right once after the opening animation has finished
+2026-10-22 | world.class.js | Added addItem and loadLevel (stops the old level and the projectiles, builds the new level, places the character at its start, resets the camera)
+2026-10-22 | level.class.js | Added stopAll to stop the timers of enemies and items
+2026-10-22 | classes/levels/level-one-boss.js | New empty boss level LEVEL_ONE_BOSS: canvas sized (15 x 10), only the ground row, player start marker 69, backgrounds of level one
+2026-10-22 | index.html, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Included portal.class.js and level-one-boss.js; added chest.portalOffset and the portal block and documented them

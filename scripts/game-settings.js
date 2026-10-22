@@ -69,7 +69,13 @@ const GAME_SETTINGS = {
     chest: {
         scale: 2,
         openDistance: 48,
-        openFps: 8
+        openFps: 8,
+        portalOffset: 2
+    },
+    portal: {
+        size: 96,
+        animationFps: 8,
+        appearTicks: 30
     },
     energy: {
         maxCharges: 5,
