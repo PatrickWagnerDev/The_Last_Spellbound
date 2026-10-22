@@ -45,6 +45,8 @@ The graphics and the font used in this project come from [Craftpix.net](https://
 
 The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic Font (532173) from Craftpix.net.
 
+The font `assets/fonts/Planes_ValMore.ttf` is part of the Game UI Pixel Art pack (781165) from Craftpix.net.
+
 ## What I Learned
 
 The main focus of this project is learning and applying object-oriented programming (OOP) in JavaScript. Through developing the game, I aim to deepen my understanding of classes, objects, inheritance, and how they interact to create a structured and maintainable application.

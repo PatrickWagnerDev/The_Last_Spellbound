@@ -1,4 +1,12 @@
 @font-face {
+    font-family: 'Planes ValMore';
+    src: url('../assets/fonts/Planes_ValMore.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: 'Straight Pixel Gothic';
     src: url('../assets/fonts/Straight pixel gothic.otf') format('opentype');
     font-weight: normal;

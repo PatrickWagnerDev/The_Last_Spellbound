@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./styles/variable.css">
     <link rel="stylesheet" href="./styles/standard.css">
     <link rel="stylesheet" href="./styles/assets.css">
+    <link rel="stylesheet" href="./styles/controls.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -30,7 +31,7 @@
                     <button class="start-button" onclick="startGame()">
                         <span class="menu-label">Start Game</span>
                     </button>
-                    <button class="start-button">
+                    <button class="start-button" onclick="openControls()">
                         <span class="menu-label">Controls</span>
                     </button>
                     <button class="start-button">
@@ -40,6 +41,86 @@
                         <span class="menu-label">Impressum</span>
                     </button>
                 </div>
+            </div>
+        </div>
+        <div id="controls-screen" class="controls-screen" onclick="closeControls(event)">
+            <div class="window-frame controls-window">
+                <h2 class="window-title title-controls">Controls</h2>
+                <h2 class="window-title title-items">Collectables</h2>
+                <button class="close-button" aria-label="Close"></button>
+                <div class="controls-body page-keys">
+                    <div class="keys-block">
+                        <svg class="key-lines" width="480" height="142" viewBox="0 0 480 142" aria-hidden="true">
+                            <polyline class="group-jump" points="240,26 240,42"/>
+                            <polyline class="group-jump" points="140,54 219,54"/>
+                            <polyline class="group-jump" points="340,54 261,54"/>
+                            <polyline class="group-walk" points="180,94 217,94"/>
+                            <polyline class="group-walk" points="300,94 263,94"/>
+                            <polyline class="group-walk" points="45,94 60,94"/>
+                            <polyline class="group-walk" points="420,94 435,94"/>
+                            <polyline class="group-roll" points="120,114 120,132 196,132"/>
+                            <polyline class="group-roll" points="360,114 360,132 284,132"/>
+                        </svg>
+                        <div class="key-cluster cluster-left">
+                            <span class="key-cap key-up group-jump"></span>
+                            <span class="key-cap key-left group-walk"></span>
+                            <span class="key-cap key-down group-roll"></span>
+                            <span class="key-cap key-right group-walk"></span>
+                        </div>
+                        <span class="key-cap key-wide group-jump">Space</span>
+                        <span class="legend-label label-jump group-jump">Jump</span>
+                        <span class="legend-label label-walk group-walk">Walk</span>
+                        <span class="legend-label label-walk-left group-walk">Walk</span>
+                        <span class="legend-label label-walk-right group-walk">Walk</span>
+                        <span class="legend-label label-roll group-roll">Dodge roll</span>
+                        <div class="key-cluster cluster-right">
+                            <span class="key-cap group-jump">W</span>
+                            <span class="key-cap group-walk">A</span>
+                            <span class="key-cap group-roll">S</span>
+                            <span class="key-cap group-walk">D</span>
+                        </div>
+                    </div>
+                    <div class="attack-row">
+                        <div class="attack-group">
+                            <span class="key-cap">J</span>
+                            <span class="key-slash">/</span>
+                            <span class="key-cap">X</span>
+                            <span class="attack-text">Melee attack</span>
+                        </div>
+                        <div class="attack-group">
+                            <span class="key-cap">K</span>
+                            <span class="key-slash">/</span>
+                            <span class="key-cap">C</span>
+                            <span class="attack-text">Special attack<br>(cost 1 Energy)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-body page-items">
+                    <div class="item-row">
+                        <span class="item-icon icon-key"></span>
+                        <span class="item-text">
+                            <span class="item-name">Golden Key</span>
+                            <span class="item-effect">Opens the chest (the key is used up)</span>
+                        </span>
+                    </div>
+                    <div class="item-row">
+                        <span class="item-icon icon-pizza"></span>
+                        <span class="item-text">
+                            <span class="item-name">Pizza</span>
+                            <span class="item-effect">Heals 1 HP</span>
+                        </span>
+                    </div>
+                    <div class="item-row">
+                        <span class="item-icon icon-donut"></span>
+                        <span class="item-text">
+                            <span class="item-name">Donut</span>
+                            <span class="item-effect">Refills the whole energy bar</span>
+                        </span>
+                    </div>
+                </div>
+                <button class="page-button" aria-label="Switch page" onclick="toggleControlsPage()">
+                    <span class="page-icon"></span>
+                </button>
             </div>
         </div>
         <div id="game-over-screen" class="game-over-screen">
@@ -57,8 +138,8 @@
                 </div>
             </div>
         </div>
-        <div id="pause-menu" class="pause-menu">
-            <h2 class="pause-title">Pause</h2>
+        <div id="pause-menu" class="window-frame pause-menu">
+            <h2 class="window-title">Pause</h2>
             <div class="menu-buttons">
                 <button class="menu-button" onclick="togglePause()">
                     <span class="menu-icon icon-back"></span>

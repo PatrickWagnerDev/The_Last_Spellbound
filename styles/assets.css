@@ -1,4 +1,5 @@
 .start-screen,
+.controls-screen,
 .game-over-screen,
 .screen-fade {
     position: absolute;
@@ -8,11 +9,7 @@
     height: var(--canvas-height);
 }
 
-.pause-menu {
-    display: none;
-    position: absolute;
-    top: calc(var(--frame-padding) + (var(--canvas-height) - var(--menu-height)) / 2);
-    left: calc(var(--frame-padding) + (var(--canvas-width) - var(--menu-width)) / 2);
+.window-frame {
     width: var(--menu-width);
     height: var(--menu-height);
     background-image: url('../assets/image/09-ui/Window.png');
@@ -21,11 +18,18 @@
     image-rendering: pixelated;
 }
 
+.pause-menu {
+    display: none;
+    position: absolute;
+    top: calc(var(--frame-padding) + (var(--canvas-height) - var(--menu-height)) / 2);
+    left: calc(var(--frame-padding) + (var(--canvas-width) - var(--menu-width)) / 2);
+}
+
 .pause-menu.is-open {
     display: block;
 }
 
-.pause-title {
+.window-title {
     position: absolute;
     top: 8px;
     left: 192px;
@@ -54,7 +58,9 @@
 }
 
 .menu-button,
-.start-button {
+.start-button,
+.page-button,
+.close-button {
     position: relative;
     z-index: 0;
     border: none;
@@ -64,7 +70,9 @@
 }
 
 .menu-button::before,
-.start-button::before {
+.start-button::before,
+.page-button::before,
+.close-button::before {
     content: '';
     position: absolute;
     inset: 4px;
@@ -74,7 +82,9 @@
 }
 
 .menu-button:hover::before,
-.start-button:hover::before {
+.start-button:hover::before,
+.page-button:hover::before,
+.close-button:hover::before {
     background-color: var(--color-navy-hover);
 }
 
