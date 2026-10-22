@@ -8,7 +8,6 @@ class StatusBar extends DrawableObject {
 
     constructor(emptyPath, fullPath, x, y, options = {}){
         super();
-        this.segmentCount = options.segments ?? 0;
         this.blinkEnabled = options.blink ?? true;
         this.loadImage(emptyPath);
         this.fullImage = new Image();
@@ -49,16 +48,6 @@ class StatusBar extends DrawableObject {
         this.drawFullPart(ctx, 0, this.getRatio(this.value));
         if(this.isBlinkVisible()){
             this.drawFullPart(ctx, this.getRatio(this.value), this.getRatio(this.blinkFrom));
-        }
-        this.drawDividers(ctx);
-    }
-
-    drawDividers(ctx){
-        const SCALE_FACTOR = this.width / this.frameWidth;
-        ctx.fillStyle = 'rgb(28, 18, 27)';
-        for(let dividerIndex = 1; dividerIndex < this.segmentCount; dividerIndex++){
-            const DIVIDER_X = Math.round(this.frameWidth * dividerIndex / this.segmentCount);
-            ctx.fillRect(this.x + DIVIDER_X * SCALE_FACTOR, this.y, SCALE_FACTOR, this.height);
         }
     }
 

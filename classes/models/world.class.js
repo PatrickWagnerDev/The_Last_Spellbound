@@ -6,7 +6,7 @@ const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 class World {
     character = new Character();
     level = new Level(LEVEL_ONE);
-    energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { segments: GAME_SETTINGS.energy.maxCharges, blink: false });
+    energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
     healthBar =new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
     canvas;

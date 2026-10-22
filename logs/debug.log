@@ -133,3 +133,4 @@
 2026-10-22 | world.class.js | Added IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, energyBar and its drawing in drawStatusBars
 2026-10-22 | character.class.js | Added maxEnergy, energy, addEnergy; a fireball needs one charge and uses it at the shot
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added energy.maxCharges 5, energy.startCharges 5, ui.energyBarY 44 and documented them
+2026-10-22 | status-bar.class.js, world.class.js, scripts/GAME-SETTINGS.md | Removed the segment dividers (segments option, segmentCount, drawDividers) from the energy bar; it still fills in steps of one charge
