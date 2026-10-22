@@ -147,3 +147,4 @@
 2026-10-22 | enemy.class.js | setupSprites in the constructor; hurt and death use setProgressSprite
 2026-10-22 | fireball.class.js, status-bar.class.js, level.class.js, world.class.js | Use getTicksPerFrame, TICKS_PER_SECOND, createImage, tickDown, clampValue; Level got forEachCell for buildTiles and buildEnemies
 2026-10-22 | scripts/GAME-SETTINGS.md | Added TICKS_PER_SECOND to the list of values that are not settings
+2026-10-22 | character.class.js | updateObject split into updateStatus, updateDeadState, updateMovement, updateActions, updatePhysics, updateAnimation (same call order); updateSprite uses getSpriteState and a table of sprite players, added setJumpSprite

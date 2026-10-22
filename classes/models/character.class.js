@@ -44,27 +44,51 @@ class Character extends MovableObject{
     }
 
     updateObject(){
+        this.updateStatus();
+        if(this.isDead()){
+            this.updateDeadState();
+            return;
+        }
+        this.updateMovement();
+        this.updateActions();
+        this.updatePhysics();
+        this.updateAnimation();
+    }
+
+    updateStatus(){
         this.updateInvincibility();
         this.updateHurt();
         this.checkCollisions();
-        if(this.isDead()){
-            this.applyGravity();
-            this.limitToWall();
-            this.updateDeathSprite();
-            return;
-        }
+    }
+
+    updateDeadState(){
+        this.applyGravity();
+        this.limitToWall();
+        this.updateDeathSprite();
+    }
+
+    updateMovement(){
         this.updateSpeed();
         this.moveByKeyboard();
         this.updateRoll();
         this.limitToWall();
         this.handleJump();
         this.handleRoll();
+    }
+
+    updateActions(){
         this.handleAttack();
         this.updateAttack();
         this.handleCast();
         this.updateCast();
+    }
+
+    updatePhysics(){
         this.applyGravity();
         this.updateJumpPhase();
+    }
+
+    updateAnimation(){
         this.updateIdleTicks();
         this.updateSprite();
     }
@@ -338,24 +362,36 @@ class Character extends MovableObject{
         this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
+    getSpriteState(){
+        const STATE_CHECKS = [
+            ['hurt', this.isHurt()],
+            ['roll', this.isRolling()],
+            ['attack', this.isAttacking()],
+            ['cast', this.isCasting()],
+            ['jump', this.jumpPhase != 'none'],
+            ['walk', this.isWalking()],
+            ['rest', this.idleTicks >= this.settings.restDelayTicks]
+        ];
+        const ACTIVE_STATE = STATE_CHECKS.find(check => check[1]);
+        return ACTIVE_STATE ? ACTIVE_STATE[0] : 'idle';
+    }
+
     updateSprite(){
-        if(this.isHurt()){
-            this.setProgressSprite(IMAGE_HURT, 3, this.getHurtElapsed(), this.settings.hurtTicks);
-        } else if(this.isRolling()){
-            this.setProgressSprite(IMAGE_ROLL, 6, this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks);
-        } else if(this.isAttacking()){
-            this.setProgressSprite(IMAGE_ATTACK, 5, this.getAttackElapsed(), this.settings.attackTicks);
-        } else if(this.isCasting()){
-            this.setProgressSprite(IMAGE_CAST, 8, this.settings.castTicks - this.castTicksLeft, this.settings.castTicks);
-        } else if(this.jumpPhase != 'none'){
-            this.setSprite(IMAGE_JUMP, 9, 0);
-            this.currentFrame = this.getJumpFrame();
-        } else if(this.isWalking()){
-            this.setSprite(IMAGE_WALK, 6, this.settings.walkFps);
-        } else if(this.idleTicks >= this.settings.restDelayTicks){
-            this.setProgressSprite(IMAGE_REST, 4, this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * 4);
-        } else {
-            this.setSprite(IMAGE_IDLE, 7, this.settings.idleFps);
-        }
+        const SPRITE_PLAYERS = {
+            hurt: () => this.setProgressSprite(IMAGE_HURT, 3, this.getHurtElapsed(), this.settings.hurtTicks),
+            roll: () => this.setProgressSprite(IMAGE_ROLL, 6, this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks),
+            attack: () => this.setProgressSprite(IMAGE_ATTACK, 5, this.getAttackElapsed(), this.settings.attackTicks),
+            cast: () => this.setProgressSprite(IMAGE_CAST, 8, this.settings.castTicks - this.castTicksLeft, this.settings.castTicks),
+            jump: () => this.setJumpSprite(),
+            walk: () => this.setSprite(IMAGE_WALK, 6, this.settings.walkFps),
+            rest: () => this.setProgressSprite(IMAGE_REST, 4, this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * 4),
+            idle: () => this.setSprite(IMAGE_IDLE, 7, this.settings.idleFps)
+        };
+        SPRITE_PLAYERS[this.getSpriteState()]();
+    }
+
+    setJumpSprite(){
+        this.setSprite(IMAGE_JUMP, 9, 0);
+        this.currentFrame = this.getJumpFrame();
     }
 }
