@@ -7,6 +7,8 @@ class World {
     level;
     restartLevelData;
     frameRequest;
+    onGameOver;
+    isGameOver = false;
     character = new Character();
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
@@ -21,7 +23,8 @@ class World {
     transition = null;
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
-    constructor(canvas, keyboard, levelData){
+    constructor(canvas, keyboard, levelData, onGameOver){
+        this.onGameOver = onGameOver;
         this.level = new Level(levelData);
         this.restartLevelData = levelData.restartLevel ?? levelData;
         this.ctx = canvas.getContext('2d');
@@ -78,8 +81,15 @@ class World {
         this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, levelData);
     }
 
+    checkGameOver(){
+        if(!this.isGameOver && this.character.hasDeathFinished()){
+            this.isGameOver = true;
+            this.onGameOver?.();
+        }
+    }
+
     togglePause(){
-        if(!this.transition){
+        if(!this.transition && !this.isGameOver){
             this.isPaused = !this.isPaused;
         }
     }
@@ -148,6 +158,7 @@ class World {
     drawWorld(){
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.checkGameOver();
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
@@ -175,6 +186,9 @@ class World {
     }
 
     drawStatusBars(){
+        if(this.isGameOver){
+            return;
+        }
         this.healthBar.setValue(this.character.health, this.character.maxHealth);
         this.healthBar.drawObject(this.ctx);
         this.energyBar.setValue(this.character.energy, this.character.maxEnergy);

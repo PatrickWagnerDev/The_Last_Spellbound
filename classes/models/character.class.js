@@ -128,6 +128,10 @@ class Character extends CharacterMovement{
         this.showProgressState('dead', this.deadTicks, this.settings.deadFrameTicks * this.sprites.dead.frames);
     }
 
+    hasDeathFinished(){
+        return this.isDead() && this.deadTicks >= this.settings.deadFrameTicks * this.sprites.dead.frames;
+    }
+
     updateSpeed(){
         if(this.isRolling()){
             this.speed = this.settings.rollSpeed;

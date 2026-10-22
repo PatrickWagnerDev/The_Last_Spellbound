@@ -23,7 +23,21 @@ function getStartLevelData(){
 
 function init(){
     gameCanvas = document.getElementById('game-canvas');
-    gameWorld = new World(gameCanvas, gameKeyboard, getStartLevelData());
+    createWorld(getStartLevelData());
+}
+
+function createWorld(levelData){
+    gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameOver);
+}
+
+function updateGameOverUi(isGameOver){
+    document.getElementById('game-container').classList.toggle('is-game-over', isGameOver);
+    document.getElementById('game-over-screen').classList.toggle('is-open', isGameOver);
+    document.activeElement?.blur();
+}
+
+function showGameOver(){
+    updateGameOverUi(true);
 }
 
 function updateKey(event, isPressed){
@@ -49,7 +63,8 @@ function togglePause(){
 function restartLevel(){
     const RESTART_DATA = gameWorld.restartLevelData;
     gameWorld.stop();
-    gameWorld = new World(gameCanvas, gameKeyboard, RESTART_DATA);
+    createWorld(RESTART_DATA);
+    updateGameOverUi(false);
     updatePauseUi();
 }
 
