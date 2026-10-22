@@ -73,13 +73,25 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `flightFps` | `12` | Animation speed of the flight frames (5 frames) in frames per second. |
 | `impactFps` | `14` | Animation speed of the impact frames (7 frames) in frames per second. The impact animation only plays when an enemy is hit. |
 
+## item
+
+| Variable | Default | Effect |
+|---|---|---|
+| `pickupFps` | `14` | Animation speed of the pickup effect (6 frames) that plays once when the character collects an item. Only the character can collect items, enemies cannot. |
+
 ## key
 
 | Variable | Default | Effect |
 |---|---|---|
 | `scale` | `2` | Size factor of the key on the playing field (the key image is 16x16 px, the pickup effect 32x32 px). Whole numbers keep the pixels sharp. The key sits in the middle of its map cell. |
 | `animationFps` | `10` | Animation speed of the turning key in frames per second (12 frames). |
-| `pickupFps` | `14` | Animation speed of the pickup effect that plays once when the key is collected (6 frames). |
+
+## pizza
+
+| Variable | Default | Effect |
+|---|---|---|
+| `scale` | `2` | Size factor of the pizza on the playing field (the image is 16x16 px). Whole numbers keep the pixels sharp. The pizza sits in the middle of its map cell. |
+| `healAmount` | `1` | Health points the pizza heals. At full health the pizza is not collected and stays where it is. |
 
 ## energy
 
@@ -114,12 +126,12 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js`, `key.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js`, `key.class.js`, `pizza.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the fireball and the key, `FIREBALL_SPAWN` | `enemy.class.js`, `fireball.class.js`, `key.class.js` | They are measured from the sprites. |
-| Tile map with the markers for items (60 to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
+| Tile map with the markers for items (60 key, 61 pizza, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
-| `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy.class.js`, `key.class.js` | They connect a marker number with an enemy or item class. |
+| `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy.class.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
 | Images of the status bars | `world.class.js` | They are facts of the bar images. |
 | `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |

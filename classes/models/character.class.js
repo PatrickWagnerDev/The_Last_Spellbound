@@ -70,7 +70,7 @@ class Character extends CharacterMovement{
 
     checkItems(){
         this.world.level.items.forEach(item => {
-            if(item.isCollectable() && this.isColliding(item)){
+            if(item.isCollectable(this) && this.isColliding(item)){
                 item.collect(this);
             }
         });

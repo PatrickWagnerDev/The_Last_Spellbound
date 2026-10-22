@@ -52,10 +52,16 @@ const GAME_SETTINGS = {
         flightFps: 12,
         impactFps: 14
     },
+    item: {
+        pickupFps: 14
+    },
     key: {
         scale: 2,
-        animationFps: 10,
-        pickupFps: 14
+        animationFps: 10
+    },
+    pizza: {
+        scale: 2,
+        healAmount: 1
     },
     energy: {
         maxCharges: 5,

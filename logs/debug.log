@@ -168,3 +168,8 @@
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added key.animationFps, key.pickupFps and ui.keyIconY, keyIconSpacing, keyIconScale and documented them
 2026-10-22 | classes/levels/level-one.js, tile-reference.html, index.html | Key marker 60 in row 4 column 9, legend entry for the key, included key.class.js
 2026-10-22 | key.class.js, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Key size is now 16 * key.scale (2 = 32 px) centered in its cell, the pickup effect is 32 * scale and centered on the key, the hitbox covers the drawn key
+2026-10-22 | classes/models/collectible.class.js | New base class Collectible with the shared pickup flow (canCollect, applyEffect, isCollectable(character), collect, pickup effect, removal)
+2026-10-22 | key.class.js, pizza.class.js, item-markers.js | Key now extends Collectible; new Pizza heals pizza.healAmount (only collected below full health); ITEM_MARKERS { 60: Key, 61: Pizza } moved to item-markers.js
+2026-10-22 | movable-object.class.js, character.class.js | Added heal(amount); checkItems asks item.isCollectable(this); only the character collects items
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added item.pickupFps (moved from key), pizza.scale and pizza.healAmount and documented them
+2026-10-22 | classes/levels/level-one.js, tile-reference.html, index.html | Pizza marker 61 in row 8 column 20, legend entry, included the new scripts
