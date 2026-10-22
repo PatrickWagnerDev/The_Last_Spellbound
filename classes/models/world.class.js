@@ -7,7 +7,7 @@ class World {
     character = new Character();
     level = new Level(LEVEL_ONE);
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
-    healthBar =new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
+    healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
     canvas;
     keyboard;
@@ -28,7 +28,7 @@ class World {
             const LAYER_OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
             this.ctx.save();
             this.ctx.translate(-Math.round(LAYER_OFFSET), 0);
-            layer.draw(this.ctx);
+            layer.drawObject(this.ctx);
             this.ctx.restore();
         });
     }
@@ -57,7 +57,7 @@ class World {
         this.ctx.save();
         this.ctx.translate(-Math.round(this.cameraX), 0);
         this.addObjectsToMap(this.level.tiles);
-        this.character.draw(this.ctx);
+        this.character.drawObject(this.ctx);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.projectiles);
         this.drawHitboxes();
@@ -75,7 +75,7 @@ class World {
     }
 
     addObjectsToMap(objects){
-        objects.forEach(object => object.draw(this.ctx));
+        objects.forEach(object => object.drawObject(this.ctx));
     }
 
     drawHitboxes(){
@@ -92,8 +92,8 @@ class World {
 
     drawStatusBars(){
         this.healthBar.setValue(this.character.health, this.character.maxHealth);
-        this.healthBar.draw(this.ctx);
+        this.healthBar.drawObject(this.ctx);
         this.energyBar.setValue(this.character.energy, this.character.maxEnergy);
-        this.energyBar.draw(this.ctx);
+        this.energyBar.drawObject(this.ctx);
     }
 }

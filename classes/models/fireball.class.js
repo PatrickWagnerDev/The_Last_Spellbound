@@ -26,7 +26,7 @@ class Fireball extends MovableObject {
     updateObject(){
         this.stateTicks++;
         if(this.state == 'flying'){
-            this.fly();
+            this.flyForward();
         } else if(this.state == 'impact'){
             this.updateImpact();
         } else {
@@ -34,7 +34,7 @@ class Fireball extends MovableObject {
         }
     }
 
-    fly(){
+    flyForward(){
         this.moveForward();
         this.distance += this.speed;
         this.currentFrame = Math.floor(this.stateTicks / (60 / this.settings.flightFps)) % 5;
@@ -42,9 +42,9 @@ class Fireball extends MovableObject {
     }
 
     checkImpact(){
-        const TARGET = this.world.level.getCollidables().find(enemy => this.isColliding(enemy));
-        if(TARGET){
-            TARGET.receiveHit(this.settings.damage, this);
+        const HIT_TARGET = this.world.level.getCollidables().find(enemy => this.isColliding(enemy));
+        if(HIT_TARGET){
+            HIT_TARGET.receiveHit(this.settings.damage, this);
             this.startState('impact');
         } else if(this.distance >= this.settings.range || this.isOutOfLevel()){
             this.startState('vanish');

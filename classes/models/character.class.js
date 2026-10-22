@@ -192,8 +192,8 @@ class Character extends MovableObject{
     }
 
     isAttackActive(){
-        const ELAPSED = this.getAttackElapsed();
-        return this.isAttacking() && ELAPSED >= this.settings.attackHitStartTick && ELAPSED < this.settings.attackHitEndTick;
+        const ELAPSED_TICKS = this.getAttackElapsed();
+        return this.isAttacking() && ELAPSED_TICKS >= this.settings.attackHitStartTick && ELAPSED_TICKS < this.settings.attackHitEndTick;
     }
 
     updateAttack(){
@@ -265,8 +265,8 @@ class Character extends MovableObject{
     }
 
     getCastFrame(){
-        const ELAPSED = this.settings.castTicks - this.castTicksLeft;
-        return Math.min(Math.floor(ELAPSED / (this.settings.castTicks / 8)), 7);
+        const ELAPSED_TICKS = this.settings.castTicks - this.castTicksLeft;
+        return Math.min(Math.floor(ELAPSED_TICKS / (this.settings.castTicks / 8)), 7);
     }
 
     isMovementLocked(){

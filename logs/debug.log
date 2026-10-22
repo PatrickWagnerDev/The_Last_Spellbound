@@ -134,3 +134,7 @@
 2026-10-22 | character.class.js | Added maxEnergy, energy, addEnergy; a fireball needs one charge and uses it at the shot
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added energy.maxCharges 5, energy.startCharges 5, ui.energyBarY 44 and documented them
 2026-10-22 | status-bar.class.js, world.class.js, scripts/GAME-SETTINGS.md | Removed the segment dividers (segments option, segmentCount, drawDividers) from the energy bar; it still fills in steps of one charge
+2026-10-22 | drawable-object.class.js, status-bar.class.js, world.class.js | Renamed draw to drawObject (definitions and all calls)
+2026-10-22 | fireball.class.js, enemy.class.js | Renamed fly to flyForward and patrol to patrolPlatform; TARGET to HIT_TARGET
+2026-10-22 | status-bar.class.js, movable-object.class.js, character.class.js | Renamed constants PHASE to BLINK_PHASE and ELAPSED to ELAPSED_TICKS
+2026-10-22 | world.class.js | Fixed the missing space in the healthBar field

@@ -53,7 +53,7 @@ class DrawableObject{
         return this.otherDirection !== this.spriteFacesLeft;
     }
 
-    draw(ctx){
+    drawObject(ctx){
         let drawX = this.x;
         ctx.save();
         if(this.isFlipped()){

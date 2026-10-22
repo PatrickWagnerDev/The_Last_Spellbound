@@ -35,15 +35,15 @@ class StatusBar extends DrawableObject {
     }
 
     isBlinkVisible(){
-        const PHASE = Math.floor(this.blinkTicksLeft / GAME_SETTINGS.ui.blinkIntervalTicks);
-        return this.blinkTicksLeft > 0 && PHASE % 2 == 0;
+        const BLINK_PHASE = Math.floor(this.blinkTicksLeft / GAME_SETTINGS.ui.blinkIntervalTicks);
+        return this.blinkTicksLeft > 0 && BLINK_PHASE % 2 == 0;
     }
 
     getRatio(value){
         return this.maxValue > 0 ? value / this.maxValue : 0;
     }
 
-    draw(ctx){
+    drawObject(ctx){
         ctx.drawImage(this.img, 0, 0, this.frameWidth, this.frameHeight, this.x, this.y, this.width, this.height);
         this.drawFullPart(ctx, 0, this.getRatio(this.value));
         if(this.isBlinkVisible()){

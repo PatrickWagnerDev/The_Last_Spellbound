@@ -48,7 +48,7 @@ class Enemy extends MovableObject {
             return;
         }
         this.setSprite(IMAGE_BEAR_WALK, 6, this.settings.animationFps);
-        this.patrol();
+        this.patrolPlatform();
     }
 
     updateDeath(){
@@ -62,7 +62,7 @@ class Enemy extends MovableObject {
         }
     }
 
-    patrol(){
+    patrolPlatform(){
         if(!this.onGround){
             return;
         }
