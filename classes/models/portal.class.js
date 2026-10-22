@@ -46,7 +46,7 @@ class Portal extends LevelItem {
         const PLAYER_CHARACTER = this.world.character;
         if(this.isAppeared() && !this.isUsed && !PLAYER_CHARACTER.isDead() && this.isColliding(PLAYER_CHARACTER)){
             this.isUsed = true;
-            this.world.startTransition(this, LEVEL_ONE_BOSS);
+            this.world.startTransition(this);
         }
     }
 }

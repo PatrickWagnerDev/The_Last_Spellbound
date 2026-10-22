@@ -5,7 +5,9 @@ const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 
 class World {
     level;
+    levelData;
     restartLevelData;
+    barInterval;
     frameRequest;
     onGameEnd;
     isGameEnded = false;
@@ -31,6 +33,7 @@ class World {
         this.keyboard = keyboard;
         this.character.placeAt(this.level.playerStart);
         this.setWorld();
+        this.startBarTimer();
         this.drawWorld();
     }
 
@@ -56,6 +59,7 @@ class World {
     }
 
     setLevel(levelData){
+        this.levelData = levelData;
         this.level = new Level(levelData);
         this.restartLevelData = levelData.restartLevel ?? levelData;
     }
@@ -78,18 +82,32 @@ class World {
         this.cameraX = 0;
     }
 
+    getBars(){
+        return [this.healthBar, this.energyBar, ...this.bossBars];
+    }
+
+    startBarTimer(){
+        this.barInterval = setInterval(() => this.updateBars(), 1000 / TICKS_PER_SECOND);
+    }
+
+    updateBars(){
+        if(!this.isPaused){
+            this.getBars().forEach(bar => bar.updateBlink());
+        }
+    }
+
     stopWorld(){
         cancelAnimationFrame(this.frameRequest);
         this.level.stopAll();
         this.character.stopAnimation();
         this.clearProjectiles();
         this.transition?.stopAnimation();
-        [this.healthBar, this.energyBar, ...this.bossBars].forEach(bar => bar.stopBlink());
+        clearInterval(this.barInterval);
     }
 
-    startTransition(portal, levelData){
+    startTransition(portal){
         this.isPaused = true;
-        this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, levelData);
+        this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, this.levelData.getNextLevel());
     }
 
     checkGameEnd(){
