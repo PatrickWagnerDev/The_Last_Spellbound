@@ -189,3 +189,4 @@
 2026-10-22 | movable-object.class.js | startAnimation skips the tick while isFrozen() is true; isFrozen follows world.isPaused (ready for a later pause button)
 2026-10-22 | world.class.js, portal.class.js | Added isPaused, transition, startTransition, endTransition, drawTransition; the portal starts the transition instead of loading the level directly
 2026-10-22 | index.html, scripts/game-settings.js, scripts/GAME-SETTINGS.md | Included portal-transition.class.js; added the transition block (expandTicks, contractTicks, spinFps) and documented it
+2026-10-22 | classes/levels/level-one-boss.js | Boss level doubled in width: 30 columns x 10 rows (1440 x 480 px), ground row, player start 69 in row 8 column 1, the camera now scrolls in the boss level
