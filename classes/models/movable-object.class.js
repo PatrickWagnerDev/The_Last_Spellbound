@@ -8,10 +8,14 @@ class MovableObject extends DrawableObject{
     health = 1;
 
     startAnimation(){
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             this.updateObject();
             this.nextFrame();
         }, 1000 / 60);
+    }
+
+    stopAnimation(){
+        clearInterval(this.animationInterval);
     }
 
     updateObject(){
@@ -54,31 +58,41 @@ class MovableObject extends DrawableObject{
         return true;
     }
 
-    getHitbox(){
+    getBoxRect(box){
         const OFFSET_X = this.isFlipped()
-            ? this.width - this.hitbox.offsetX - this.hitbox.width
-            : this.hitbox.offsetX;
+            ? this.width - box.offsetX - box.width
+            : box.offsetX;
         return {
             x: this.x + OFFSET_X,
-            y: this.y + this.hitbox.offsetY,
-            width: this.hitbox.width,
-            height: this.hitbox.height
+            y: this.y + box.offsetY,
+            width: box.width,
+            height: box.height
         };
     }
 
-    isColliding(movable){
+    getHitbox(){
+        return this.getBoxRect(this.hitbox);
+    }
+
+    isOverlapping(rect){
         const OWN_RECT = this.getHitbox();
-        const OTHER_RECT = movable.getHitbox();
-        return OWN_RECT.x < OTHER_RECT.x + OTHER_RECT.width
-            && OWN_RECT.x + OWN_RECT.width > OTHER_RECT.x
-            && OWN_RECT.y < OTHER_RECT.y + OTHER_RECT.height
-            && OWN_RECT.y + OWN_RECT.height > OTHER_RECT.y;
+        return OWN_RECT.x < rect.x + rect.width
+            && OWN_RECT.x + OWN_RECT.width > rect.x
+            && OWN_RECT.y < rect.y + rect.height
+            && OWN_RECT.y + OWN_RECT.height > rect.y;
+    }
+
+    isColliding(movable){
+        return this.isOverlapping(movable.getHitbox());
+    }
+
+    drawRect(ctx, rect, color){
+        ctx.strokeStyle = color;
+        ctx.strokeRect(Math.round(rect.x) + 0.5, Math.round(rect.y) + 0.5, rect.width, rect.height);
     }
 
     drawHitbox(ctx, color){
-        const HITBOX_RECT = this.getHitbox();
-        ctx.strokeStyle = color;
-        ctx.strokeRect(Math.round(HITBOX_RECT.x) + 0.5, Math.round(HITBOX_RECT.y) + 0.5, HITBOX_RECT.width, HITBOX_RECT.height);
+        this.drawRect(ctx, this.getHitbox(), color);
     }
 
     takeDamage(amount){

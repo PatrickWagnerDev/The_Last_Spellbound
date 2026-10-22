@@ -69,6 +69,7 @@ class World {
             return;
         }
         this.character.drawHitbox(this.ctx, 'lime');
+        this.character.drawAttackBox(this.ctx);
         this.level.enemies.forEach(enemy => {
             enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
         });

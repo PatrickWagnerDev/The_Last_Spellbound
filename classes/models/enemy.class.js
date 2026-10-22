@@ -1,4 +1,5 @@
 const IMAGE_BEAR_WALK = './assets/image/03-monsters/1 Bear/Walk.png';
+const IMAGE_BEAR_DEATH = './assets/image/03-monsters/1 Bear/Death.png';
 
 class Enemy extends MovableObject {
     settings = GAME_SETTINGS.enemy;
@@ -13,9 +14,12 @@ class Enemy extends MovableObject {
     maxHealth = this.settings.maxHealth;
     health = this.maxHealth;
     spriteFacesLeft = true;
+    deadTicks = 0;
 
     constructor(column, row){
         super().loadImage(IMAGE_BEAR_WALK);
+        this.loadImages([IMAGE_BEAR_WALK, IMAGE_BEAR_DEATH]);
+        this.currentPath = IMAGE_BEAR_WALK;
         this.x = column * TILE_SIZE;
         this.y = (row + 1) * TILE_SIZE - this.height;
         this.otherDirection = Math.random() < 0.5;
@@ -23,8 +27,23 @@ class Enemy extends MovableObject {
     }
 
     updateObject(){
+        if(this.isDead()){
+            this.updateDeath();
+            return;
+        }
         this.patrol();
         this.applyGravity();
+    }
+
+    updateDeath(){
+        this.applyGravity();
+        this.deadTicks++;
+        this.setSprite(IMAGE_BEAR_DEATH, 6, 0);
+        this.currentFrame = Math.min(Math.floor(this.deadTicks / (this.settings.deathTicks / 6)), 5);
+        if(this.deadTicks >= this.settings.deathTicks){
+            this.stopAnimation();
+            this.world.level.removeEnemy(this);
+        }
     }
 
     patrol(){

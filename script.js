@@ -10,7 +10,9 @@ const KEY_MAP = {
     KeyA: 'LEFT',
     KeyW: 'UP',
     KeyS: 'DOWN',
-    Space: 'SPACE'
+    Space: 'SPACE',
+    KeyJ: 'ATTACK',
+    KeyX: 'ATTACK'
 };
 
 function init(){

@@ -16,6 +16,9 @@ const GAME_SETTINGS = {
         rollTicks: 36,
         rollSpeed: 5,
         rollCooldownTicks: 30,
+        attackTicks: 30,
+        attackHitStartTick: 12,
+        attackHitEndTick: 18,
         speed: 3,
         airSpeedFactor: 1.25,
         jumpSpeed: 11.5,
@@ -34,7 +37,8 @@ const GAME_SETTINGS = {
         height: 80,
         maxHealth: 2,
         speed: 0.5,
-        animationFps: 8
+        animationFps: 8,
+        deathTicks: 60
     },
     ui: {
         statusBarScale: 2,

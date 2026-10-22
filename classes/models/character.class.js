@@ -5,8 +5,10 @@ const IMAGE_REST = './assets/image/02-wizard-extras/Fire Wizard/Rest.png';
 const IMAGE_HURT = './assets/image/01-wizard/Fire Wizard/Hurt.png';
 const IMAGE_DEAD = './assets/image/01-wizard/Fire Wizard/Dead.png';
 const IMAGE_ROLL = './assets/image/02-wizard-extras/Fire Wizard/Roll.png';
+const IMAGE_ATTACK = './assets/image/02-wizard-extras/Fire Wizard/Attack_1.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
+const ATTACK_HITBOX = { offsetX: 79, offsetY: 65, width: 51, height: 50 };
 
 class Character extends MovableObject{
     settings = GAME_SETTINGS.character;
@@ -28,10 +30,13 @@ class Character extends MovableObject{
     deadTicks = 0;
     rollTicksLeft = 0;
     rollCooldownLeft = 0;
+    attackTicksLeft = 0;
+    attackHits = [];
+    attackKeyDown = false;
 
     constructor(){
         super().loadImage(IMAGE_IDLE);
-        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL]);
+        this.loadImages([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK]);
         this.currentPath = IMAGE_IDLE;
         this.startAnimation();
     }
@@ -52,6 +57,8 @@ class Character extends MovableObject{
         this.limitToWall();
         this.handleJump();
         this.handleRoll();
+        this.handleAttack();
+        this.updateAttack();
         this.applyGravity();
         this.updateJumpPhase();
         this.updateIdleTicks();
@@ -106,6 +113,7 @@ class Character extends MovableObject{
         this.knockbackDirection = IS_SOURCE_RIGHT ? -1 : 1;
         this.otherDirection = !IS_SOURCE_RIGHT;
         this.hurtTicksLeft = this.settings.hurtTicks;
+        this.attackTicksLeft = 0;
         if(this.jumpPhase == 'crouch' || this.jumpPhase == 'land'){
             this.startPhase('none');
         }
@@ -139,7 +147,7 @@ class Character extends MovableObject{
     }
 
     hasInput(){
-        return this.isWalking() || this.wantsJump() || this.wantsRoll();
+        return this.isWalking() || this.wantsJump() || this.wantsRoll() || this.wantsAttack();
     }
 
     isRolling(){
@@ -157,6 +165,7 @@ class Character extends MovableObject{
         const CAN_ROLL = this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling();
         if(this.wantsRoll() && CAN_ROLL && this.rollCooldownLeft == 0){
             this.rollTicksLeft = this.settings.rollTicks;
+            this.attackTicksLeft = 0;
         }
     }
 
@@ -174,6 +183,65 @@ class Character extends MovableObject{
     getRollFrame(){
         const FRAME_INDEX = Math.floor((this.settings.rollTicks - this.rollTicksLeft) / (this.settings.rollTicks / 6));
         return Math.min(FRAME_INDEX, 5);
+    }
+
+    isAttacking(){
+        return this.attackTicksLeft > 0;
+    }
+
+    wantsAttack(){
+        return this.world.keyboard.ATTACK;
+    }
+
+    handleAttack(){
+        const IS_PRESSED = this.wantsAttack();
+        const JUST_PRESSED = IS_PRESSED && !this.attackKeyDown;
+        const CAN_ATTACK = !this.isAttacking() && !this.isRolling() && !this.isHurt();
+        this.attackKeyDown = IS_PRESSED;
+        if(JUST_PRESSED && CAN_ATTACK){
+            this.attackTicksLeft = this.settings.attackTicks;
+            this.attackHits = [];
+        }
+    }
+
+    getAttackElapsed(){
+        return this.settings.attackTicks - this.attackTicksLeft;
+    }
+
+    isAttackActive(){
+        const ELAPSED = this.getAttackElapsed();
+        return this.isAttacking() && ELAPSED >= this.settings.attackHitStartTick && ELAPSED < this.settings.attackHitEndTick;
+    }
+
+    updateAttack(){
+        if(!this.isAttacking()){
+            return;
+        }
+        if(this.isAttackActive()){
+            this.hitEnemies();
+        }
+        this.attackTicksLeft--;
+    }
+
+    hitEnemies(){
+        const ATTACK_RECT = this.getBoxRect(ATTACK_HITBOX);
+        this.world.level.getCollidables().forEach(enemy => {
+            if(!this.attackHits.includes(enemy) && enemy.isOverlapping(ATTACK_RECT)){
+                enemy.takeDamage(GAME_SETTINGS.combat.hitDamage);
+                this.attackHits.push(enemy);
+            }
+        });
+    }
+
+    getAttackFrame(){
+        const FRAME_INDEX = Math.floor(this.getAttackElapsed() / (this.settings.attackTicks / 5));
+        return Math.min(FRAME_INDEX, 4);
+    }
+
+    drawAttackBox(ctx){
+        if(this.isAttackActive()){
+            this.drawRect(ctx, this.getBoxRect(ATTACK_HITBOX), 'orange');
+        }
     }
 
     isMovementLocked(){
@@ -254,7 +322,7 @@ class Character extends MovableObject{
     }
 
     updateIdleTicks(){
-        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling()){
+        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling() || this.isAttacking()){
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
@@ -268,7 +336,7 @@ class Character extends MovableObject{
 
     setSprite(path, count, fps){
         super.setSprite(path, count, fps);
-        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD].includes(path);
+        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD, IMAGE_ATTACK].includes(path);
         this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
@@ -279,6 +347,9 @@ class Character extends MovableObject{
         } else if(this.isRolling()){
             this.setSprite(IMAGE_ROLL, 6, 0);
             this.currentFrame = this.getRollFrame();
+        } else if(this.isAttacking()){
+            this.setSprite(IMAGE_ATTACK, 5, 0);
+            this.currentFrame = this.getAttackFrame();
         } else if(this.jumpPhase != 'none'){
             this.setSprite(IMAGE_JUMP, 9, 0);
             this.currentFrame = this.getJumpFrame();

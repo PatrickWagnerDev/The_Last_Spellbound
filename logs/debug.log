@@ -113,3 +113,10 @@
 2026-10-22 | index.html | Included status-bar.class.js after drawable-object.class.js
 2026-10-22 | character.class.js | Added the roll (IMAGE_ROLL, rollTicksLeft, rollCooldownLeft, isRolling, wantsRoll, handleRoll, updateRoll, getRollFrame): S or down arrow on the ground, not cancellable, no jump or turn while rolling, no damage while rolling
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.rollTicks 36, rollSpeed 5, rollCooldownTicks 30 and documented them
+2026-10-22 | classes/models/keyboard.class.js, script.js | Added ATTACK, mapped KeyJ and KeyX to it
+2026-10-22 | character.class.js | Added the melee attack (IMAGE_ATTACK, ATTACK_HITBOX, handleAttack with a new key press required, updateAttack, hitEnemies, getAttackFrame, drawAttackBox); possible in the air, no movement lock, cancelled by a hit or a roll
+2026-10-22 | movable-object.class.js | Added stopAnimation, getBoxRect, isOverlapping, drawRect; getHitbox, isColliding and drawHitbox use them
+2026-10-22 | enemy.class.js | Added the death animation (IMAGE_BEAR_DEATH, deadTicks, updateDeath): no damage after death, removed after deathTicks
+2026-10-22 | level.class.js | getCollidables skips dead enemies; added removeEnemy
+2026-10-22 | world.class.js | drawHitboxes also draws the attack box
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added character.attackTicks 30, attackHitStartTick 12, attackHitEndTick 18 and enemy.deathTicks 60 and documented them

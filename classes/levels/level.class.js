@@ -46,7 +46,11 @@ class Level {
     }
 
     getCollidables(){
-        return [...this.enemies];
+        return this.enemies.filter(enemy => !enemy.isDead());
+    }
+
+    removeEnemy(enemy){
+        this.enemies = this.enemies.filter(other => other != enemy);
     }
 
     getTileIdAt(x, y){
