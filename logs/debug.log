@@ -148,3 +148,7 @@
 2026-10-22 | fireball.class.js, status-bar.class.js, level.class.js, world.class.js | Use getTicksPerFrame, TICKS_PER_SECOND, createImage, tickDown, clampValue; Level got forEachCell for buildTiles and buildEnemies
 2026-10-22 | scripts/GAME-SETTINGS.md | Added TICKS_PER_SECOND to the list of values that are not settings
 2026-10-22 | character.class.js | updateObject split into updateStatus, updateDeadState, updateMovement, updateActions, updatePhysics, updateAnimation (same call order); updateSprite uses getSpriteState and a table of sprite players, added setJumpSprite
+2026-10-22 | classes/models/character-sprites.js | New data file CHARACTER_SPRITES with path and frame count per state for the fire wizard; hitboxes stay shared game constants so alternative characters play identically
+2026-10-22 | classes/models/character-movement.class.js | New parent class CharacterMovement (walking, jumping, rest, key helpers, wall) with the hooks isReadyOnGround, isBusy, isMovementLocked and hasInput
+2026-10-22 | character.class.js | Character extends CharacterMovement and takes a sprite set in the constructor; showProgressState, showLoopState and showFrameState replace the IMAGE constants and the setSprite override; handleRoll uses isReadyOnGround
+2026-10-22 | index.html | Included character-sprites.js and character-movement.class.js before character.class.js

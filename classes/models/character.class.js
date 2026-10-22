@@ -1,28 +1,9 @@
-const IMAGE_IDLE = './assets/image/01-wizard/Fire Wizard/Idle.png';
-const IMAGE_WALK = './assets/image/01-wizard/Fire Wizard/Walk.png';
-const IMAGE_JUMP = './assets/image/01-wizard/Fire Wizard/Jump.png';
-const IMAGE_REST = './assets/image/02-wizard-extras/Fire Wizard/Rest.png';
-const IMAGE_HURT = './assets/image/01-wizard/Fire Wizard/Hurt.png';
-const IMAGE_DEAD = './assets/image/01-wizard/Fire Wizard/Dead.png';
-const IMAGE_ROLL = './assets/image/02-wizard-extras/Fire Wizard/Roll.png';
-const IMAGE_ATTACK = './assets/image/02-wizard-extras/Fire Wizard/Attack_1.png';
-const IMAGE_CAST = './assets/image/01-wizard/Fire Wizard/Fireball.png';
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
 const ATTACK_HITBOX = { offsetX: 79, offsetY: 65, width: 51, height: 50 };
+const STANDING_STATES = ['idle', 'jump', 'hurt', 'dead', 'attack', 'cast'];
 
-class Character extends MovableObject{
-    settings = GAME_SETTINGS.character;
-    width = this.settings.width;
-    height = this.settings.height;
-    frameCount = 7;
-    hitbox = HITBOX_STANDING;
-    x = TILE_SIZE;
-    y = 9 * TILE_SIZE - this.height;
-    speed = this.settings.speed;
-    jumpPhase = 'none';
-    phaseTicks = 0;
-    idleTicks = 0;
+class Character extends CharacterMovement{
     maxHealth = this.settings.maxHealth;
     health = this.maxHealth;
     invincibleTicks = 0;
@@ -31,15 +12,17 @@ class Character extends MovableObject{
     rollCooldownLeft = 0;
     attackTicksLeft = 0;
     attackHits = [];
-    previousKeys = {};
     castTicksLeft = 0;
     castCooldownLeft = 0;
     maxEnergy = GAME_SETTINGS.energy.maxCharges;
     energy = GAME_SETTINGS.energy.startCharges;
 
-    constructor(){
+    constructor(spriteSet = CHARACTER_SPRITES.fireWizard){
         super();
-        this.setupSprites([IMAGE_IDLE, IMAGE_WALK, IMAGE_JUMP, IMAGE_REST, IMAGE_HURT, IMAGE_DEAD, IMAGE_ROLL, IMAGE_ATTACK, IMAGE_CAST]);
+        this.sprites = spriteSet;
+        this.hitbox = HITBOX_STANDING;
+        this.frameCount = this.sprites.idle.frames;
+        this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
         this.startAnimation();
     }
 
@@ -128,7 +111,7 @@ class Character extends MovableObject{
 
     updateDeathSprite(){
         this.deadTicks++;
-        this.setProgressSprite(IMAGE_DEAD, 6, this.deadTicks, this.settings.deadFrameTicks * 6);
+        this.showProgressState('dead', this.deadTicks, this.settings.deadFrameTicks * this.sprites.dead.frames);
     }
 
     updateSpeed(){
@@ -136,19 +119,23 @@ class Character extends MovableObject{
             this.speed = this.settings.rollSpeed;
             return;
         }
-        this.speed = this.onGround ? this.settings.speed : this.settings.speed * this.settings.airSpeedFactor;
-    }
-
-    isWalking(){
-        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
-    }
-
-    wantsJump(){
-        return this.world.keyboard.UP || this.world.keyboard.SPACE;
+        super.updateSpeed();
     }
 
     hasInput(){
-        return this.isWalking() || this.wantsJump() || this.wantsRoll() || this.wantsAttack() || this.wantsCast();
+        return super.hasInput() || this.wantsRoll() || this.wantsAttack() || this.wantsCast();
+    }
+
+    isMovementLocked(){
+        return super.isMovementLocked() || this.isHurt() || this.isRolling();
+    }
+
+    isReadyOnGround(){
+        return super.isReadyOnGround() && !this.isHurt() && !this.isRolling();
+    }
+
+    isBusy(){
+        return this.isRolling() || this.isAttacking() || this.isCasting();
     }
 
     isRolling(){
@@ -161,8 +148,7 @@ class Character extends MovableObject{
 
     handleRoll(){
         this.rollCooldownLeft = tickDown(this.rollCooldownLeft);
-        const CAN_ROLL = this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling();
-        if(this.wantsRoll() && CAN_ROLL && this.rollCooldownLeft == 0){
+        if(this.wantsRoll() && this.isReadyOnGround() && this.rollCooldownLeft == 0){
             this.rollTicksLeft = this.settings.rollTicks;
             this.attackTicksLeft = 0;
             this.castTicksLeft = 0;
@@ -178,13 +164,6 @@ class Character extends MovableObject{
         if(!this.isRolling()){
             this.rollCooldownLeft = this.settings.rollCooldownTicks;
         }
-    }
-
-    isNewPress(keyName){
-        const IS_PRESSED = this.world.keyboard[keyName];
-        const IS_NEW = IS_PRESSED && !this.previousKeys[keyName];
-        this.previousKeys[keyName] = IS_PRESSED;
-        return IS_NEW;
     }
 
     isAttacking(){
@@ -272,96 +251,6 @@ class Character extends MovableObject{
         this.energy = Math.min(this.energy + amount, this.maxEnergy);
     }
 
-    isMovementLocked(){
-        return this.jumpPhase == 'crouch' || this.jumpPhase == 'land' || this.isHurt() || this.isRolling();
-    }
-
-    moveByKeyboard(){
-        if(this.isMovementLocked()){
-            return;
-        }
-        if(this.world.keyboard.RIGHT){
-            this.moveRight();
-            this.otherDirection = false;
-        }
-        if(this.world.keyboard.LEFT){
-            this.moveLeft();
-            this.otherDirection = true;
-        }
-    }
-
-    limitToWall(){
-        const MAX_X = this.world.level.width - this.width + this.settings.rightWallOffset;
-        this.x = clampValue(this.x, this.settings.leftWallX, MAX_X);
-    }
-
-    handleJump(){
-        if(this.wantsJump() && this.onGround && this.jumpPhase == 'none' && !this.isHurt() && !this.isRolling()){
-            this.startPhase('crouch');
-        }
-    }
-
-    startPhase(phaseName){
-        this.jumpPhase = phaseName;
-        this.phaseTicks = 0;
-    }
-
-    launchJump(){
-        this.speedY = this.settings.jumpSpeed;
-        this.startPhase('air');
-    }
-
-    updateJumpPhase(){
-        this.phaseTicks++;
-        if(!this.onGround && this.jumpPhase != 'air'){
-            this.startPhase('air');
-        } else if(this.jumpPhase == 'crouch' && this.phaseTicks >= this.settings.crouchTicks){
-            this.launchJump();
-        } else if(this.jumpPhase == 'air' && this.onGround){
-            this.startPhase('land');
-        } else if(this.jumpPhase == 'land' && this.phaseTicks >= this.settings.landTicks){
-            this.startPhase('none');
-        }
-    }
-
-    getJumpFrame(){
-        if(this.jumpPhase == 'crouch'){
-            return this.getPhaseFrame(0, this.settings.crouchTicks);
-        }
-        if(this.jumpPhase == 'land'){
-            return this.getPhaseFrame(6, this.settings.landTicks);
-        }
-        return this.getAirFrame();
-    }
-
-    getPhaseFrame(startFrame, totalTicks){
-        return startFrame + getProgressFrame(this.phaseTicks, totalTicks, 3);
-    }
-
-    getAirFrame(){
-        if(this.speedY > this.settings.apexSpeed){
-            return 3;
-        }
-        if(this.speedY < -this.settings.apexSpeed){
-            return 5;
-        }
-        return 4;
-    }
-
-    updateIdleTicks(){
-        if(this.hasInput() || this.jumpPhase != 'none' || this.isRolling() || this.isAttacking() || this.isCasting()){
-            this.idleTicks = 0;
-        } else {
-            this.idleTicks++;
-        }
-    }
-
-    setSprite(path, count, fps){
-        super.setSprite(path, count, fps);
-        const IS_STANDING = [IMAGE_IDLE, IMAGE_JUMP, IMAGE_HURT, IMAGE_DEAD, IMAGE_ATTACK, IMAGE_CAST].includes(path);
-        this.hitbox = IS_STANDING ? HITBOX_STANDING : HITBOX_WALKING;
-    }
-
     getSpriteState(){
         const STATE_CHECKS = [
             ['hurt', this.isHurt()],
@@ -376,22 +265,38 @@ class Character extends MovableObject{
         return ACTIVE_STATE ? ACTIVE_STATE[0] : 'idle';
     }
 
-    updateSprite(){
-        const SPRITE_PLAYERS = {
-            hurt: () => this.setProgressSprite(IMAGE_HURT, 3, this.getHurtElapsed(), this.settings.hurtTicks),
-            roll: () => this.setProgressSprite(IMAGE_ROLL, 6, this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks),
-            attack: () => this.setProgressSprite(IMAGE_ATTACK, 5, this.getAttackElapsed(), this.settings.attackTicks),
-            cast: () => this.setProgressSprite(IMAGE_CAST, 8, this.settings.castTicks - this.castTicksLeft, this.settings.castTicks),
-            jump: () => this.setJumpSprite(),
-            walk: () => this.setSprite(IMAGE_WALK, 6, this.settings.walkFps),
-            rest: () => this.setProgressSprite(IMAGE_REST, 4, this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * 4),
-            idle: () => this.setSprite(IMAGE_IDLE, 7, this.settings.idleFps)
-        };
-        SPRITE_PLAYERS[this.getSpriteState()]();
+    getStateHitbox(stateName){
+        return STANDING_STATES.includes(stateName) ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
-    setJumpSprite(){
-        this.setSprite(IMAGE_JUMP, 9, 0);
-        this.currentFrame = this.getJumpFrame();
+    showProgressState(stateName, elapsedTicks, totalTicks){
+        const SPRITE = this.sprites[stateName];
+        this.hitbox = this.getStateHitbox(stateName);
+        this.setProgressSprite(SPRITE.path, SPRITE.frames, elapsedTicks, totalTicks);
+    }
+
+    showLoopState(stateName, fps){
+        const SPRITE = this.sprites[stateName];
+        this.hitbox = this.getStateHitbox(stateName);
+        this.setSprite(SPRITE.path, SPRITE.frames, fps);
+    }
+
+    showFrameState(stateName, frameIndex){
+        this.showLoopState(stateName, 0);
+        this.currentFrame = frameIndex;
+    }
+
+    updateSprite(){
+        const SPRITE_PLAYERS = {
+            hurt: () => this.showProgressState('hurt', this.getHurtElapsed(), this.settings.hurtTicks),
+            roll: () => this.showProgressState('roll', this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks),
+            attack: () => this.showProgressState('attack', this.getAttackElapsed(), this.settings.attackTicks),
+            cast: () => this.showProgressState('cast', this.settings.castTicks - this.castTicksLeft, this.settings.castTicks),
+            jump: () => this.showFrameState('jump', this.getJumpFrame()),
+            walk: () => this.showLoopState('walk', this.settings.walkFps),
+            rest: () => this.showProgressState('rest', this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * this.sprites.rest.frames),
+            idle: () => this.showLoopState('idle', this.settings.idleFps)
+        };
+        SPRITE_PLAYERS[this.getSpriteState()]();
     }
 }
