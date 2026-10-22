@@ -211,3 +211,4 @@
 2026-10-22 | enemy.class.js | Added showFrameState
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md, index.html | Added rayCooldownTicks, rayWindupTicks, rayTicks, rayDamage, raySpeedFactor, rayScale, rayMaxHeight to mageBoss, included boss-ray.class.js and documented the values
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Playtest setup: debug.showHitboxes false, debug.startInBossLevel false (the game starts in level one again), energy.startCharges 1; defaults in the docs updated
+2026-10-22 | game-guide.html | New simple page in the main folder describing the controls and the collectibles (key, pizza, donut) with sprite images, styled like tile-reference.html
