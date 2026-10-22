@@ -152,3 +152,10 @@
 2026-10-22 | classes/models/character-movement.class.js | New parent class CharacterMovement (walking, jumping, rest, key helpers, wall) with the hooks isReadyOnGround, isBusy, isMovementLocked and hasInput
 2026-10-22 | character.class.js | Character extends CharacterMovement and takes a sprite set in the constructor; showProgressState, showLoopState and showFrameState replace the IMAGE constants and the setSprite override; handleRoll uses isReadyOnGround
 2026-10-22 | index.html | Included character-sprites.js and character-movement.class.js before character.class.js
+2026-10-22 | tile.class.js | FIRST_MARKER_ID lowered to 60, added PLAYER_START_ID 60
+2026-10-22 | level.class.js | Added playerStart and buildPlayerStart (marker 60 in the map)
+2026-10-22 | character-movement.class.js | Removed the fixed start position, added placeAt(start)
+2026-10-22 | world.class.js | level is created before the character, the character is placed at the level player start
+2026-10-22 | classes/levels/level-one.js | Player start marker 60 in row 8 column 1
+2026-10-22 | classes/levels/tile-reference.html | Marker section now lists the player start (60) and the number ranges
+2026-10-22 | scripts/GAME-SETTINGS.md | Corrected hitDamage, enemy.maxHealth and showHitboxes and rewrote the list of values that are not settings

@@ -4,8 +4,8 @@ const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
 const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
 
 class World {
-    character = new Character();
     level = new Level(LEVEL_ONE);
+    character = new Character();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
     healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
@@ -19,6 +19,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.character.placeAt(this.level.playerStart);
         this.setWorld();
         this.drawWorld();
     }

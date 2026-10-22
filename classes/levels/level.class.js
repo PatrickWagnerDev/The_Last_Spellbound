@@ -3,6 +3,7 @@ class Level {
     tiles = [];
     enemies = [];
     backgroundObjects = [];
+    playerStart = { column: 0, row: 0 };
     tilesetImage;
     width;
     height;
@@ -14,7 +15,16 @@ class Level {
         this.tilesetImage = createImage(TILESET_IMAGE);
         this.buildTiles();
         this.buildEnemies();
+        this.buildPlayerStart();
         this.buildBackgrounds(levelData.backgroundLayers);
+    }
+
+    buildPlayerStart(){
+        this.forEachCell((cellId, column, row) => {
+            if(cellId == PLAYER_START_ID){
+                this.playerStart = { column, row };
+            }
+        });
     }
 
     forEachCell(callback){

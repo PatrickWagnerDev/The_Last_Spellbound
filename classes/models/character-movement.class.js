@@ -2,13 +2,16 @@ class CharacterMovement extends MovableObject{
     settings = GAME_SETTINGS.character;
     width = this.settings.width;
     height = this.settings.height;
-    x = TILE_SIZE;
-    y = 9 * TILE_SIZE - this.height;
     speed = this.settings.speed;
     jumpPhase = 'none';
     phaseTicks = 0;
     idleTicks = 0;
     previousKeys = {};
+
+    placeAt(start){
+        this.x = start.column * TILE_SIZE;
+        this.y = (start.row + 1) * TILE_SIZE - this.height;
+    }
 
     updateSpeed(){
         this.speed = this.onGround ? this.settings.speed : this.settings.speed * this.settings.airSpeedFactor;

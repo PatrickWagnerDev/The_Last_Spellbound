@@ -15,7 +15,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 
 | Variable | Default | Effect |
 |---|---|---|
-| `hitDamage` | `1` | Damage of every single hit, the same for all attackers. |
+| `hitDamage` | `1` | Damage of every melee hit and of every hit an enemy deals. The fireball has its own damage (`fireball.damage`). |
 | `invincibleTicks` | `60` | Ticks the character cannot be hurt again after a hit (60 ticks = 1 second). Without it, an enemy would drain all health within a few ticks because the hitboxes overlap every tick. |
 
 ## character
@@ -56,7 +56,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 |---|---|---|
 | `width` | `80` | Drawn width in px. The sprite frame is 40x40, multiples of 40 keep the pixels even. If you change it, also adjust the hitbox in `enemy.class.js`. |
 | `height` | `80` | Drawn height in px. Same note as `width`. |
-| `maxHealth` | `2` | Health points of the bear. Other enemy types will get their own values. Enemies cannot be hurt yet. |
+| `maxHealth` | `2` | Health points of the bear. Other enemy types will get their own values. Each hit costs the damage of the attacker, at 0 the enemy dies. |
 | `speed` | `0.5` | Walking speed in px per tick. Values below 1 look slightly jerky because drawing rounds to whole pixels. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). The bear stands still, is pushed away from the attacker and turns towards it. |
@@ -95,14 +95,20 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 
 | Variable | Default | Effect |
 |---|---|---|
-| `showHitboxes` | `true` | Draws the hitboxes (green, red while an enemy touches the character). Set to `false` for release. |
+| `showHitboxes` | `true` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 
 ## Not part of the settings
 
+These values are fixed in the code on purpose.
+
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character.class.js`, `enemy.class.js` | They are facts of the sprite sheets. |
-| Hitbox offsets | `character.class.js`, `enemy.class.js` | They are measured from the sprites. |
-| Parallax factors, enemy spawns, tile map | `classes/levels/level-one.js` | They belong to the level. |
-| `TILE_SIZE`, `WALKABLE_TILE_IDS` | `tile.class.js` | They depend on the tileset. |
+| Image paths and frame counts | `character-sprites.js`, `enemy.class.js`, `fireball.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
+| Hitbox of the bear and of the fireball, `FIREBALL_SPAWN` | `enemy.class.js`, `fireball.class.js` | They are measured from the sprites. |
+| Tile map with the markers for the player start (60), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
+| `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
+| `ENEMY_MARKERS` | `enemy.class.js` | It connects a marker number with an enemy class. |
+| `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
+| Images of the status bars | `world.class.js` | They are facts of the bar images. |
 | `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |
