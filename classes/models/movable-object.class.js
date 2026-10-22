@@ -29,6 +29,26 @@ class MovableObject extends DrawableObject{
         this.currentPath = paths[0];
     }
 
+    showLoopState(stateName, fps){
+        const SPRITE_DATA = this.sprites[stateName];
+        this.applyStateHitbox(stateName);
+        this.setSprite(SPRITE_DATA.path, SPRITE_DATA.frames, fps);
+    }
+
+    showFrameState(stateName, frameIndex){
+        this.showLoopState(stateName, 0);
+        this.currentFrame = frameIndex;
+    }
+
+    showProgressState(stateName, elapsedTicks, totalTicks){
+        const SPRITE_DATA = this.sprites[stateName];
+        this.applyStateHitbox(stateName);
+        this.setProgressSprite(SPRITE_DATA.path, SPRITE_DATA.frames, elapsedTicks, totalTicks);
+    }
+
+    applyStateHitbox(stateName){
+    }
+
     stopAnimation(){
         clearInterval(this.animationInterval);
     }

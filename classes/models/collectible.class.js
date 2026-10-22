@@ -1,6 +1,6 @@
 const IMAGE_PICKUP = './assets/image/06-tileset/Objects_Animated/Pickup.png';
 
-class Collectible extends MovableObject {
+class Collectible extends LevelItem {
     frameWidth = 16;
     frameHeight = 16;
     isCollected = false;

@@ -1,5 +1,6 @@
 class Enemy extends MovableObject {
     deadTicks = 0;
+    isBoss = false;
 
     constructor(column, row, config){
         super();
@@ -35,21 +36,6 @@ class Enemy extends MovableObject {
             this.startKnockback(source);
             this.otherDirection = this.knockbackDirection > 0;
         }
-    }
-
-    showLoopState(stateName, fps){
-        const SPRITE_DATA = this.sprites[stateName];
-        this.setSprite(SPRITE_DATA.path, SPRITE_DATA.frames, fps);
-    }
-
-    showFrameState(stateName, frameIndex){
-        this.showLoopState(stateName, 0);
-        this.currentFrame = frameIndex;
-    }
-
-    showProgressState(stateName, elapsedTicks, totalTicks){
-        const SPRITE_DATA = this.sprites[stateName];
-        this.setProgressSprite(SPRITE_DATA.path, SPRITE_DATA.frames, elapsedTicks, totalTicks);
     }
 
     updateObject(){

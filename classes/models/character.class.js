@@ -162,8 +162,16 @@ class Character extends CharacterMovement{
         return this.isRolling() || this.isAttacking() || this.isCasting();
     }
 
+    isActionFree(){
+        return !this.isAttacking() && !this.isCasting() && !this.isRolling() && !this.isHurt();
+    }
+
     isRolling(){
         return this.rollTicksLeft > 0;
+    }
+
+    getRollElapsed(){
+        return this.settings.rollTicks - this.rollTicksLeft;
     }
 
     wantsRoll(){
@@ -200,7 +208,7 @@ class Character extends CharacterMovement{
 
     handleAttack(){
         const JUST_PRESSED = this.isNewPress('ATTACK');
-        const CAN_ATTACK = !this.isAttacking() && !this.isCasting() && !this.isRolling() && !this.isHurt();
+        const CAN_ATTACK = this.isActionFree();
         if(JUST_PRESSED && CAN_ATTACK){
             this.attackTicksLeft = this.settings.attackTicks;
             this.attackHits = [];
@@ -246,13 +254,17 @@ class Character extends CharacterMovement{
         return this.castTicksLeft > 0;
     }
 
+    getCastElapsed(){
+        return this.settings.castTicks - this.castTicksLeft;
+    }
+
     wantsCast(){
         return this.world.keyboard.SHOOT;
     }
 
     handleCast(){
         const JUST_PRESSED = this.isNewPress('SHOOT');
-        const CAN_CAST = !this.isCasting() && !this.isAttacking() && !this.isRolling() && !this.isHurt() && this.castCooldownLeft == 0 && this.energy >= 1;
+        const CAN_CAST = this.isActionFree() && this.castCooldownLeft == 0 && this.energy >= 1;
         this.castCooldownLeft = tickDown(this.castCooldownLeft);
         if(JUST_PRESSED && CAN_CAST){
             this.castTicksLeft = this.settings.castTicks;
@@ -263,7 +275,7 @@ class Character extends CharacterMovement{
         if(!this.isCasting()){
             return;
         }
-        if(this.settings.castTicks - this.castTicksLeft == this.settings.castReleaseTick){
+        if(this.getCastElapsed() == this.settings.castReleaseTick){
             this.world.addProjectile(new Fireball(this));
             this.castCooldownLeft = this.settings.castCooldownTicks;
             this.energy -= 1;
@@ -293,29 +305,16 @@ class Character extends CharacterMovement{
         return STANDING_STATES.includes(stateName) ? HITBOX_STANDING : HITBOX_WALKING;
     }
 
-    showProgressState(stateName, elapsedTicks, totalTicks){
-        const SPRITE_DATA = this.sprites[stateName];
+    applyStateHitbox(stateName){
         this.hitbox = this.getStateHitbox(stateName);
-        this.setProgressSprite(SPRITE_DATA.path, SPRITE_DATA.frames, elapsedTicks, totalTicks);
-    }
-
-    showLoopState(stateName, fps){
-        const SPRITE_DATA = this.sprites[stateName];
-        this.hitbox = this.getStateHitbox(stateName);
-        this.setSprite(SPRITE_DATA.path, SPRITE_DATA.frames, fps);
-    }
-
-    showFrameState(stateName, frameIndex){
-        this.showLoopState(stateName, 0);
-        this.currentFrame = frameIndex;
     }
 
     updateSprite(){
         const SPRITE_PLAYERS = {
             hurt: () => this.showProgressState('hurt', this.getHurtElapsed(), this.settings.hurtTicks),
-            roll: () => this.showProgressState('roll', this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks),
+            roll: () => this.showProgressState('roll', this.getRollElapsed(), this.settings.rollTicks),
             attack: () => this.showProgressState('attack', this.getAttackElapsed(), this.settings.attackTicks),
-            cast: () => this.showProgressState('cast', this.settings.castTicks - this.castTicksLeft, this.settings.castTicks),
+            cast: () => this.showProgressState('cast', this.getCastElapsed(), this.settings.castTicks),
             jump: () => this.showFrameState('jump', this.getJumpFrame()),
             walk: () => this.showLoopState('walk', this.settings.walkFps),
             rest: () => this.showProgressState('rest', this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * this.sprites.rest.frames),

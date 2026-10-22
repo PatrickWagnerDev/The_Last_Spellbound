@@ -4,7 +4,7 @@ const IMAGES_PORTAL = [
     './assets/image/08-magic-effects/PNG/Spiral/Spiral3.png'
 ];
 
-class Portal extends MovableObject {
+class Portal extends LevelItem {
     settings = GAME_SETTINGS.portal;
     frameWidth = 128;
     frameHeight = 128;
@@ -19,10 +19,6 @@ class Portal extends MovableObject {
         this.centerY = (row + 1) * TILE_SIZE - this.settings.size / 2;
         this.updateSize();
         this.startAnimation();
-    }
-
-    isCollectable(character){
-        return false;
     }
 
     isAppeared(){

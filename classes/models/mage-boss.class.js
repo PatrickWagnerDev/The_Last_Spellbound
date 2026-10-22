@@ -17,6 +17,7 @@ const BOSS_FIREBALL_SPAWN = {
 const BOSS_RAY_SPAWN = { offsetX: 11, offsetY: 45.5 };
 
 class MageBoss extends Enemy {
+    isBoss = true;
     state = 'wait';
     stateTicks = 0;
     vanishSide = 1;

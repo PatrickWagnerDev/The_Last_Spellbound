@@ -1,6 +1,6 @@
 const IMAGE_BOSS_FIREBALL = './assets/image/04-bosses/1 Mage/Attack2_3_FireBall.png';
 
-class BossFireball extends MovableObject {
+class BossFireball extends Projectile {
     settings = GAME_SETTINGS.mageBoss;
     frameWidth = 10;
     frameHeight = 10;
@@ -21,26 +21,8 @@ class BossFireball extends MovableObject {
 
     updateObject(){
         this.moveForward();
-        if(this.isOutOfLevel() || this.hitsCharacter()){
+        if(this.isOutOfLevel() || this.damagePlayer(this.settings.fireballDamage, this)){
             this.removeSelf();
         }
-    }
-
-    hitsCharacter(){
-        const PLAYER_CHARACTER = this.world.character;
-        if(!PLAYER_CHARACTER.canBeHurt() || !this.isColliding(PLAYER_CHARACTER)){
-            return false;
-        }
-        PLAYER_CHARACTER.receiveHit(this.settings.fireballDamage, this);
-        return true;
-    }
-
-    isOutOfLevel(){
-        return this.x < -this.width || this.x > this.world.level.width;
-    }
-
-    removeSelf(){
-        this.stopAnimation();
-        this.world.removeProjectile(this);
     }
 }

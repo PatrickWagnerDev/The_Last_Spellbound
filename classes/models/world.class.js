@@ -25,8 +25,7 @@ class World {
 
     constructor(canvas, keyboard, levelData, onGameEnd){
         this.onGameEnd = onGameEnd;
-        this.level = new Level(levelData);
-        this.restartLevelData = levelData.restartLevel ?? levelData;
+        this.setLevel(levelData);
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -56,12 +55,24 @@ class World {
         this.level.items.push(item);
     }
 
-    loadLevel(levelData){
-        this.level.stopAll();
-        this.projectiles.forEach(projectile => projectile.stopAnimation());
-        this.projectiles = [];
+    setLevel(levelData){
         this.level = new Level(levelData);
         this.restartLevelData = levelData.restartLevel ?? levelData;
+    }
+
+    clearProjectiles(){
+        this.projectiles.forEach(projectile => projectile.stopAnimation());
+        this.projectiles = [];
+    }
+
+    findBoss(){
+        return this.level.enemies.find(enemy => enemy.isBoss);
+    }
+
+    loadLevel(levelData){
+        this.level.stopAll();
+        this.clearProjectiles();
+        this.setLevel(levelData);
         this.setWorld();
         this.character.placeAt(this.level.playerStart);
         this.cameraX = 0;
@@ -71,7 +82,7 @@ class World {
         cancelAnimationFrame(this.frameRequest);
         this.level.stopAll();
         this.character.stopAnimation();
-        this.projectiles.forEach(projectile => projectile.stopAnimation());
+        this.clearProjectiles();
         this.transition?.stopAnimation();
         [this.healthBar, this.energyBar, ...this.bossBars].forEach(bar => bar.stopBlink());
     }
@@ -93,15 +104,14 @@ class World {
     }
 
     hasBossDefeated(){
-        const BOSS_ENEMY = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        const BOSS_ENEMY = this.findBoss();
         return BOSS_ENEMY?.hasDeathFinished() ?? false;
     }
 
     endGame(isVictory){
         this.isGameEnded = true;
         if(isVictory){
-            this.projectiles.forEach(projectile => projectile.stopAnimation());
-            this.projectiles = [];
+            this.clearProjectiles();
             this.keyboard = new Keyboard();
         }
         this.onGameEnd?.(isVictory);
@@ -223,7 +233,7 @@ class World {
     }
 
     drawBossBars(){
-        const BOSS_ENEMY = this.level.enemies.find(enemy => enemy instanceof MageBoss);
+        const BOSS_ENEMY = this.findBoss();
         if(!BOSS_ENEMY || (BOSS_ENEMY.state == 'wait' && BOSS_ENEMY.health == BOSS_ENEMY.maxHealth)){
             return;
         }

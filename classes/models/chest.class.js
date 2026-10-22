@@ -1,6 +1,6 @@
 const IMAGE_CHEST = './assets/image/06-tileset/Objects_Animated/Golden_Chest_Open.png';
 
-class Chest extends MovableObject {
+class Chest extends LevelItem {
     settings = GAME_SETTINGS.chest;
     width = 32 * this.settings.scale;
     height = 32 * this.settings.scale;
@@ -21,10 +21,6 @@ class Chest extends MovableObject {
         this.x = column * TILE_SIZE + (TILE_SIZE - 26 * this.settings.scale) / 2;
         this.y = (row + 1) * TILE_SIZE - this.height;
         this.startAnimation();
-    }
-
-    isCollectable(character){
-        return false;
     }
 
     isNearCharacter(character){

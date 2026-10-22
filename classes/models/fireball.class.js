@@ -1,7 +1,7 @@
 const IMAGE_FIREBALL = './assets/image/01-wizard/Fire Wizard/Charge.png';
 const FIREBALL_SPAWN = { offsetX: 16, offsetY: 28 };
 
-class Fireball extends MovableObject {
+class Fireball extends Projectile {
     settings = GAME_SETTINGS.fireball;
     width = 128;
     height = 128;
@@ -70,14 +70,5 @@ class Fireball extends MovableObject {
         if(this.stateTicks >= getTicksPerFrame(this.settings.flightFps)){
             this.removeSelf();
         }
-    }
-
-    removeSelf(){
-        this.stopAnimation();
-        this.world.removeProjectile(this);
-    }
-
-    isOutOfLevel(){
-        return this.x < -this.width || this.x > this.world.level.width;
     }
 }
