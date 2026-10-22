@@ -63,6 +63,9 @@ const GAME_SETTINGS = {
         scale: 2,
         healAmount: 1
     },
+    donut: {
+        scale: 2
+    },
     energy: {
         maxCharges: 5,
         startCharges: 5

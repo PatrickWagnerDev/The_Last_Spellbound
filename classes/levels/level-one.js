@@ -1,14 +1,14 @@
 const LEVEL_ONE = {
     mapRows: [
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 61, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
-        [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
+        [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 62, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 32, 33, 34, XX, XX, XX, 32, 33, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 32, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, 60, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, XX, XX, XX, 32, 33, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 32, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, 69, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 32, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, 32, 33, 33, 34, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
-        [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, 61, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
+        [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, 70, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
     ],
     backgroundLayers: [
