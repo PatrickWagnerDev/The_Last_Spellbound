@@ -1,6 +1,10 @@
+const IMAGE_HEALTH_EMPTY = './assets/image/09-ui/2 Bars/Healthbar_empty.png';
+const IMAGE_HEALTH_FULL = './assets/image/09-ui/2 Bars/Healthbar_full.png';
+
 class World {
     character = new Character();
     level = new Level(LEVEL_ONE);
+    healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
     ctx;
     canvas;
     keyboard;
@@ -52,7 +56,7 @@ class World {
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
-        this.drawDebugHealth();
+        this.drawStatusBars();
         requestAnimationFrame(() => this.drawWorld());
     }
 
@@ -70,12 +74,8 @@ class World {
         });
     }
 
-    drawDebugHealth(){
-        if(!this.showHitboxes){
-            return;
-        }
-        this.ctx.fillStyle = 'white';
-        this.ctx.font = '16px sans-serif';
-        this.ctx.fillText('HP ' + this.character.health, 12, 24);
+    drawStatusBars(){
+        this.healthBar.setValue(this.character.health, this.character.maxHealth);
+        this.healthBar.draw(this.ctx);
     }
 }

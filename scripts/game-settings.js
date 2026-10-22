@@ -33,6 +33,13 @@ const GAME_SETTINGS = {
         speed: 0.5,
         animationFps: 8
     },
+    ui: {
+        statusBarScale: 2,
+        statusBarX: 12,
+        statusBarY: 12,
+        blinkTicks: 60,
+        blinkIntervalTicks: 6
+    },
     debug: {
         showHitboxes: true
     }

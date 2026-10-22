@@ -51,6 +51,16 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `speed` | `0.5` | Walking speed in px per tick. Values below 1 look slightly jerky because drawing rounds to whole pixels. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 
+## ui
+
+| Variable | Default | Effect |
+|---|---|---|
+| `statusBarScale` | `2` | Size factor of the status bars (the bar image is 96x12 px). Whole numbers keep the pixels sharp. |
+| `statusBarX` | `12` | Distance of the health bar from the left edge of the canvas in px. |
+| `statusBarY` | `12` | Distance of the health bar from the top edge of the canvas in px. |
+| `blinkTicks` | `60` | How long a lost segment of a bar blinks before it stays empty (60 ticks = 1 second). |
+| `blinkIntervalTicks` | `6` | Ticks the blinking segment is visible or hidden (6 ticks = 0.1 second). |
+
 ## debug
 
 | Variable | Default | Effect |
