@@ -138,3 +138,5 @@
 2026-10-22 | fireball.class.js, enemy.class.js | Renamed fly to flyForward and patrol to patrolPlatform; TARGET to HIT_TARGET
 2026-10-22 | status-bar.class.js, movable-object.class.js, character.class.js | Renamed constants PHASE to BLINK_PHASE and ELAPSED to ELAPSED_TICKS
 2026-10-22 | world.class.js | Fixed the missing space in the healthBar field
+2026-10-22 | drawable-object.class.js | Added getProgressFrame(elapsedTicks, totalTicks, frameTotal) as the one place that maps elapsed time to a frame
+2026-10-22 | movable-object.class.js, character.class.js, enemy.class.js | getHurtFrame, getRollFrame, getAttackFrame, getCastFrame, getPhaseFrame, getRestFrame, the death frame of the character and the death frame of the bear use getProgressFrame

@@ -49,6 +49,10 @@ class DrawableObject{
         }
     }
 
+    getProgressFrame(elapsedTicks, totalTicks, frameTotal){
+        return Math.min(Math.floor(elapsedTicks / (totalTicks / frameTotal)), frameTotal - 1);
+    }
+
     isFlipped(){
         return this.otherDirection !== this.spriteFacesLeft;
     }

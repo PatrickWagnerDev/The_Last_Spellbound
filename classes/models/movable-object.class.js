@@ -130,7 +130,6 @@ class MovableObject extends DrawableObject{
     }
 
     getHurtFrame(frameTotal){
-        const ELAPSED_TICKS = this.settings.hurtTicks - this.hurtTicksLeft;
-        return Math.min(Math.floor(ELAPSED_TICKS / (this.settings.hurtTicks / frameTotal)), frameTotal - 1);
+        return this.getProgressFrame(this.settings.hurtTicks - this.hurtTicksLeft, this.settings.hurtTicks, frameTotal);
     }
 }

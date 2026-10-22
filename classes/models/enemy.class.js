@@ -55,7 +55,7 @@ class Enemy extends MovableObject {
         this.applyGravity();
         this.deadTicks++;
         this.setSprite(IMAGE_BEAR_DEATH, 6, 0);
-        this.currentFrame = Math.min(Math.floor(this.deadTicks / (this.settings.deathTicks / 6)), 5);
+        this.currentFrame = this.getProgressFrame(this.deadTicks, this.settings.deathTicks, 6);
         if(this.deadTicks >= this.settings.deathTicks){
             this.stopAnimation();
             this.world.level.removeEnemy(this);

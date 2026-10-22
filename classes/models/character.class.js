@@ -109,7 +109,7 @@ class Character extends MovableObject{
     updateDeathSprite(){
         this.deadTicks++;
         this.setSprite(IMAGE_DEAD, 6, 0);
-        this.currentFrame = Math.min(Math.floor(this.deadTicks / this.settings.deadFrameTicks), this.frameCount - 1);
+        this.currentFrame = this.getProgressFrame(this.deadTicks, this.settings.deadFrameTicks * 6, 6);
     }
 
     updateSpeed(){
@@ -164,8 +164,7 @@ class Character extends MovableObject{
     }
 
     getRollFrame(){
-        const FRAME_INDEX = Math.floor((this.settings.rollTicks - this.rollTicksLeft) / (this.settings.rollTicks / 6));
-        return Math.min(FRAME_INDEX, 5);
+        return this.getProgressFrame(this.settings.rollTicks - this.rollTicksLeft, this.settings.rollTicks, 6);
     }
 
     isAttacking(){
@@ -217,8 +216,7 @@ class Character extends MovableObject{
     }
 
     getAttackFrame(){
-        const FRAME_INDEX = Math.floor(this.getAttackElapsed() / (this.settings.attackTicks / 5));
-        return Math.min(FRAME_INDEX, 4);
+        return this.getProgressFrame(this.getAttackElapsed(), this.settings.attackTicks, 5);
     }
 
     drawAttackBox(ctx){
@@ -265,8 +263,7 @@ class Character extends MovableObject{
     }
 
     getCastFrame(){
-        const ELAPSED_TICKS = this.settings.castTicks - this.castTicksLeft;
-        return Math.min(Math.floor(ELAPSED_TICKS / (this.settings.castTicks / 8)), 7);
+        return this.getProgressFrame(this.settings.castTicks - this.castTicksLeft, this.settings.castTicks, 8);
     }
 
     isMovementLocked(){
@@ -332,8 +329,7 @@ class Character extends MovableObject{
     }
 
     getPhaseFrame(startFrame, totalTicks){
-        const FRAME_INDEX = Math.floor(this.phaseTicks / (totalTicks / 3));
-        return startFrame + Math.min(FRAME_INDEX, 2);
+        return startFrame + this.getProgressFrame(this.phaseTicks, totalTicks, 3);
     }
 
     getAirFrame(){
@@ -355,8 +351,7 @@ class Character extends MovableObject{
     }
 
     getRestFrame(){
-        const FRAME_INDEX = Math.floor((this.idleTicks - this.settings.restDelayTicks) / this.settings.restFrameTicks);
-        return Math.min(FRAME_INDEX, this.frameCount - 1);
+        return this.getProgressFrame(this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * this.frameCount, this.frameCount);
     }
 
     setSprite(path, count, fps){
