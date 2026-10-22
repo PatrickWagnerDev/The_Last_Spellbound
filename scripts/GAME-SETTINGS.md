@@ -47,6 +47,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `restFrameTicks` | `15` | Ticks per frame of the sit-down animation (4 frames, 15 = 1 second in total). |
 | `idleFps` | `5` | Animation speed of the idle sprite in frames per second. |
 | `walkFps` | `8` | Animation speed of the walk sprite in frames per second. |
+| `edgeTolerance` | `12` | How far in px the character can be past the edge of a platform before it falls (the support is checked at the center of the hitbox and 12 px to each side). It also lets a jump land on a platform that was just missed. Enemies do not use it. |
 | `leftWallX` | `-60` | Smallest allowed x of the character box. `0` stops the box at the level start, a negative value lets the figure walk closer to the edge (`-60` matches the figure inside the sprite). |
 | `rightWallOffset` | `60` | How many px the character box may reach past the level end. Counterpart to `leftWallX`. |
 

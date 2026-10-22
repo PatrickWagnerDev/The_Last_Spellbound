@@ -62,15 +62,22 @@ class MovableObject extends DrawableObject{
     }
 
     landOnTile(previousFeet){
-        const FEET_X = this.x + this.width / 2;
         const FEET_Y = this.y + this.height;
         const TILE_TOP = Math.floor(FEET_Y / TILE_SIZE) * TILE_SIZE;
-        if(!this.world.level.isWalkableAt(FEET_X, FEET_Y) || previousFeet > TILE_TOP){
+        if(!this.hasSupportAt(FEET_Y) || previousFeet > TILE_TOP){
             return false;
         }
         this.y = TILE_TOP - this.height;
         this.speedY = 0;
         return true;
+    }
+
+    hasSupportAt(feetY){
+        return this.getSupportXs().some(feetX => this.world.level.isWalkableAt(feetX, feetY));
+    }
+
+    getSupportXs(){
+        return [this.x + this.width / 2];
     }
 
     getBoxRect(box){

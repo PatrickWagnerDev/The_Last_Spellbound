@@ -128,6 +128,12 @@ class Character extends CharacterMovement{
         this.showProgressState('dead', this.deadTicks, this.settings.deadFrameTicks * this.sprites.dead.frames);
     }
 
+    getSupportXs(){
+        const CENTER_X = getRectCenterX(this.getHitbox());
+        const TOLERANCE = this.settings.edgeTolerance;
+        return [CENTER_X - TOLERANCE, CENTER_X, CENTER_X + TOLERANCE];
+    }
+
     hasDeathFinished(){
         return this.isDead() && this.deadTicks >= this.settings.deadFrameTicks * this.sprites.dead.frames;
     }
