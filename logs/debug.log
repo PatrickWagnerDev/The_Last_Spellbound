@@ -215,3 +215,5 @@
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Reset to the test mode: debug.startInBossLevel true, debug.showHitboxes true, energy.startCharges 5; defaults in the docs updated
 2026-10-22 | status-bar.class.js, world.class.js | StatusBar accepts options.scale; World shows the boss health as bossBars (5 small health bars in a row at the bottom center, 3 HP each, per-bar blink) once the boss has seen the character or lost health, hidden when the boss is removed
 2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Added ui.bossBarScale, bossBarGap, bossBarMargin, bossBarHealthPerBar and documented them
+2026-10-22 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | ui.bossBarGap 0 so the boss health bars sit directly next to each other; default in the docs updated
+2026-10-22 | scripts/GAME-SETTINGS.md | Documented the new defaults mageBoss.fireballCooldownTicks 500 and rayCooldownTicks 1200 (changed by the user in game-settings.js)
