@@ -114,7 +114,7 @@ const GAME_SETTINGS = {
     },
     energy: {
         maxCharges: 5,
-        startCharges: 1
+        startCharges: 5
     },
     ui: {
         statusBarScale: 2,
@@ -128,7 +128,7 @@ const GAME_SETTINGS = {
         blinkIntervalTicks: 6
     },
     debug: {
-        startInBossLevel: false,
-        showHitboxes: false
+        startInBossLevel: true,
+        showHitboxes: true
     }
 };
