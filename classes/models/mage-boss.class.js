@@ -89,6 +89,7 @@ class MageBoss extends Enemy {
         if(this.isCharacterInSight()){
             this.rayCooldownLeft = this.settings.rayCooldownTicks;
             this.startSneer();
+            soundManager.playMusic('bossMusic');
         }
     }
 
@@ -184,6 +185,7 @@ class MageBoss extends Enemy {
         }
         this.attackVariant = ATTACK_VARIANT;
         this.setState('attack');
+        soundManager.playSound('bossFireball');
         return true;
     }
 

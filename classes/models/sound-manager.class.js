@@ -22,18 +22,21 @@ const SOUND_VOLUMES = {
     portalExit: 0.4,
     enemyHit: 0.4,
     bearDeath: 0.4,
-    bossDeath: 0.2
+    bossDeath: 0.2,
+    bossFireball: 0.4
 };
 const LOOP_RATES = {
     walk: 1.1
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
-    forestMusic: 0.3
+    forestMusic: 0.3,
+    bossMusic: 0.1
 };
 const MUSIC_PATHS = {
     menuMusic: './assets/sounds/628385__davo32__metal-forest.mp3',
-    forestMusic: './assets/sounds/785711__16pixel__fantasy-forest.mp3'
+    forestMusic: './assets/sounds/785711__16pixel__fantasy-forest.mp3',
+    bossMusic: './assets/sounds/443128__sirkoto51__boss-battle-loop-3.mp3'
 };
 const SOUND_PATHS = {
     menuClick: './assets/sounds/873105__heyheytheree__tab-rpg-psx-ui-sfx-free.mp3',
@@ -58,7 +61,8 @@ const SOUND_PATHS = {
     portalExit: './assets/sounds/697634__bigdino1995__portal-reverse.mp3',
     enemyHit: './assets/sounds/273563__n_audioman__hit_hurt7.mp3',
     bearDeath: './assets/sounds/704635__zulfish__monster-dying.mp3',
-    bossDeath: './assets/sounds/500272__bigspider95__enimey_dead.mp3'
+    bossDeath: './assets/sounds/500272__bigspider95__enimey_dead.mp3',
+    bossFireball: './assets/sounds/714744__fall-e__interface-magic-fireball-bell-spell.mp3'
 };
 
 class SoundManager {

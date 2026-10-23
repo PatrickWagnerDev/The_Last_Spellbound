@@ -21,7 +21,10 @@ class BossFireball extends Projectile {
 
     updateObject(){
         this.moveForward();
-        if(this.isOutOfLevel() || this.damagePlayer(this.settings.fireballDamage, this)){
+        if(this.isOutOfLevel()){
+            this.removeSelf();
+        } else if(this.damagePlayer(this.settings.fireballDamage, this)){
+            soundManager.playSound('fireballImpact');
             this.removeSelf();
         }
     }
