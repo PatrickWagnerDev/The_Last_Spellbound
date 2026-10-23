@@ -17,5 +17,6 @@ const LEVEL_ONE = {
         { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees1.png', factor: 0.5 },
         { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
     ],
+    music: 'forestMusic',
     getNextLevel: () => LEVEL_ONE_BOSS
 };

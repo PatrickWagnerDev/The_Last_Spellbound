@@ -36,7 +36,6 @@ function startGame(){
 }
 
 function finishStartGame(){
-    soundManager.stopMusic();
     createWorld(getStartLevelData());
     updateStartScreenUi(false);
 }
@@ -57,6 +56,7 @@ function showStartScreen(){
 
 function createWorld(levelData){
     gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameEnd);
+    soundManager.playMusic(levelData.music);
 }
 
 function updateKey(event, isPressed){
