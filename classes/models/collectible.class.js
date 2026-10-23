@@ -32,6 +32,7 @@ class Collectible extends LevelItem {
     }
 
     collectItem(character){
+        soundManager.playSound('collect');
         const CENTER_X = this.x + this.width / 2;
         const CENTER_Y = this.y + this.height / 2;
         this.applyEffect(character);

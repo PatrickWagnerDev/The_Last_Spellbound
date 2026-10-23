@@ -49,20 +49,20 @@ class Character extends CharacterMovement{
         this.applyGravity();
         this.limitToWall();
         this.updateDeathSprite();
-        soundManager.stopLoop('walk');
+        this.stopLoopSounds();
     }
 
     isFrozen(){
         const IS_FROZEN = super.isFrozen();
         if(IS_FROZEN){
-            soundManager.stopLoop('walk');
+            this.stopLoopSounds();
         }
         return IS_FROZEN;
     }
 
     stopAnimation(){
         super.stopAnimation();
-        soundManager.stopLoop('walk');
+        this.stopLoopSounds();
     }
 
     updateMovement(){
@@ -98,15 +98,30 @@ class Character extends CharacterMovement{
     updateAnimation(){
         this.updateIdleTicks();
         this.updateSprite();
-        this.updateWalkSound();
+        this.updateLoopSounds();
     }
 
-    updateWalkSound(){
-        if(this.getSpriteState() === 'walk'){
-            soundManager.startLoop('walk');
+    updateLoopSounds(){
+        this.toggleLoop('walk', this.getSpriteState() === 'walk');
+        this.toggleLoop('snore', this.isSleeping());
+    }
+
+    toggleLoop(soundName, isActive){
+        if(isActive){
+            soundManager.startLoop(soundName);
         } else {
-            soundManager.stopLoop('walk');
+            soundManager.stopLoop(soundName);
         }
+    }
+
+    isSleeping(){
+        const SIT_TICKS = this.settings.restDelayTicks + this.settings.restFrameTicks * this.sprites.rest.frames;
+        return this.getSpriteState() === 'rest' && this.idleTicks >= SIT_TICKS;
+    }
+
+    stopLoopSounds(){
+        soundManager.stopLoop('walk');
+        soundManager.stopLoop('snore');
     }
 
     updateInvincibility(){
@@ -134,6 +149,7 @@ class Character extends CharacterMovement{
         this.takeDamage(damage);
         this.invincibleTicks = GAME_SETTINGS.combat.invincibleTicks;
         this.startHurt(source);
+        soundManager.playSound('hurt');
     }
 
     startHurt(source){

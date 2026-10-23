@@ -13,7 +13,10 @@ const SOUND_VOLUMES = {
     cast: 0.4,
     fireballImpact: 0.4,
     noEnergy: 0.3,
-    walk: 0.5
+    walk: 0.5,
+    hurt: 0.4,
+    collect: 0.2,
+    snore: 0.3
 };
 const LOOP_RATES = {
     walk: 1.1
@@ -40,7 +43,10 @@ const SOUND_PATHS = {
     cast: './assets/sounds/334237__liamg_sfx__fireball-cast-3.mp3',
     fireballImpact: './assets/sounds/431174__blankened__fireball-explosion.mp3',
     noEnergy: './assets/sounds/407466__loyalty_freak_music__buzzer.mp3',
-    walk: './assets/sounds/417291__benzix2__steps.mp3'
+    walk: './assets/sounds/417291__benzix2__steps.mp3',
+    hurt: './assets/sounds/662465__fullstacksound__hurt_player.mp3',
+    collect: './assets/sounds/711129__xiko__retro-collection-3.mp3',
+    snore: './assets/sounds/760036__stevielematt__snore-03_44100.mp3'
 };
 
 class SoundManager {
