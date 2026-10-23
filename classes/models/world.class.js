@@ -1,21 +1,12 @@
-const IMAGE_HEALTH_EMPTY = './assets/image/09-ui/2 Bars/Healthbar_empty.png';
-const IMAGE_HEALTH_FULL = './assets/image/09-ui/2 Bars/Healthbar_full.png';
-const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
-const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
-
 class World {
     level;
     levelData;
     restartLevelData;
-    barInterval;
     frameRequest;
     onGameEnd;
     isGameEnded = false;
     character = new Character();
-    keyIcon = this.createKeyIcon();
-    energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
-    healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
-    bossBars = this.createBossBars();
+    hud = new Hud(this);
     ctx;
     canvas;
     keyboard;
@@ -33,7 +24,6 @@ class World {
         this.keyboard = keyboard;
         this.character.placeAt(this.level.playerStart);
         this.setWorld();
-        this.startBarTimer();
         this.drawWorld();
     }
 
@@ -82,27 +72,13 @@ class World {
         this.cameraX = 0;
     }
 
-    getBars(){
-        return [this.healthBar, this.energyBar, ...this.bossBars];
-    }
-
-    startBarTimer(){
-        this.barInterval = setInterval(() => this.updateBars(), 1000 / TICKS_PER_SECOND);
-    }
-
-    updateBars(){
-        if(!this.isPaused){
-            this.getBars().forEach(bar => bar.updateBlink());
-        }
-    }
-
     stopWorld(){
         cancelAnimationFrame(this.frameRequest);
         this.level.stopAll();
         this.character.stopAnimation();
         this.clearProjectiles();
         this.transition?.stopAnimation();
-        clearInterval(this.barInterval);
+        this.hud.stopTimer();
     }
 
     startTransition(portal){
@@ -164,17 +140,6 @@ class World {
         }
     }
 
-    createKeyIcon(){
-        const KEY_ICON = new DrawableObject();
-        KEY_ICON.loadImage(IMAGE_KEY);
-        KEY_ICON.frameWidth = 16;
-        KEY_ICON.frameHeight = 16;
-        KEY_ICON.width = 16 * GAME_SETTINGS.ui.keyIconScale;
-        KEY_ICON.height = 16 * GAME_SETTINGS.ui.keyIconScale;
-        KEY_ICON.y = GAME_SETTINGS.ui.keyIconY;
-        return KEY_ICON;
-    }
-
     addProjectile(projectile){
         projectile.world = this;
         this.projectiles.push(projectile);
@@ -209,7 +174,7 @@ class World {
         this.updateCamera();
         this.drawBackgroundObjects();
         this.drawScrollingObjects();
-        this.drawStatusBars();
+        this.hud.drawHud(this.ctx);
         this.drawPauseOverlay();
         this.drawTransition();
         this.frameRequest = requestAnimationFrame(() => this.drawWorld());
@@ -232,46 +197,4 @@ class World {
         this.projectiles.forEach(projectile => projectile.drawHitbox(this.ctx, 'orange'));
     }
 
-    drawStatusBars(){
-        if(this.isGameEnded){
-            return;
-        }
-        this.healthBar.setValue(this.character.health, this.character.maxHealth);
-        this.healthBar.drawObject(this.ctx);
-        this.energyBar.setValue(this.character.energy, this.character.maxEnergy);
-        this.energyBar.drawObject(this.ctx);
-        this.drawKeyIcons();
-        this.drawBossBars();
-    }
-
-    createBossBars(){
-        const BAR_COUNT = GAME_SETTINGS.mageBoss.maxHealth / GAME_SETTINGS.ui.bossBarHealthPerBar;
-        const BAR_OPTIONS = { scale: GAME_SETTINGS.ui.bossBarScale };
-        return Array.from({ length: BAR_COUNT }, () => new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, 0, 0, BAR_OPTIONS));
-    }
-
-    drawBossBars(){
-        const BOSS_ENEMY = this.findBoss();
-        if(!BOSS_ENEMY || (BOSS_ENEMY.state === 'wait' && BOSS_ENEMY.health === BOSS_ENEMY.maxHealth)){
-            return;
-        }
-        const BAR_STEP = this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
-        const START_X = (this.canvas.width - (this.bossBars.length * BAR_STEP - GAME_SETTINGS.ui.bossBarGap)) / 2;
-        this.bossBars.forEach((bar, barIndex) => this.drawBossBar(bar, BOSS_ENEMY, START_X + barIndex * BAR_STEP, barIndex));
-    }
-
-    drawBossBar(bar, boss, barX, barIndex){
-        const HEALTH_PER_BAR = GAME_SETTINGS.ui.bossBarHealthPerBar;
-        bar.x = barX;
-        bar.y = this.canvas.height - bar.height - GAME_SETTINGS.ui.bossBarMargin;
-        bar.setValue(clampValue(boss.health - barIndex * HEALTH_PER_BAR, 0, HEALTH_PER_BAR), HEALTH_PER_BAR);
-        bar.drawObject(this.ctx);
-    }
-
-    drawKeyIcons(){
-        for(let keyIndex = 0; keyIndex < this.character.keyCount; keyIndex++){
-            this.keyIcon.x = GAME_SETTINGS.ui.statusBarX + keyIndex * GAME_SETTINGS.ui.keyIconSpacing;
-            this.keyIcon.drawObject(this.ctx);
-        }
-    }
 }
