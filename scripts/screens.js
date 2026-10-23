@@ -57,6 +57,12 @@ function updatePauseUi(){
     toggleScreen('pause-menu', IS_PAUSED, 'pause-button', 'is-paused');
 }
 
+function updateMuteUi(){
+    const MUTE_BUTTON = document.getElementById('mute-button');
+    MUTE_BUTTON.classList.toggle('is-muted', soundManager.isMuted);
+    MUTE_BUTTON.setAttribute('aria-pressed', soundManager.isMuted);
+}
+
 function openDialog(dialogId){
     const DIALOG_SCREEN = document.getElementById(dialogId);
     DIALOG_SCREEN.classList.remove('is-second-page');

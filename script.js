@@ -1,6 +1,7 @@
 let gameCanvas;
 let gameWorld;
 let gameKeyboard = new Keyboard();
+let soundManager = new SoundManager();
 const PORTRAIT_QUERY = window.matchMedia('(orientation: portrait) and (pointer: coarse)');
 const KEY_MAP = {
     ArrowRight: 'RIGHT',
@@ -24,6 +25,7 @@ function getStartLevelData(){
 
 function init(){
     gameCanvas = document.getElementById('game-canvas');
+    updateMuteUi();
     document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
     loadStartAssets().catch(() => {}).then(playStartIntro);
 }
@@ -71,6 +73,12 @@ function togglePause(){
     }
     gameWorld.togglePause();
     updatePauseUi();
+}
+
+function toggleMute(){
+    soundManager.toggleMute();
+    updateMuteUi();
+    releaseFocus();
 }
 
 function restartLevel(){

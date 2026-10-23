@@ -45,6 +45,7 @@
                 </div>
             </div>
         </div>
+        <button id="mute-button" class="mute-button" aria-label="Mute sound" aria-pressed="false" onclick="toggleMute()"></button>
         <div id="controls-screen" class="dialog-screen controls-screen" role="dialog" aria-modal="true" aria-label="Controls" onclick="closeDialog(event)">
             <div class="window-frame dialog-window">
                 <h2 class="window-title title-controls">Controls</h2>
@@ -226,6 +227,7 @@
     <script src="./classes/models/world.class.js"></script>
     <script src="./classes/models/background-object.class.js"></script>
     <script src="./classes/models/keyboard.class.js"></script>
+    <script src="./classes/models/sound-manager.class.js"></script>
     <script src="./classes/levels/level-one.js"></script>
     <script src="./classes/levels/level-one-boss.js"></script>
     <script src="./scripts/screens.js"></script>

@@ -267,7 +267,8 @@
 
 .start-screen.is-waiting .start-title,
 .start-screen.is-waiting .start-wizard-area,
-.start-screen.is-waiting .start-buttons {
+.start-screen.is-waiting .start-buttons,
+.start-screen.is-waiting + .mute-button {
     opacity: 0;
 }
 
@@ -279,11 +280,13 @@
     animation: start-fade-in 1s linear 1.6s both;
 }
 
-.start-screen.is-intro .start-buttons {
+.start-screen.is-intro .start-buttons,
+.start-screen.is-intro + .mute-button {
     animation: start-fade-in 0.8s linear 2.6s both;
 }
 
-.start-screen:not(.is-ready) .start-button {
+.start-screen:not(.is-ready) .start-button,
+.start-screen:not(.is-ready) + .mute-button {
     pointer-events: none;
 }
 
