@@ -7,7 +7,6 @@ class Character extends CharacterMovement{
     maxHealth = this.settings.maxHealth;
     health = this.maxHealth;
     invincibleTicks = 0;
-    deadTicks = 0;
     rollTicksLeft = 0;
     rollCooldownLeft = 0;
     attackTicksLeft = 0;
@@ -48,7 +47,7 @@ class Character extends CharacterMovement{
     updateDeadState(){
         this.applyGravity();
         this.limitToWall();
-        this.updateDeathSprite();
+        this.advanceDeath('dead');
         this.stopLoopSounds();
     }
 
@@ -162,19 +161,14 @@ class Character extends CharacterMovement{
         }
     }
 
-    updateDeathSprite(){
-        this.deadTicks++;
-        this.showProgressState('dead', this.deadTicks, this.settings.deadFrameTicks * this.sprites.dead.frames);
+    getDeathTicks(){
+        return this.settings.deadFrameTicks * this.sprites.dead.frames;
     }
 
     getSupportXs(){
         const CENTER_X = getRectCenterX(this.getHitbox());
         const EDGE_TOLERANCE = this.settings.edgeTolerance;
         return [CENTER_X - EDGE_TOLERANCE, CENTER_X, CENTER_X + EDGE_TOLERANCE];
-    }
-
-    hasDeathFinished(){
-        return this.isDead() && this.deadTicks >= this.settings.deadFrameTicks * this.sprites.dead.frames;
     }
 
     updateSpeed(){

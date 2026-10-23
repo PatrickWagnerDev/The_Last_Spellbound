@@ -8,6 +8,7 @@ class MovableObject extends DrawableObject{
     health = 1;
     hurtTicksLeft = 0;
     knockbackDirection = 1;
+    deadTicks = 0;
 
     startAnimation(){
         this.animationInterval = setInterval(() => {
@@ -143,6 +144,19 @@ class MovableObject extends DrawableObject{
 
     isDead(){
         return this.health <= 0;
+    }
+
+    getDeathTicks(){
+        return 0;
+    }
+
+    advanceDeath(stateName){
+        this.deadTicks++;
+        this.showProgressState(stateName, this.deadTicks, this.getDeathTicks());
+    }
+
+    hasDeathFinished(){
+        return this.isDead() && this.deadTicks >= this.getDeathTicks();
     }
 
     isHurt(){

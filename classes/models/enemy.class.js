@@ -1,5 +1,4 @@
 class Enemy extends MovableObject {
-    deadTicks = 0;
     isBoss = false;
 
     constructor(column, row, config){
@@ -82,15 +81,14 @@ class Enemy extends MovableObject {
 
     updateDeath(){
         this.applyGravity();
-        this.deadTicks++;
-        this.showProgressState('death', this.deadTicks, this.settings.deathTicks);
+        this.advanceDeath('death');
         if(this.hasDeathFinished()){
             this.finishDeath();
         }
     }
 
-    hasDeathFinished(){
-        return this.isDead() && this.deadTicks >= this.settings.deathTicks;
+    getDeathTicks(){
+        return this.settings.deathTicks;
     }
 
     finishDeath(){

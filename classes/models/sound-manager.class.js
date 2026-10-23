@@ -121,22 +121,22 @@ class SoundManager {
         if(this.isMuted){
             return;
         }
-        const SOUND = this.sounds[soundName].cloneNode();
-        SOUND.volume = SOUND_VOLUMES[soundName];
-        SOUND.play().catch(() => {});
+        const SOUND_CLONE = this.sounds[soundName].cloneNode();
+        SOUND_CLONE.volume = SOUND_VOLUMES[soundName];
+        SOUND_CLONE.play().catch(() => {});
     }
 
     startLoop(soundName){
         if(this.loops[soundName]){
             return;
         }
-        const LOOP = this.sounds[soundName].cloneNode();
-        LOOP.loop = true;
-        LOOP.volume = SOUND_VOLUMES[soundName];
-        LOOP.playbackRate = LOOP_RATES[soundName] ?? 1;
-        LOOP.muted = this.isMuted;
-        LOOP.play().catch(() => {});
-        this.loops[soundName] = LOOP;
+        const LOOP_CLONE = this.sounds[soundName].cloneNode();
+        LOOP_CLONE.loop = true;
+        LOOP_CLONE.volume = SOUND_VOLUMES[soundName];
+        LOOP_CLONE.playbackRate = LOOP_RATES[soundName] ?? 1;
+        LOOP_CLONE.muted = this.isMuted;
+        LOOP_CLONE.play().catch(() => {});
+        this.loops[soundName] = LOOP_CLONE;
     }
 
     stopLoop(soundName){
