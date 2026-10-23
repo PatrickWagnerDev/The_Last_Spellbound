@@ -9,7 +9,10 @@ const SOUND_VOLUMES = {
     jump: 0.4,
     land: 0.4,
     roll: 0.4,
-    attack: 0.4
+    attack: 0.4,
+    cast: 0.4,
+    fireballImpact: 0.4,
+    noEnergy: 0.3
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
@@ -29,7 +32,10 @@ const SOUND_PATHS = {
     jump: './assets/sounds/662463__fullstacksound__jump_player.mp3',
     land: './assets/sounds/540272__zepurple__land-a-jump.mp3',
     roll: './assets/sounds/529563__drmrsir__roll.mp3',
-    attack: './assets/sounds/840716__nomagician__sword-swing-1.mp3'
+    attack: './assets/sounds/840716__nomagician__sword-swing-1.mp3',
+    cast: './assets/sounds/334237__liamg_sfx__fireball-cast-3.mp3',
+    fireballImpact: './assets/sounds/431174__blankened__fireball-explosion.mp3',
+    noEnergy: './assets/sounds/407466__loyalty_freak_music__buzzer.mp3'
 };
 
 class SoundManager {

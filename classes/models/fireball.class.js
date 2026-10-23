@@ -46,6 +46,7 @@ class Fireball extends Projectile {
         if(HIT_TARGET){
             HIT_TARGET.receiveHit(this.settings.damage, this);
             this.startState('impact');
+            soundManager.playSound('fireballImpact');
         } else if(this.distance >= this.settings.range || this.isOutOfLevel()){
             this.startState('vanish');
         }

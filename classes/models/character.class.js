@@ -277,8 +277,15 @@ class Character extends CharacterMovement{
         const CAN_CAST = this.isActionFree() && this.castCooldownLeft === 0 && this.energy >= 1;
         this.castCooldownLeft = tickDown(this.castCooldownLeft);
         if(JUST_PRESSED && CAN_CAST){
-            this.castTicksLeft = this.settings.castTicks;
+            this.startCast();
+        } else if(JUST_PRESSED && this.energy < 1){
+            soundManager.playSound('noEnergy');
         }
+    }
+
+    startCast(){
+        this.castTicksLeft = this.settings.castTicks;
+        soundManager.playSound('cast');
     }
 
     updateCast(){
