@@ -140,7 +140,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `scale` | `2` | Size factor of the chest on the playing field (the image is 32x32 px). Whole numbers keep the pixels sharp. The chest stands on the bottom edge of its map cell. |
 | `openDistance` | `48` | How close the character has to be to open the chest, in px measured from the sides of the chest (48 = one tile). The character needs a key, one key is used up when the chest opens. |
 | `openFps` | `8` | Animation speed of the opening in frames per second (8 frames, plays once and stays open). |
-| `openSoundFrame` | `5` | Frame of the opening animation (0 to 7) at which the chest sound starts. 4 is the turned key, 5 is the lid starting to open. |
+| `openSoundFrame` | `5` | Frame of the opening animation (0 to 7) at which the chest sound starts. 0 is the start of the animation, 4 is the turned key, 5 is the lid starting to open. |
 | `portalOffset` | `2` | How many map cells to the right of the chest the portal appears once the chest is fully open. |
 
 ## portal
