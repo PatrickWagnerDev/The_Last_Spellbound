@@ -49,6 +49,20 @@ class Character extends CharacterMovement{
         this.applyGravity();
         this.limitToWall();
         this.updateDeathSprite();
+        soundManager.stopLoop('walk');
+    }
+
+    isFrozen(){
+        const IS_FROZEN = super.isFrozen();
+        if(IS_FROZEN){
+            soundManager.stopLoop('walk');
+        }
+        return IS_FROZEN;
+    }
+
+    stopAnimation(){
+        super.stopAnimation();
+        soundManager.stopLoop('walk');
     }
 
     updateMovement(){
@@ -84,6 +98,15 @@ class Character extends CharacterMovement{
     updateAnimation(){
         this.updateIdleTicks();
         this.updateSprite();
+        this.updateWalkSound();
+    }
+
+    updateWalkSound(){
+        if(this.getSpriteState() === 'walk'){
+            soundManager.startLoop('walk');
+        } else {
+            soundManager.stopLoop('walk');
+        }
     }
 
     updateInvincibility(){

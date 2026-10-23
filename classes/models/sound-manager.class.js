@@ -12,7 +12,11 @@ const SOUND_VOLUMES = {
     attack: 0.4,
     cast: 0.4,
     fireballImpact: 0.4,
-    noEnergy: 0.3
+    noEnergy: 0.3,
+    walk: 0.5
+};
+const LOOP_RATES = {
+    walk: 1.1
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
@@ -35,13 +39,15 @@ const SOUND_PATHS = {
     attack: './assets/sounds/840716__nomagician__sword-swing-1.mp3',
     cast: './assets/sounds/334237__liamg_sfx__fireball-cast-3.mp3',
     fireballImpact: './assets/sounds/431174__blankened__fireball-explosion.mp3',
-    noEnergy: './assets/sounds/407466__loyalty_freak_music__buzzer.mp3'
+    noEnergy: './assets/sounds/407466__loyalty_freak_music__buzzer.mp3',
+    walk: './assets/sounds/417291__benzix2__steps.mp3'
 };
 
 class SoundManager {
     constructor(){
         this.isMuted = this.readMuteState();
         this.music = null;
+        this.loops = {};
         this.sounds = this.loadSounds();
     }
 
@@ -70,9 +76,12 @@ class SoundManager {
     toggleMute(){
         this.isMuted = !this.isMuted;
         this.saveMuteState();
-        if(this.music){
-            this.music.muted = this.isMuted;
-        }
+        this.applyMute();
+    }
+
+    applyMute(){
+        const PLAYERS = [this.music, ...Object.values(this.loops)];
+        PLAYERS.filter(Boolean).forEach(player => player.muted = this.isMuted);
     }
 
     playMusic(soundName){
@@ -91,6 +100,24 @@ class SoundManager {
         const SOUND = this.sounds[soundName].cloneNode();
         SOUND.volume = SOUND_VOLUMES[soundName];
         SOUND.play().catch(() => {});
+    }
+
+    startLoop(soundName){
+        if(this.loops[soundName]){
+            return;
+        }
+        const LOOP = this.sounds[soundName].cloneNode();
+        LOOP.loop = true;
+        LOOP.volume = SOUND_VOLUMES[soundName];
+        LOOP.playbackRate = LOOP_RATES[soundName] ?? 1;
+        LOOP.muted = this.isMuted;
+        LOOP.play().catch(() => {});
+        this.loops[soundName] = LOOP;
+    }
+
+    stopLoop(soundName){
+        this.loops[soundName]?.pause();
+        delete this.loops[soundName];
     }
 
     stopMusic(){
