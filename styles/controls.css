@@ -162,7 +162,7 @@
 }
 
 .key-left {
-    background-image: url('../assets/image/09-ui/3 Icons/Icons_14.png');
+    background-image: var(--icon-arrow-left);
 }
 
 .key-down {
@@ -170,7 +170,7 @@
 }
 
 .key-right {
-    background-image: url('../assets/image/09-ui/3 Icons/Icons_15.png');
+    background-image: var(--icon-arrow-right);
 }
 
 .group-jump {
@@ -305,10 +305,10 @@
 .page-icon {
     width: 24px;
     height: 24px;
-    background-image: url('../assets/image/09-ui/3 Icons/Icons_15.png');
+    background-image: var(--icon-arrow-right);
     image-rendering: pixelated;
 }
 
 .controls-screen.is-second-page .page-icon {
-    background-image: url('../assets/image/09-ui/3 Icons/Icons_14.png');
+    background-image: var(--icon-arrow-left);
 }
