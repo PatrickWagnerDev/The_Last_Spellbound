@@ -99,7 +99,8 @@
 
 .start-screen.is-press .start-wizard-area,
 .start-screen.is-press .start-buttons,
-.start-screen.is-press + .mute-button {
+.start-screen.is-press + .mute-button,
+.start-screen.is-press ~ .fullscreen-button {
     opacity: 0;
 }
 
@@ -116,14 +117,16 @@
 }
 
 .start-screen.is-settle .start-buttons,
-.start-screen.is-settle + .mute-button {
+.start-screen.is-settle + .mute-button,
+.start-screen.is-settle ~ .fullscreen-button {
     animation: start-fade-in 0.8s linear 2.2s both;
 }
 
 .start-screen.is-waiting .start-title,
 .start-screen.is-waiting .start-wizard-area,
 .start-screen.is-waiting .start-buttons,
-.start-screen.is-waiting + .mute-button {
+.start-screen.is-waiting + .mute-button,
+.start-screen.is-waiting ~ .fullscreen-button {
     opacity: 0;
 }
 
@@ -137,12 +140,14 @@
 }
 
 .start-screen.is-intro .start-buttons,
-.start-screen.is-intro + .mute-button {
+.start-screen.is-intro + .mute-button,
+.start-screen.is-intro ~ .fullscreen-button {
     animation: start-fade-in 0.8s linear 2.6s both;
 }
 
 .start-screen:not(.is-ready) .start-button,
-.start-screen:not(.is-ready) + .mute-button {
+.start-screen:not(.is-ready) + .mute-button,
+.start-screen:not(.is-ready) ~ .fullscreen-button {
     pointer-events: none;
 }
 

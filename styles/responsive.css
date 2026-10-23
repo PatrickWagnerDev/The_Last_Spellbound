@@ -7,7 +7,24 @@
     .game-container {
         zoom: var(--game-scale);
         background-image: none;
-        box-shadow: 0 0 28px 6px rgba(0, 0, 0, 0.85);
+        box-shadow: var(--frame-shadow);
+    }
+
+    canvas {
+        image-rendering: pixelated;
+    }
+}
+
+@media (display-mode: fullscreen) {
+    :root {
+        --frame-padding: 0px;
+        --game-scale: min(tan(atan2(100vw, 720px)), tan(atan2(100dvh, 480px)));
+    }
+
+    .game-container {
+        zoom: var(--game-scale);
+        background-image: none;
+        box-shadow: var(--frame-shadow);
     }
 
     canvas {

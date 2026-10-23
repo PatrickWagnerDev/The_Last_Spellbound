@@ -11,6 +11,7 @@ function init(){
     gameCanvas = document.getElementById('game-canvas');
     updateMuteUi();
     addMenuSounds();
+    initFullscreen();
     document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
     loadStartAssets().catch(() => {}).then(showPressScreen);
 }

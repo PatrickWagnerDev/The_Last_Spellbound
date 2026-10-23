@@ -19,7 +19,8 @@ body {
 }
 
 .pause-button,
-.mute-button {
+.mute-button,
+.fullscreen-button {
     position: absolute;
     top: calc(var(--frame-padding) + var(--pause-button-gap));
     right: calc(var(--frame-padding) + var(--pause-button-gap));
@@ -35,7 +36,9 @@ body {
 .pause-button:hover,
 .pause-button:focus-visible,
 .mute-button:hover,
-.mute-button:focus-visible {
+.mute-button:focus-visible,
+.fullscreen-button:hover,
+.fullscreen-button:focus-visible {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
@@ -71,17 +74,39 @@ body {
     background-image: url('./assets/image/09-ui/3 Icons/Icons_29.png');
 }
 
-.game-container.is-start-screen .mute-button {
+.fullscreen-button {
+    right: calc(var(--frame-padding) + var(--pause-button-gap) * 3 + 80px);
+    background-image: url('./assets/image/09-ui/3 Icons/Icons_55.png');
+    background-size: 24px 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.fullscreen-button.is-fullscreen {
+    background-image: url('./assets/icons/Fullscreen_exit.png');
+}
+
+.game-container.is-start-screen .mute-button,
+.game-container.is-start-screen .fullscreen-button {
     top: auto;
     right: auto;
     bottom: calc(var(--frame-padding) + 24px);
-    left: calc(var(--frame-padding) + (var(--canvas-width) - 40px) / 2);
+}
+
+.game-container.is-start-screen .mute-button {
+    left: calc(var(--frame-padding) + (var(--canvas-width) - 40px) / 2 - 26px);
+}
+
+.game-container.is-start-screen .fullscreen-button {
+    left: calc(var(--frame-padding) + (var(--canvas-width) - 40px) / 2 + 26px);
 }
 
 .pause-button.is-paused,
 .game-container.is-game-over .pause-button,
 .game-container.is-start-screen .pause-button,
-.game-container.is-game-over .mute-button {
+.game-container.is-game-over .mute-button,
+.game-container.is-game-over .fullscreen-button {
     display: none;
 }
 
