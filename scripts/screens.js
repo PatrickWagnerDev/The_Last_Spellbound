@@ -1,5 +1,6 @@
 const START_WIZARD_IMAGE = './assets/image/01-wizard/Fire Wizard/Idle.png';
 const SCREEN_FADE_MS = 400;
+const PRESS_EVENTS = ['keydown', 'pointerdown'];
 
 function releaseFocus(){
     document.activeElement?.blur();
@@ -22,12 +23,30 @@ function setStartPhase(removedClasses, addedClass){
     START_SCREEN.classList.add(addedClass);
 }
 
+function centerTitleLines(){
+    const START_TITLE = document.querySelector('.start-title');
+    const FIRST_LINE = START_TITLE.querySelector('.title-line');
+    START_TITLE.style.setProperty('--title-line-shift', `${(START_TITLE.offsetWidth - FIRST_LINE.offsetWidth) / 2}px`);
+}
+
+function showPressScreen(){
+    centerTitleLines();
+    setStartPhase(['is-waiting'], 'is-press');
+    PRESS_EVENTS.forEach(eventName => window.addEventListener(eventName, leavePressScreen));
+}
+
+function leavePressScreen(){
+    PRESS_EVENTS.forEach(eventName => window.removeEventListener(eventName, leavePressScreen));
+    soundManager.playMusic('menuMusic');
+    setStartPhase(['is-press'], 'is-settle');
+}
+
 function playStartIntro(){
     setStartPhase(['is-waiting', 'is-ready'], 'is-intro');
 }
 
 function finishStartIntro(){
-    setStartPhase(['is-intro'], 'is-ready');
+    setStartPhase(['is-intro', 'is-settle'], 'is-ready');
 }
 
 function updateStartScreenUi(isOpen){

@@ -26,9 +26,8 @@ function getStartLevelData(){
 function init(){
     gameCanvas = document.getElementById('game-canvas');
     updateMuteUi();
-    soundManager.playMusic('menuMusic');
     document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
-    loadStartAssets().catch(() => {}).then(playStartIntro);
+    loadStartAssets().catch(() => {}).then(showPressScreen);
 }
 
 function startGame(){
