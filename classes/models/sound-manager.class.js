@@ -7,7 +7,8 @@ const SOUND_VOLUMES = {
     gameOver: 0.5,
     victory: 0.5,
     jump: 0.4,
-    land: 0.4
+    land: 0.4,
+    roll: 0.4
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
@@ -25,7 +26,8 @@ const SOUND_PATHS = {
     gameOver: './assets/sounds/409343__luminousfridge__player-death.mp3',
     victory: './assets/sounds/856038__yokomatsuko__electronic-victory-sound.mp3',
     jump: './assets/sounds/662463__fullstacksound__jump_player.mp3',
-    land: './assets/sounds/540272__zepurple__land-a-jump.mp3'
+    land: './assets/sounds/540272__zepurple__land-a-jump.mp3',
+    roll: './assets/sounds/529563__drmrsir__roll.mp3'
 };
 
 class SoundManager {

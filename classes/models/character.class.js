@@ -181,10 +181,15 @@ class Character extends CharacterMovement{
     handleRoll(){
         this.rollCooldownLeft = tickDown(this.rollCooldownLeft);
         if(this.wantsRoll() && this.isReadyOnGround() && this.rollCooldownLeft === 0){
-            this.rollTicksLeft = this.settings.rollTicks;
-            this.attackTicksLeft = 0;
-            this.castTicksLeft = 0;
+            this.startRoll();
         }
+    }
+
+    startRoll(){
+        this.rollTicksLeft = this.settings.rollTicks;
+        this.attackTicksLeft = 0;
+        this.castTicksLeft = 0;
+        soundManager.playSound('roll');
     }
 
     updateRoll(){
