@@ -17,9 +17,6 @@ The game currently offers the following features:
 - **Audio** – Enjoy background music for the start screen, the level and the boss fight, sound effects for the character, the enemies and the menus, and a mute button that is saved in Local Storage.
 - **Responsive Layout** – The game scales down on small screens and shows an orientation notice on touch devices in portrait mode.
 - **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay with a button on the start screen and in the game.
-
-The following features are planned:
-
 - **Touch Controls** – Play on mobile devices in landscape mode with on-screen buttons.
 
 ## Technologies
@@ -115,7 +112,7 @@ simply repeating the technologies or features listed above.
 
 > **Current Status:** In Development
 
-The project is currently being developed. The gameplay, the menus, the dialogs, the audio and the fullscreen mode are finished, touch controls and the final cleanup are still open.
+The project is currently being developed. The gameplay, the menus, the dialogs, the audio, the fullscreen mode and the touch controls are finished, only the final cleanup is still open.
 
 <!--
 PROJECT STATUS:

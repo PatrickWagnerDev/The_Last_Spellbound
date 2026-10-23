@@ -24,6 +24,7 @@ function updateGameOverUi(isGameOver){
 }
 
 function showGameEnd(isVictory){
+    releaseAllKeys();
     document.getElementById('game-over-title').textContent = isVictory ? 'VICTORY' : 'GAME OVER';
     updateGameOverUi(true);
     soundManager.stopMusic();

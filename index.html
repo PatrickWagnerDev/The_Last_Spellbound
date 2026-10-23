@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./styles/credits.css">
     <link rel="stylesheet" href="./styles/legal.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/touch-controls.css">
     <link rel="stylesheet" href="./styles/responsive.css">
 </head>
 
@@ -50,6 +51,14 @@
         </div>
         <button id="mute-button" class="mute-button" aria-label="Mute sound" aria-pressed="false" onclick="toggleMute()"></button>
         <button id="fullscreen-button" class="fullscreen-button" aria-label="Fullscreen" aria-pressed="false" onclick="toggleFullscreen()"></button>
+        <div class="touch-controls">
+            <button class="touch-button touch-square touch-left" data-key="LEFT" aria-label="Move left" tabindex="-1"></button>
+            <button class="touch-button touch-square touch-right" data-key="RIGHT" aria-label="Move right" tabindex="-1"></button>
+            <button class="touch-button touch-round touch-jump" data-key="UP" aria-label="Jump" tabindex="-1"></button>
+            <button class="touch-button touch-square touch-roll" data-key="DOWN" aria-label="Dodge roll" tabindex="-1"></button>
+            <button class="touch-button touch-round touch-special" data-key="SHOOT" aria-label="Fireball" tabindex="-1"></button>
+            <button class="touch-button touch-round touch-attack" data-key="ATTACK" aria-label="Melee attack" tabindex="-1"></button>
+        </div>
         <div id="controls-screen" class="dialog-screen controls-screen" role="dialog" aria-modal="true" aria-label="Controls" onclick="closeDialog(event)">
             <div class="window-frame dialog-window">
                 <h2 class="window-title title-controls">Controls</h2>
@@ -281,6 +290,7 @@
     <script src="./scripts/menu-sounds.js"></script>
     <script src="./scripts/input.js"></script>
     <script src="./scripts/fullscreen.js"></script>
+    <script src="./scripts/touch-controls.js"></script>
     <script src="./script.js"></script>
 </body>
 

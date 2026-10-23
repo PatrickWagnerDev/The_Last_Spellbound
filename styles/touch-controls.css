@@ -1,0 +1,124 @@
+.touch-controls {
+    display: none;
+    position: absolute;
+    top: var(--frame-padding);
+    left: var(--frame-padding);
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+    pointer-events: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .touch-controls {
+        display: block;
+    }
+}
+
+.game-container.is-start-screen .touch-controls,
+.game-container.is-game-over .touch-controls,
+.game-container:has(.pause-menu.is-open) .touch-controls {
+    display: none;
+}
+
+.touch-button {
+    position: absolute;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background-color: var(--color-plate);
+    clip-path: var(--touch-shape);
+    opacity: 0.5;
+    pointer-events: auto;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.touch-button::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    z-index: -1;
+    background-color: var(--color-navy);
+    clip-path: var(--touch-shape);
+}
+
+.touch-button.is-pressed::before {
+    background-color: var(--color-navy-hover);
+}
+
+.touch-button::after {
+    content: '';
+    width: var(--touch-icon-size);
+    height: var(--touch-icon-size);
+    background-image: var(--touch-icon);
+    background-size: var(--touch-icon-size) var(--touch-icon-size);
+    image-rendering: pixelated;
+}
+
+.touch-square {
+    --touch-shape: var(--shape-notch-small);
+}
+
+.touch-round {
+    --touch-shape: var(--shape-pixel-circle);
+}
+
+.touch-left {
+    --touch-icon: var(--icon-arrow-left);
+    --touch-icon-size: 48px;
+    left: 27px;
+    bottom: 60px;
+    width: 72px;
+    height: 56px;
+}
+
+.touch-right {
+    --touch-icon: var(--icon-arrow-right);
+    --touch-icon-size: 48px;
+    left: 119px;
+    bottom: 60px;
+    width: 72px;
+    height: 56px;
+}
+
+.touch-jump {
+    --touch-icon: url('../assets/image/09-ui/3 Icons/Icons_22.png');
+    --touch-icon-size: 48px;
+    right: 16px;
+    bottom: 40px;
+    width: 88px;
+    height: 88px;
+}
+
+.touch-roll {
+    --touch-icon: url('../assets/image/09-ui/3 Icons/Icons_35.png');
+    --touch-icon-size: 24px;
+    right: 112px;
+    bottom: 40px;
+    width: 64px;
+    height: 52px;
+}
+
+.touch-special {
+    --touch-icon: url('../assets/image/09-ui/3 Icons/Icons_64.png');
+    --touch-icon-size: 24px;
+    right: 80px;
+    bottom: 131px;
+    width: 56px;
+    height: 56px;
+}
+
+.touch-attack {
+    --touch-icon: url('../assets/image/09-ui/3 Icons/Icons_63.png');
+    --touch-icon-size: 24px;
+    right: 12px;
+    bottom: 153px;
+    width: 52px;
+    height: 52px;
+}

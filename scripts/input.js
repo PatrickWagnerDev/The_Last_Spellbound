@@ -43,7 +43,13 @@ function handlePauseKey(event){
     }
 }
 
+function releaseAllKeys(){
+    Object.keys(gameKeyboard).forEach(keyName => gameKeyboard[keyName] = false);
+    document.querySelectorAll('.touch-button.is-pressed').forEach(button => button.classList.remove('is-pressed'));
+}
+
 window.addEventListener('keydown', (event) => updateKey(event, true));
 window.addEventListener('keydown', handlePauseKey);
 window.addEventListener('keyup', (event) => updateKey(event, false));
 PORTRAIT_QUERY.addEventListener('change', pauseInPortrait);
+window.addEventListener('blur', releaseAllKeys);

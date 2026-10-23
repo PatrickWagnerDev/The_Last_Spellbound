@@ -12,6 +12,7 @@ function init(){
     updateMuteUi();
     addMenuSounds();
     initFullscreen();
+    initTouchControls();
     document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
     loadStartAssets().catch(() => {}).then(showPressScreen);
 }
@@ -41,6 +42,7 @@ function showStartScreen(){
 }
 
 function createWorld(levelData){
+    releaseAllKeys();
     gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameEnd);
     soundManager.playMusic(levelData.music);
 }
@@ -53,6 +55,9 @@ function togglePause(){
     gameWorld.togglePause();
     updatePauseUi();
     playPauseSound(WAS_PAUSED);
+    if(gameWorld.isPauseActive()){
+        releaseAllKeys();
+    }
 }
 
 function playPauseSound(wasPaused){
