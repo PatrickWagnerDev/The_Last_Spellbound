@@ -194,6 +194,48 @@ While the transition runs, the level is switched under the covered canvas. The s
 | `startInBossLevel` | `true` | Starts the game directly in the boss level to test the boss. Set to `false` for release. |
 | `showHitboxes` | `true` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 
+## Sounds
+
+The volumes, paths and the loop speed live in `scripts/sound-settings.js`, the playing is done by `classes/models/sound-manager.class.js`.
+Every value is between `0` and `1`. For sound effects `0.5` is the maximum. A new sound needs an entry in `SOUND_PATHS` and in `SOUND_VOLUMES` (music in `MUSIC_PATHS` and `MUSIC_VOLUMES`).
+The mute button (state in the local storage under `spellbound-muted`) mutes all sounds, music and loops.
+
+| Sound | Default volume | Plays when |
+|---|---|---|
+| `menuClick` | `0.3` | Click on a menu button (main menu, dialogs, game over and victory screen) |
+| `menuHover` | `0.5` | Mouse over a menu button |
+| `pauseOpen` | `0.3` | The pause opens (button or Esc) |
+| `pauseClose` | `0.3` | The pause closes (Continue, Esc, Retry or Home in the pause menu) |
+| `gameOver` | `0.5` | The character died and the game over screen appears |
+| `victory` | `0.5` | The boss is defeated and the victory screen appears |
+| `jump` | `0.4` | The character leaves the ground |
+| `land` | `0.4` | The character lands on the ground or on a platform |
+| `roll` | `0.4` | The dodge roll starts |
+| `attack` | `0.4` | The melee attack starts |
+| `cast` | `0.4` | The cast of the fireball starts |
+| `fireballImpact` | `0.4` | A fireball hits a target (character fireball on an enemy, boss fireball on the character) |
+| `noEnergy` | `0.3` | The special attack key is pressed with an empty energy bar |
+| `walk` | `0.5` | Footsteps, loop while the character walks on the ground (speed `1.1` from `LOOP_RATES`) |
+| `hurt` | `0.4` | The character takes damage |
+| `collect` | `0.2` | A key, a pizza or a donut is collected |
+| `snore` | `0.3` | Loop while the character sits after the rest delay |
+| `chestOpen` | `0.3` | The lid of the chest starts to open (`chest.openSoundFrame`) |
+| `portalEnter` | `0.4` | The portal vortex grows (cut to the length of `transition.expandTicks`) |
+| `portalExit` | `0.4` | The portal vortex shrinks (cut to the length of `transition.contractTicks`) |
+| `enemyHit` | `0.4` | An enemy or the boss is hit without dying |
+| `bearDeath` | `0.4` | The killing hit on a bear |
+| `bossDeath` | `0.2` | The killing hit on the boss |
+| `bossFireball` | `0.4` | A fireball attack of the boss starts |
+| `bossRay` | `0.3` | The ray attack of the boss starts (windup and ray, cut to 2.5 seconds) |
+
+| Music | Default volume | Plays when |
+|---|---|---|
+| `menuMusic` | `0.1` | Main menu |
+| `forestMusic` | `0.3` | Level one |
+| `bossMusic` | `0.1` | The boss sees the character for the first time |
+
+`LOOP_RATES` sets the playback speed of a loop (`1` is the speed of the file). The footsteps use `1.1` to match the walk animation.
+
 ## Not part of the settings
 
 These values are fixed in the code on purpose.
@@ -201,12 +243,12 @@ These values are fixed in the code on purpose.
 | What | Where | Why |
 |---|---|---|
 | Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
-| Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
+| Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
 | `TILE_SIZE`, `TILE_COLUMNS`, `WALKABLE_TILE_IDS`, `EMPTY_TILE_ID`, `XX`, `FIRST_MARKER_ID`, `PLAYER_START_ID` | `tile.class.js` | They depend on the tileset and on the numbering of the map. |
 | `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy-markers.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
 | `SPIRAL_RADIUS_RATIO` | `portal-transition.class.js` | The vortex image fills about 40 % of its width as a circle, the transition uses this to cover the canvas completely. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
-| Images of the status bars | `world.class.js` | They are facts of the bar images. |
+| Images of the status bars | `hud.class.js` | They are facts of the bar images. |
 | `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |
