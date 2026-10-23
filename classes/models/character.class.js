@@ -116,7 +116,7 @@ class Character extends CharacterMovement{
 
     isSleeping(){
         const SIT_TICKS = this.settings.restDelayTicks + this.settings.restFrameTicks * this.sprites.rest.frames;
-        return this.getSpriteState() === 'rest' && this.idleTicks >= SIT_TICKS;
+        return !this.world.isGameEnded && this.getSpriteState() === 'rest' && this.idleTicks >= SIT_TICKS;
     }
 
     stopLoopSounds(){

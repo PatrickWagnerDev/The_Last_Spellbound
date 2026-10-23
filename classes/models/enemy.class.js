@@ -21,6 +21,7 @@ class Enemy extends MovableObject {
         this.frameHeight = config.frameSize;
         this.hitbox = config.hitbox;
         this.spriteFacesLeft = config.spriteFacesLeft;
+        this.deathSound = config.deathSound;
     }
 
     applyStats(){
@@ -32,10 +33,13 @@ class Enemy extends MovableObject {
 
     receiveHit(damage, source){
         this.takeDamage(damage);
-        if(!this.isDead()){
-            this.startKnockback(source);
-            this.otherDirection = this.knockbackDirection > 0;
+        if(this.isDead()){
+            soundManager.playSound(this.deathSound);
+            return;
         }
+        soundManager.playSound('enemyHit');
+        this.startKnockback(source);
+        this.otherDirection = this.knockbackDirection > 0;
     }
 
     updateObject(){

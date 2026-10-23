@@ -32,7 +32,8 @@ class MageBoss extends Enemy {
             sprites: MAGE_BOSS_SPRITES,
             frameSize: 64,
             hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
-            spriteFacesLeft: true
+            spriteFacesLeft: true,
+            deathSound: 'bossDeath'
         });
         this.otherDirection = true;
         this.startAnimation();

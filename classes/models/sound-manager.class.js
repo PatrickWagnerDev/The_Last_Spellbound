@@ -19,7 +19,10 @@ const SOUND_VOLUMES = {
     snore: 0.3,
     chestOpen: 0.4,
     portalEnter: 0.4,
-    portalExit: 0.4
+    portalExit: 0.4,
+    enemyHit: 0.4,
+    bearDeath: 0.4,
+    bossDeath: 0.2
 };
 const LOOP_RATES = {
     walk: 1.1
@@ -52,7 +55,10 @@ const SOUND_PATHS = {
     snore: './assets/sounds/760036__stevielematt__snore-03_44100.mp3',
     chestOpen: './assets/sounds/519630__mrthenoronha__open-treasure-chest-8-bit.mp3',
     portalEnter: './assets/sounds/697634__bigdino1995__portal.mp3',
-    portalExit: './assets/sounds/697634__bigdino1995__portal-reverse.mp3'
+    portalExit: './assets/sounds/697634__bigdino1995__portal-reverse.mp3',
+    enemyHit: './assets/sounds/273563__n_audioman__hit_hurt7.mp3',
+    bearDeath: './assets/sounds/704635__zulfish__monster-dying.mp3',
+    bossDeath: './assets/sounds/500272__bigspider95__enimey_dead.mp3'
 };
 
 class SoundManager {

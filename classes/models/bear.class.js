@@ -11,7 +11,8 @@ class Bear extends Enemy {
             sprites: BEAR_SPRITES,
             frameSize: 40,
             hitbox: { offsetX: 28, offsetY: 20, width: 48, height: 60 },
-            spriteFacesLeft: true
+            spriteFacesLeft: true,
+            deathSound: 'bearDeath'
         });
         this.otherDirection = Math.random() < 0.5;
         this.startAnimation();
