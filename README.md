@@ -16,11 +16,11 @@ The game currently offers the following features:
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 - **Audio** – Enjoy background music for the start screen, the level and the boss fight, sound effects for the character, the enemies and the menus, and a mute button that is saved in Local Storage.
 - **Responsive Layout** – The game scales down on small screens and shows an orientation notice on touch devices in portrait mode.
+- **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay with a button on the start screen and in the game.
 
 The following features are planned:
 
 - **Touch Controls** – Play on mobile devices in landscape mode with on-screen buttons.
-- **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay.
 
 ## Technologies
 
@@ -47,6 +47,8 @@ The graphics and the font used in this project come from [Craftpix.net](https://
 The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic Font (532173) from Craftpix.net.
 
 The font `assets/fonts/Planes_ValMore.ttf` is part of the Game UI Pixel Art pack (781165) from Craftpix.net.
+
+The icon `assets/icons/Fullscreen_exit.png` is derived from an icon of the Game UI Pixel Art pack (781165) from Craftpix.net: the two arrows of the fullscreen icon were turned around.
 
 ### Sound Credits
 
@@ -113,7 +115,7 @@ simply repeating the technologies or features listed above.
 
 > **Current Status:** In Development
 
-The project is currently being developed. The gameplay, the menus, the dialogs and the audio are finished, touch controls and the final cleanup are still open.
+The project is currently being developed. The gameplay, the menus, the dialogs, the audio and the fullscreen mode are finished, touch controls and the final cleanup are still open.
 
 <!--
 PROJECT STATUS:
