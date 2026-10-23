@@ -91,6 +91,8 @@ function updateGameOverUi(isGameOver){
 function showGameEnd(isVictory){
     document.getElementById('game-over-title').textContent = isVictory ? 'VICTORY' : 'GAME OVER';
     updateGameOverUi(true);
+    soundManager.stopMusic();
+    soundManager.playSound(isVictory ? 'victory' : 'gameOver');
 }
 
 function updatePauseUi(){

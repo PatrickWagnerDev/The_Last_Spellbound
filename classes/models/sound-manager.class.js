@@ -3,7 +3,9 @@ const SOUND_VOLUMES = {
     menuClick: 0.3,
     menuHover: 0.5,
     pauseOpen: 0.3,
-    pauseClose: 0.3
+    pauseClose: 0.3,
+    gameOver: 0.5,
+    victory: 0.5
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
@@ -17,7 +19,9 @@ const SOUND_PATHS = {
     menuClick: './assets/sounds/873105__heyheytheree__tab-rpg-psx-ui-sfx-free.mp3',
     menuHover: './assets/sounds/251390__deadsillyrabbit__button_hover-mp3.mp3',
     pauseOpen: './assets/sounds/873101__heyheytheree__pause-rpg-psx-ui-sfx-free.mp3',
-    pauseClose: './assets/sounds/873112__heyheytheree__unpause-rpg-psx-ui-sfx-free.mp3'
+    pauseClose: './assets/sounds/873112__heyheytheree__unpause-rpg-psx-ui-sfx-free.mp3',
+    gameOver: './assets/sounds/409343__luminousfridge__player-death.mp3',
+    victory: './assets/sounds/856038__yokomatsuko__electronic-victory-sound.mp3'
 };
 
 class SoundManager {
