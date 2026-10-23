@@ -12,13 +12,14 @@ The game currently offers the following features:
 - **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
-- **Game Screens** – Use the start screen, the pause menu, the game-over screen and the victory screen, and retry or return to the start screen.
+- **Game Screens** – Start with a "Press any key" page, use the start screen, the pause menu, the game-over screen and the victory screen, and retry or return to the start screen.
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.
+- **Audio** – Enjoy background music for the start screen, the level and the boss fight, sound effects for the character, the enemies and the menus, and a mute button that is saved in Local Storage.
+- **Responsive Layout** – The game scales down on small screens and shows an orientation notice on touch devices in portrait mode.
 
 The following features are planned:
 
-- **Audio Settings** – Enjoy background music and sound effects, with a mute option saved in Local Storage.
-- **Touch Controls** – Play on mobile devices in landscape mode with an orientation notice for portrait mode.
+- **Touch Controls** – Play on mobile devices in landscape mode with on-screen buttons.
 - **Fullscreen Mode** – Switch between the standard canvas view and fullscreen gameplay.
 
 ## Technologies
@@ -112,7 +113,7 @@ simply repeating the technologies or features listed above.
 
 > **Current Status:** In Development
 
-The project is currently being developed. The gameplay, the menus and the dialogs are finished, audio, touch controls and the final cleanup are still open.
+The project is currently being developed. The gameplay, the menus, the dialogs and the audio are finished, touch controls and the final cleanup are still open.
 
 <!--
 PROJECT STATUS:
