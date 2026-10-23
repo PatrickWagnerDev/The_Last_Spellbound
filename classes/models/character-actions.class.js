@@ -38,7 +38,7 @@ class CharacterActions extends CharacterMovement{
     }
 
     isBusy(){
-        return this.isRolling() || this.isAttacking() || this.isCasting();
+        return this.isRolling() || this.isAttacking() || this.isCasting() || this.isHurt();
     }
 
     isActionFree(){
