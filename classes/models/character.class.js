@@ -215,9 +215,14 @@ class Character extends CharacterMovement{
         const JUST_PRESSED = this.isNewPress('ATTACK');
         const CAN_ATTACK = this.isActionFree();
         if(JUST_PRESSED && CAN_ATTACK){
-            this.attackTicksLeft = this.settings.attackTicks;
-            this.attackHits = [];
+            this.startAttack();
         }
+    }
+
+    startAttack(){
+        this.attackTicksLeft = this.settings.attackTicks;
+        this.attackHits = [];
+        soundManager.playSound('attack');
     }
 
     getAttackElapsed(){
