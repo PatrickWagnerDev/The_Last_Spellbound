@@ -1,7 +1,7 @@
 const START_WIZARD_IMAGE = './assets/image/01-wizard/Fire Wizard/Idle.png';
 const SCREEN_FADE_MS = 400;
 const PRESS_EVENTS = ['keydown', 'pointerdown'];
-const MENU_BUTTON_SELECTOR = '.start-button, .close-button, .page-button';
+const MENU_BUTTON_SELECTOR = '.start-button, .close-button, .page-button, .menu-button';
 const HOVER_QUERY = window.matchMedia('(hover: hover)');
 
 function releaseFocus(){
@@ -22,7 +22,8 @@ function playHoverSound(event){
 }
 
 function playClickSound(event){
-    if(event.target.closest(MENU_BUTTON_SELECTOR)){
+    const MENU_BUTTON = event.target.closest(MENU_BUTTON_SELECTOR);
+    if(MENU_BUTTON && !MENU_BUTTON.closest('#pause-menu')){
         soundManager.playSound('menuClick');
     }
 }

@@ -1,5 +1,10 @@
 const MUTE_STORAGE_KEY = 'spellbound-muted';
-const EFFECT_VOLUME = 0.5;
+const SOUND_VOLUMES = {
+    menuClick: 0.3,
+    menuHover: 0.5,
+    pauseOpen: 0.3,
+    pauseClose: 0.3
+};
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
     forestMusic: 0.3
@@ -10,7 +15,9 @@ const MUSIC_PATHS = {
 };
 const SOUND_PATHS = {
     menuClick: './assets/sounds/873105__heyheytheree__tab-rpg-psx-ui-sfx-free.mp3',
-    menuHover: './assets/sounds/251390__deadsillyrabbit__button_hover-mp3.mp3'
+    menuHover: './assets/sounds/251390__deadsillyrabbit__button_hover-mp3.mp3',
+    pauseOpen: './assets/sounds/873101__heyheytheree__pause-rpg-psx-ui-sfx-free.mp3',
+    pauseClose: './assets/sounds/873112__heyheytheree__unpause-rpg-psx-ui-sfx-free.mp3'
 };
 
 class SoundManager {
@@ -64,7 +71,7 @@ class SoundManager {
             return;
         }
         const SOUND = this.sounds[soundName].cloneNode();
-        SOUND.volume = EFFECT_VOLUME;
+        SOUND.volume = SOUND_VOLUMES[soundName];
         SOUND.play().catch(() => {});
     }
 

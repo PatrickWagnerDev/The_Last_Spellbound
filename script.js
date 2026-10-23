@@ -41,6 +41,7 @@ function finishStartGame(){
 }
 
 function goHome(){
+    playUnpauseSound();
     fadeThroughBlack(showStartScreen);
 }
 
@@ -74,8 +75,22 @@ function togglePause(){
     if(!gameWorld){
         return;
     }
+    const WAS_PAUSED = gameWorld.isPauseActive();
     gameWorld.togglePause();
     updatePauseUi();
+    playPauseSound(WAS_PAUSED);
+}
+
+function playPauseSound(wasPaused){
+    if(gameWorld.isPauseActive() !== wasPaused){
+        soundManager.playSound(wasPaused ? 'pauseClose' : 'pauseOpen');
+    }
+}
+
+function playUnpauseSound(){
+    if(gameWorld?.isPauseActive()){
+        soundManager.playSound('pauseClose');
+    }
 }
 
 function toggleMute(){
@@ -85,6 +100,7 @@ function toggleMute(){
 }
 
 function restartLevel(){
+    playUnpauseSound();
     fadeThroughBlack(restartWorld);
 }
 
