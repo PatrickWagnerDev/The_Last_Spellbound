@@ -5,7 +5,9 @@ const SOUND_VOLUMES = {
     pauseOpen: 0.3,
     pauseClose: 0.3,
     gameOver: 0.5,
-    victory: 0.5
+    victory: 0.5,
+    jump: 0.4,
+    land: 0.4
 };
 const MUSIC_VOLUMES = {
     menuMusic: 0.1,
@@ -21,7 +23,9 @@ const SOUND_PATHS = {
     pauseOpen: './assets/sounds/873101__heyheytheree__pause-rpg-psx-ui-sfx-free.mp3',
     pauseClose: './assets/sounds/873112__heyheytheree__unpause-rpg-psx-ui-sfx-free.mp3',
     gameOver: './assets/sounds/409343__luminousfridge__player-death.mp3',
-    victory: './assets/sounds/856038__yokomatsuko__electronic-victory-sound.mp3'
+    victory: './assets/sounds/856038__yokomatsuko__electronic-victory-sound.mp3',
+    jump: './assets/sounds/662463__fullstacksound__jump_player.mp3',
+    land: './assets/sounds/540272__zepurple__land-a-jump.mp3'
 };
 
 class SoundManager {

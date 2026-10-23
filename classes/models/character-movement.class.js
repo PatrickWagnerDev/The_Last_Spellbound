@@ -81,6 +81,12 @@ class CharacterMovement extends MovableObject{
     launchJump(){
         this.speedY = this.settings.jumpSpeed;
         this.startPhase('air');
+        soundManager.playSound('jump');
+    }
+
+    startLanding(){
+        this.startPhase('land');
+        soundManager.playSound('land');
     }
 
     updateJumpPhase(){
@@ -90,7 +96,7 @@ class CharacterMovement extends MovableObject{
         } else if(this.jumpPhase === 'crouch' && this.phaseTicks >= this.settings.crouchTicks){
             this.launchJump();
         } else if(this.jumpPhase === 'air' && this.onGround){
-            this.startPhase('land');
+            this.startLanding();
         } else if(this.jumpPhase === 'land' && this.phaseTicks >= this.settings.landTicks){
             this.startPhase('none');
         }
