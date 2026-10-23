@@ -171,11 +171,16 @@ class MageBoss extends Enemy {
             return false;
         }
         if(this.canUseRay()){
-            this.rayCooldownLeft = this.settings.rayCooldownTicks;
-            this.setState('ray');
+            this.startRay();
             return true;
         }
         return this.tryStartFireball();
+    }
+
+    startRay(){
+        this.rayCooldownLeft = this.settings.rayCooldownTicks;
+        this.setState('ray');
+        soundManager.playSound('bossRay');
     }
 
     tryStartFireball(){
