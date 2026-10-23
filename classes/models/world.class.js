@@ -1,3 +1,5 @@
+const VISIBLE_MARGIN = 128;
+
 class World {
     level;
     levelData;
@@ -180,8 +182,12 @@ class World {
         this.frameRequest = requestAnimationFrame(() => this.drawWorld());
     }
 
+    isVisible(object){
+        return object.x + object.width + VISIBLE_MARGIN > this.cameraX && object.x - VISIBLE_MARGIN < this.cameraX + this.canvas.width;
+    }
+
     addObjectsToMap(objects){
-        objects.forEach(object => object.drawObject(this.ctx));
+        objects.filter(object => this.isVisible(object)).forEach(object => object.drawObject(this.ctx));
     }
 
     drawHitboxes(){

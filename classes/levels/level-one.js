@@ -12,10 +12,10 @@ const LEVEL_ONE = {
         [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
     ],
     backgroundLayers: [
-        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees3.png', factor: 0 },
-        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees2.png', factor: 0.25 },
-        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/trees1.png', factor: 0.5 },
-        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Bright/bushes.png', factor: 1 }
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees3.png', factor: 0 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees2.png', factor: 0.25 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees1.png', factor: 0.5 },
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/bushes.png', factor: 1 }
     ],
     music: 'forestMusic',
     getNextLevel: () => LEVEL_ONE_BOSS

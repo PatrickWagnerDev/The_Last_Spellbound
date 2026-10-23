@@ -1,5 +1,5 @@
 const START_WIZARD_IMAGE = './assets/image/01-wizard/Fire Wizard/Idle.png';
-const PRESS_EVENTS = ['keydown', 'pointerdown'];
+const PRESS_EVENTS = ['keydown', 'click'];
 
 function loadStartAssets(){
     const WIZARD_IMAGE = createImage(START_WIZARD_IMAGE);

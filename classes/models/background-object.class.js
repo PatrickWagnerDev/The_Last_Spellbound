@@ -4,8 +4,8 @@ class BackgroundObject extends DrawableObject {
     y = 0;
     height = 480;
     width = BACKGROUND_WIDTH;
-    frameWidth = 1920;
-    frameHeight = 1080;
+    frameWidth = 720;
+    frameHeight = 480;
     frameCount = 1;
 
     constructor(imagePath, parallaxFactor, startX){

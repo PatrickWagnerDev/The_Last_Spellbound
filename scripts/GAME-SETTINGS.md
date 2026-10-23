@@ -250,5 +250,6 @@ These values are fixed in the code on purpose.
 | `ENEMY_MARKERS`, `ITEM_MARKERS` | `enemy-markers.js`, `item-markers.js` | They connect a marker number with an enemy or item class. |
 | `SPIRAL_RADIUS_RATIO` | `portal-transition.class.js` | The vortex image fills about 40 % of its width as a circle, the transition uses this to cover the canvas completely. |
 | `BACKGROUND_WIDTH` | `background-object.class.js` | It depends on the size of the background images. |
+| `VISIBLE_MARGIN` | `world.class.js` | Objects up to this many px outside of the screen are still drawn, so that wide sprites never pop in or out. Everything further away is skipped to keep the game fast on phones. |
 | Images of the status bars | `hud.class.js` | They are facts of the bar images. |
 | `TICKS_PER_SECOND` | `helper-functions.js` | All speeds and tick counts in the settings are tuned for 60 ticks per second. Changing it changes the speed of the whole game. |

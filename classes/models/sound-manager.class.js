@@ -47,7 +47,19 @@ class SoundManager {
         this.music.loop = true;
         this.music.volume = MUSIC_VOLUMES[soundName];
         this.music.muted = this.isMuted;
-        this.music.play().catch(() => {});
+        this.music.play().catch(() => this.retryMusicOnInput(this.music));
+    }
+
+    retryMusicOnInput(music){
+        const RETRY_MUSIC = () => {
+            window.removeEventListener('click', RETRY_MUSIC);
+            window.removeEventListener('keydown', RETRY_MUSIC);
+            if(this.music === music){
+                music.play().catch(() => {});
+            }
+        };
+        window.addEventListener('click', RETRY_MUSIC);
+        window.addEventListener('keydown', RETRY_MUSIC);
     }
 
     playSound(soundName){

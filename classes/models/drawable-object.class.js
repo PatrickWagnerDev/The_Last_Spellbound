@@ -54,18 +54,26 @@ class DrawableObject{
     }
 
     drawObject(ctx){
-        let drawX = this.x;
-        ctx.save();
         if(this.isFlipped()){
-            this.flipContext(ctx);
-            drawX = 0;
+            this.drawFlipped(ctx);
+        } else {
+            this.drawFrame(ctx, this.x);
         }
+    }
+
+    drawFlipped(ctx){
+        ctx.save();
+        this.flipContext(ctx);
+        this.drawFrame(ctx, 0);
+        ctx.restore();
+    }
+
+    drawFrame(ctx, drawX){
         ctx.drawImage(
             this.img,
             this.currentFrame * this.frameWidth, this.frameRow * this.frameHeight, this.frameWidth, this.frameHeight,
             Math.round(drawX), Math.round(this.y), this.width, this.height
         );
-        ctx.restore();
     }
 
     flipContext(ctx){
