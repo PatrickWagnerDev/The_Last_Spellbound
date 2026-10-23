@@ -1,8 +1,4 @@
-const START_WIZARD_IMAGE = './assets/image/01-wizard/Fire Wizard/Idle.png';
 const SCREEN_FADE_MS = 400;
-const PRESS_EVENTS = ['keydown', 'pointerdown'];
-const MENU_BUTTON_SELECTOR = '.start-button, .close-button, .page-button, .menu-button';
-const HOVER_QUERY = window.matchMedia('(hover: hover)');
 
 function releaseFocus(){
     document.activeElement?.blur();
@@ -12,67 +8,6 @@ function toggleScreen(screenId, isOpen, markerId, markerClass){
     document.getElementById(markerId).classList.toggle(markerClass, isOpen);
     document.getElementById(screenId).classList.toggle('is-open', isOpen);
     releaseFocus();
-}
-
-function playHoverSound(event){
-    const MENU_BUTTON = event.target.closest(MENU_BUTTON_SELECTOR);
-    if(HOVER_QUERY.matches && MENU_BUTTON && !MENU_BUTTON.contains(event.relatedTarget)){
-        soundManager.playSound('menuHover');
-    }
-}
-
-function playClickSound(event){
-    const MENU_BUTTON = event.target.closest(MENU_BUTTON_SELECTOR);
-    if(MENU_BUTTON && !MENU_BUTTON.closest('#pause-menu')){
-        soundManager.playSound('menuClick');
-    }
-}
-
-function addMenuSounds(){
-    const GAME_CONTAINER = document.getElementById('game-container');
-    GAME_CONTAINER.addEventListener('mouseover', playHoverSound);
-    GAME_CONTAINER.addEventListener('click', playClickSound);
-}
-
-function loadStartAssets(){
-    const WIZARD_IMAGE = createImage(START_WIZARD_IMAGE);
-    return Promise.all([document.fonts.load('24px "Straight Pixel Gothic"'), document.fonts.load('16px "Planes ValMore"'), WIZARD_IMAGE.decode()]);
-}
-
-function setStartPhase(removedClasses, addedClass){
-    const START_SCREEN = document.getElementById('start-screen');
-    START_SCREEN.classList.remove(...removedClasses);
-    START_SCREEN.classList.add(addedClass);
-}
-
-function centerTitleLines(){
-    const START_TITLE = document.querySelector('.start-title');
-    const FIRST_LINE = START_TITLE.querySelector('.title-line');
-    START_TITLE.style.setProperty('--title-line-shift', `${(START_TITLE.offsetWidth - FIRST_LINE.offsetWidth) / 2}px`);
-}
-
-function showPressScreen(){
-    centerTitleLines();
-    setStartPhase(['is-waiting'], 'is-press');
-    PRESS_EVENTS.forEach(eventName => window.addEventListener(eventName, leavePressScreen));
-}
-
-function leavePressScreen(){
-    PRESS_EVENTS.forEach(eventName => window.removeEventListener(eventName, leavePressScreen));
-    soundManager.playMusic('menuMusic');
-    setStartPhase(['is-press'], 'is-settle');
-}
-
-function playStartIntro(){
-    setStartPhase(['is-waiting', 'is-ready'], 'is-intro');
-}
-
-function finishStartIntro(){
-    setStartPhase(['is-intro', 'is-settle'], 'is-ready');
-}
-
-function updateStartScreenUi(isOpen){
-    toggleScreen('start-screen', isOpen, 'game-container', 'is-start-screen');
 }
 
 function fadeThroughBlack(onBlack){
@@ -104,30 +39,4 @@ function updateMuteUi(){
     const MUTE_BUTTON = document.getElementById('mute-button');
     MUTE_BUTTON.classList.toggle('is-muted', soundManager.isMuted);
     MUTE_BUTTON.setAttribute('aria-pressed', soundManager.isMuted);
-}
-
-function openDialog(dialogId){
-    const DIALOG_SCREEN = document.getElementById(dialogId);
-    DIALOG_SCREEN.classList.remove('is-second-page');
-    DIALOG_SCREEN.classList.add('is-open');
-    releaseFocus();
-}
-
-function toggleControlsPage(){
-    document.getElementById('controls-screen').classList.toggle('is-second-page');
-    releaseFocus();
-}
-
-function hideDialogs(){
-    document.querySelectorAll('.dialog-screen.is-open').forEach(dialog => dialog.classList.remove('is-open'));
-}
-
-function closeDialog(event){
-    if(event.target === event.currentTarget || event.target.closest('.close-button')){
-        hideDialogs();
-    }
-}
-
-function isDialogOpen(){
-    return document.querySelector('.dialog-screen.is-open') !== null;
 }
