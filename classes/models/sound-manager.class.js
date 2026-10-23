@@ -16,7 +16,10 @@ const SOUND_VOLUMES = {
     walk: 0.5,
     hurt: 0.4,
     collect: 0.2,
-    snore: 0.3
+    snore: 0.3,
+    chestOpen: 0.4,
+    portalEnter: 0.4,
+    portalExit: 0.4
 };
 const LOOP_RATES = {
     walk: 1.1
@@ -46,7 +49,10 @@ const SOUND_PATHS = {
     walk: './assets/sounds/417291__benzix2__steps.mp3',
     hurt: './assets/sounds/662465__fullstacksound__hurt_player.mp3',
     collect: './assets/sounds/711129__xiko__retro-collection-3.mp3',
-    snore: './assets/sounds/760036__stevielematt__snore-03_44100.mp3'
+    snore: './assets/sounds/760036__stevielematt__snore-03_44100.mp3',
+    chestOpen: './assets/sounds/519630__mrthenoronha__open-treasure-chest-8-bit.mp3',
+    portalEnter: './assets/sounds/697634__bigdino1995__portal.mp3',
+    portalExit: './assets/sounds/697634__bigdino1995__portal-reverse.mp3'
 };
 
 class SoundManager {

@@ -101,6 +101,7 @@ const GAME_SETTINGS = {
         scale: 2,
         openDistance: 48,
         openFps: 8,
+        openSoundFrame: 5,
         portalOffset: 2
     },
     portal: {
@@ -109,8 +110,8 @@ const GAME_SETTINGS = {
         appearTicks: 30
     },
     transition: {
-        expandTicks: 30,
-        contractTicks: 30,
+        expandTicks: 36,
+        contractTicks: 36,
         spinFps: 12
     },
     energy: {

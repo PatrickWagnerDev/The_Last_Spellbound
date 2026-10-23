@@ -12,6 +12,7 @@ class Chest extends LevelItem {
     isOpen = false;
     openTicks = 0;
     hasSpawnedPortal = false;
+    hasPlayedSound = false;
 
     constructor(column, row){
         super();
@@ -54,9 +55,17 @@ class Chest extends LevelItem {
         this.openTicks++;
         const TOTAL_TICKS = getTicksPerFrame(this.settings.openFps) * 8;
         this.currentFrame = getProgressFrame(this.openTicks, TOTAL_TICKS, 8);
+        this.playOpenSound();
         if(this.openTicks >= TOTAL_TICKS && !this.hasSpawnedPortal){
             this.hasSpawnedPortal = true;
             this.world.addItem(new Portal(this.column + this.settings.portalOffset, this.row));
+        }
+    }
+
+    playOpenSound(){
+        if(this.currentFrame >= this.settings.openSoundFrame && !this.hasPlayedSound){
+            this.hasPlayedSound = true;
+            soundManager.playSound('chestOpen');
         }
     }
 }

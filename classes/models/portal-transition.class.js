@@ -20,6 +20,7 @@ class PortalTransition extends MovableObject {
         this.coverSize = this.getCoverSize();
         this.setupSprites(IMAGES_PORTAL);
         this.startAnimation();
+        soundManager.playSound('portalEnter');
     }
 
     isFrozen(){
@@ -73,6 +74,7 @@ class PortalTransition extends MovableObject {
         this.coverSize = this.getCoverSize();
         this.phase = 'contract';
         this.phaseTicks = 0;
+        soundManager.playSound('portalExit');
     }
 
     drawObject(ctx){

@@ -140,6 +140,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `scale` | `2` | Size factor of the chest on the playing field (the image is 32x32 px). Whole numbers keep the pixels sharp. The chest stands on the bottom edge of its map cell. |
 | `openDistance` | `48` | How close the character has to be to open the chest, in px measured from the sides of the chest (48 = one tile). The character needs a key, one key is used up when the chest opens. |
 | `openFps` | `8` | Animation speed of the opening in frames per second (8 frames, plays once and stays open). |
+| `openSoundFrame` | `5` | Frame of the opening animation (0 to 7) at which the chest sound starts. 4 is the turned key, 5 is the lid starting to open. |
 | `portalOffset` | `2` | How many map cells to the right of the chest the portal appears once the chest is fully open. |
 
 ## portal
@@ -154,8 +155,8 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 
 | Variable | Default | Effect |
 |---|---|---|
-| `expandTicks` | `30` | Ticks the portal vortex needs to grow until it covers the whole canvas (30 ticks = 0.5 seconds). The game is paused meanwhile (`world.isPaused`). |
-| `contractTicks` | `30` | Ticks the vortex needs to shrink around the character in the new level and disappear (30 ticks = 0.5 seconds). The game continues afterwards. |
+| `expandTicks` | `36` | Ticks the portal vortex needs to grow until it covers the whole canvas (36 ticks = 0.6 seconds). The game is paused meanwhile (`world.isPaused`). The portal sound `portal.mp3` is cut to this length. |
+| `contractTicks` | `36` | Ticks the vortex needs to shrink around the character in the new level and disappear (36 ticks = 0.6 seconds). The game continues afterwards. The sound `portal-reverse.mp3` is cut to this length. |
 | `spinFps` | `12` | Speed of the turning vortex during the transition in frames per second (3 images in a loop). |
 
 While the transition runs, the level is switched under the covered canvas. The same pause (`world.isPaused`) is meant for the pause button later.
