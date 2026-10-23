@@ -26,6 +26,7 @@ function getStartLevelData(){
 function init(){
     gameCanvas = document.getElementById('game-canvas');
     updateMuteUi();
+    soundManager.playMusic('menuMusic');
     document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
     loadStartAssets().catch(() => {}).then(playStartIntro);
 }
@@ -35,6 +36,7 @@ function startGame(){
 }
 
 function finishStartGame(){
+    soundManager.stopMusic();
     createWorld(getStartLevelData());
     updateStartScreenUi(false);
 }
@@ -50,6 +52,7 @@ function showStartScreen(){
     updatePauseUi();
     updateStartScreenUi(true);
     playStartIntro();
+    soundManager.playMusic('menuMusic');
 }
 
 function createWorld(levelData){
