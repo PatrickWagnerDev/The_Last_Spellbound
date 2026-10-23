@@ -1,13 +1,25 @@
 const MUTE_STORAGE_KEY = 'spellbound-muted';
-const MUSIC_VOLUME = 0.5;
-const SOUND_PATHS = {
+const MUSIC_VOLUME = 0.2;
+const EFFECT_VOLUME = 0.5;
+const MUSIC_PATHS = {
     menuMusic: './assets/sounds/628385__davo32__metal-forest.mp3'
+};
+const SOUND_PATHS = {
+    menuClick: './assets/sounds/873105__heyheytheree__tab-rpg-psx-ui-sfx-free.mp3',
+    menuHover: './assets/sounds/251390__deadsillyrabbit__button_hover-mp3.mp3'
 };
 
 class SoundManager {
     constructor(){
         this.isMuted = this.readMuteState();
         this.music = null;
+        this.sounds = this.loadSounds();
+    }
+
+    loadSounds(){
+        const SOUNDS = {};
+        Object.entries(SOUND_PATHS).forEach(([soundName, soundPath]) => SOUNDS[soundName] = new Audio(soundPath));
+        return SOUNDS;
     }
 
     readMuteState(){
@@ -36,11 +48,20 @@ class SoundManager {
 
     playMusic(soundName){
         this.stopMusic();
-        this.music = new Audio(SOUND_PATHS[soundName]);
+        this.music = new Audio(MUSIC_PATHS[soundName]);
         this.music.loop = true;
         this.music.volume = MUSIC_VOLUME;
         this.music.muted = this.isMuted;
         this.music.play().catch(() => {});
+    }
+
+    playSound(soundName){
+        if(this.isMuted){
+            return;
+        }
+        const SOUND = this.sounds[soundName].cloneNode();
+        SOUND.volume = EFFECT_VOLUME;
+        SOUND.play().catch(() => {});
     }
 
     stopMusic(){
