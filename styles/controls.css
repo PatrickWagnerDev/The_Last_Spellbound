@@ -312,33 +312,3 @@
 .controls-screen.is-second-page .page-icon {
     background-image: url('../assets/image/09-ui/3 Icons/Icons_14.png');
 }
-
-.credits-body {
-    position: absolute;
-    top: 92px;
-    left: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 496px;
-    height: 200px;
-    padding: 0 32px;
-    font-family: var(--font-ui);
-    color: #ffffff;
-}
-
-.credits-text {
-    font-size: 20px;
-    line-height: 30px;
-    text-align: center;
-}
-
-.credits-link {
-    color: var(--color-title-light);
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.credits-link:hover {
-    color: #ffffff;
-}

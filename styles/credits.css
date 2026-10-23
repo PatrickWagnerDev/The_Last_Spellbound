@@ -1,0 +1,76 @@
+.credits-body {
+    position: absolute;
+    top: 92px;
+    left: 40px;
+    width: 496px;
+    height: 210px;
+    padding: 0 24px;
+    font-family: var(--font-ui);
+    color: #ffffff;
+}
+
+.credits-scroll {
+    height: 100%;
+    padding-right: 12px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-plate) var(--color-navy);
+}
+
+.credits-scroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.credits-scroll::-webkit-scrollbar-track {
+    background-color: var(--color-navy);
+}
+
+.credits-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--color-plate);
+    border: 2px solid var(--color-navy);
+}
+
+.credits-scroll:focus-visible {
+    outline: 2px solid var(--color-title-light);
+}
+
+.credits-text {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.credits-heading {
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: normal;
+    color: var(--color-title-light);
+}
+
+.credits-note {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-text-muted);
+}
+
+.credits-list {
+    margin-top: 10px;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 22px;
+    list-style: square;
+}
+
+.credits-license {
+    color: var(--color-text-muted);
+}
+
+.credits-link {
+    color: var(--color-title-light);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.credits-link:hover {
+    color: #ffffff;
+}

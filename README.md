@@ -47,6 +47,44 @@ The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic F
 
 The font `assets/fonts/Planes_ValMore.ttf` is part of the Game UI Pixel Art pack (781165) from Craftpix.net.
 
+### Sound Credits
+
+The music and sound effects come from [Freesound.org](https://freesound.org) (my collection: [The Last Spellbound](https://freesound.org/collections/756488-the-last-spellbound/)). Many thanks to all the creators for sharing their sounds! Some sounds were converted to mp3 and shortened.
+
+| Sound | Author | License |
+|---|---|---|
+| [Boss Battle Loop #3](https://freesound.org/people/Sirkoto51/sounds/443128/) | Sirkoto51 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Button_Hover (mp3)](https://freesound.org/people/deadsillyrabbit/sounds/251390/) | deadsillyrabbit | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [buzzer](https://freesound.org/people/Loyalty_Freak_Music/sounds/407466/) | Loyalty_Freak_Music | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Electronic Victory Sound](https://freesound.org/people/yokomatsuko/sounds/856038/) | yokomatsuko | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Enimey_Dead](https://freesound.org/people/bigspider95/sounds/500272/) | bigspider95 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Fantasy Forest](https://freesound.org/people/16Pixel/sounds/785711/) | 16Pixel | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Fireball Cast 3](https://freesound.org/people/LiamG_SFX/sounds/334237/) | LiamG_SFX | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Fireball Explosion](https://freesound.org/people/Blankened/sounds/431174/) | Blankened | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Hit_Hurt7](https://freesound.org/people/n_audioman/sounds/273563/) | n_audioman | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [hurt_player](https://freesound.org/people/FullStackSound/sounds/662465/) | FullStackSound | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Interface, magic, fireball, bell, spell](https://freesound.org/people/FALL-E/sounds/714744/) | FALL-E | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [jump_player](https://freesound.org/people/FullStackSound/sounds/662463/) | FullStackSound | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [land a jump](https://freesound.org/people/zepurple/sounds/540272/) | zepurple | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Laser shotgun loading](https://freesound.org/people/beman87/sounds/169679/) | beman87 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Metal Forest](https://freesound.org/people/davo32/sounds/628385/) | davo32 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Monster Dying](https://freesound.org/people/Zulfish/sounds/704635/) | Zulfish | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Open Treasure Chest 8 Bit](https://freesound.org/people/Mrthenoronha/sounds/519630/) | Mrthenoronha | [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) |
+| [Pause rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873101/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Player Death](https://freesound.org/people/luminousfridge/sounds/409343/) | luminousfridge | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Portal](https://freesound.org/people/BigDino1995/sounds/697634/) | BigDino1995 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Retro Collection 3](https://freesound.org/people/Xiko__/sounds/711129/) | Xiko__ | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Roll](https://freesound.org/people/DrMrSir/sounds/529563/) | DrMrSir | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [SNORE-03_44100](https://freesound.org/people/stevielematt/sounds/760036/) | stevielematt | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [steps](https://freesound.org/people/benzix2/sounds/417291/) | benzix2 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Sword Swing 1](https://freesound.org/people/Nomagician/sounds/840716/) | Nomagician | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Tab rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873105/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Unpause rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873112/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+
+Two more tracks are prepared for future bosses and not used in the game yet: [Super Mega Ultimate Final Boss Battle](https://freesound.org/people/FoolBoyMedia/sounds/530064/) by FoolBoyMedia ([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)) and [Dope Video Game Boss Music](https://freesound.org/people/Seth_Makes_Sounds/sounds/683457/) by Seth_Makes_Sounds ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)).
+
+The chest sound and the prepared FoolBoyMedia track are licensed for non-commercial use only. This project is a student project without a commercial purpose.
+
 ## AI Assistance
 
 This project was developed with the support of an AI assistant (Claude Code by Anthropic). The use of AI is officially approved by my educational institution.
