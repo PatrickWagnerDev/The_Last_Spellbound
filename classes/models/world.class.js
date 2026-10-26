@@ -94,7 +94,7 @@ class World {
         }
         if(this.character.hasDeathFinished()){
             this.endGame(false);
-        } else if(this.hasBossDefeated()){
+        } else if(!this.character.isDead() && this.hasBossDefeated()){
             this.endGame(true);
         }
     }

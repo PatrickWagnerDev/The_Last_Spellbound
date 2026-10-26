@@ -1,3 +1,5 @@
+const CALM_STATES = ['wait', 'patrol', 'jump', 'return'];
+
 class Boss extends SightEnemy {
     isBoss = true;
     state = 'wait';
@@ -15,7 +17,14 @@ class Boss extends SightEnemy {
     updateBehavior(){
         this.stateTicks++;
         this.updateCooldowns();
+        this.stopWhenCharacterDead();
         this.getStateUpdates()[this.state]();
+    }
+
+    stopWhenCharacterDead(){
+        if(this.world.character.isDead() && !CALM_STATES.includes(this.state)){
+            this.setState('patrol');
+        }
     }
 
     getStateUpdates(){
