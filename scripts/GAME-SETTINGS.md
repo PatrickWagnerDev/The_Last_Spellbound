@@ -28,8 +28,8 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `hurtTicks` | `24` | Ticks of the hurt animation after a hit (60 ticks = 1 second). Walking and jumping are locked meanwhile and the character is pushed away from the enemy. |
 | `knockbackSpeed` | `5` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (60 px by default). |
 | `deathTicks` | `60` | Duration of the death animation in ticks (60 = 1 second), independent of the number of frames. The animation plays once and stays on the last frame. |
-| `rollTicks` | `36` | Duration of the roll (60 ticks = 1 second). The roll starts with S or the down arrow on the ground, cannot be cancelled and cannot be started in the air. The character cannot be hurt while rolling. |
-| `rollSpeed` | `5` | Speed of the roll in px per tick. Distance in px is `rollSpeed * rollTicks` (180 px by default). |
+| `rollTicks` | `55` | Duration of the roll (60 ticks = 1 second). The roll starts with S or the down arrow on the ground and cannot be started in the air. The character cannot be hurt while rolling. A new press of the jump key cancels the roll, the jump starts and from that moment the character can be hurt again (the pause of `rollCooldownTicks` follows). |
+| `rollSpeed` | `5` | Speed of the roll in px per tick. Distance in px is `rollSpeed * rollTicks` (275 px by default, about 5.7 tiles). |
 | `rollCooldownTicks` | `30` | Pause after a roll before the next one is possible (30 ticks = 0.5 seconds). Without it, holding the key would make the character invulnerable all the time. `0` turns the pause off. |
 | `attackTicks` | `30` | Duration of the melee attack (60 ticks = 1 second), the 5 attack frames are spread over it. Started with J or X by a new key press, a held key does not repeat it and key presses during a swing are ignored. Walking and jumping stay possible while attacking. |
 | `attackHitStartTick` | `12` | Tick of the attack at which the sword starts to hit (the strike frame is the third one, ticks 12 to 17). |

@@ -13,7 +13,7 @@ const GAME_SETTINGS = {
         hurtTicks: 24,
         knockbackSpeed: 5,
         deathTicks: 60,
-        rollTicks: 36,
+        rollTicks: 55,
         rollSpeed: 5,
         rollCooldownTicks: 30,
         attackTicks: 30,

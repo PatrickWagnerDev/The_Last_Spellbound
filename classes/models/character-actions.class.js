@@ -86,6 +86,25 @@ class CharacterActions extends CharacterMovement{
         }
     }
 
+    handleJump(){
+        const JUST_PRESSED = this.isJumpNewlyPressed();
+        if(this.isRolling() && JUST_PRESSED){
+            this.endRoll();
+        }
+        super.handleJump();
+    }
+
+    isJumpNewlyPressed(){
+        const UP_PRESSED = this.isNewPress('UP');
+        const SPACE_PRESSED = this.isNewPress('SPACE');
+        return UP_PRESSED || SPACE_PRESSED;
+    }
+
+    endRoll(){
+        this.rollTicksLeft = 0;
+        this.rollCooldownLeft = this.settings.rollCooldownTicks;
+    }
+
     isAttacking(){
         return this.attackTicksLeft > 0;
     }
