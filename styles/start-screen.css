@@ -80,7 +80,8 @@
 }
 
 .start-screen.is-press .start-title,
-.start-screen.is-choose .start-title {
+.start-screen.is-choose .start-title,
+.start-screen.is-levels .start-title {
     transform: translate(calc(50% - 328px), calc(-50% + 176px)) scale(1.5);
 }
 
@@ -92,7 +93,8 @@
 }
 
 .start-screen.is-press .title-line,
-.start-screen.is-choose .title-line {
+.start-screen.is-choose .title-line,
+.start-screen.is-levels .title-line {
     transform: translateX(calc(var(--title-line-shift) * -1));
 }
 
@@ -105,7 +107,9 @@
 .start-screen.is-press + .mute-button,
 .start-screen.is-press ~ .fullscreen-button,
 .start-screen.is-choose .start-wizard-area,
-.start-screen.is-choose .start-buttons {
+.start-screen.is-choose .start-buttons,
+.start-screen.is-levels .start-wizard-area,
+.start-screen.is-levels .start-buttons {
     opacity: 0;
 }
 
@@ -150,9 +154,9 @@
     animation: start-fade-in 0.8s linear 2.6s both;
 }
 
-.start-screen:not(.is-ready) .start-button,
-.start-screen:not(.is-ready) + .mute-button,
-.start-screen:not(.is-ready) ~ .fullscreen-button {
+.start-screen:not(.is-ready, .is-levels) .start-button,
+.start-screen:not(.is-ready, .is-levels) + .mute-button,
+.start-screen:not(.is-ready, .is-levels) ~ .fullscreen-button {
     pointer-events: none;
 }
 
@@ -182,7 +186,8 @@
     background-image: url('../assets/image/01-wizard/Lightning Mage/Idle.png');
 }
 
-.start-screen.is-choose .start-title {
+.start-screen.is-choose .start-title,
+.start-screen.is-levels .start-title {
     filter: blur(6px);
 }
 
@@ -250,12 +255,14 @@
     padding: 0 4px;
 }
 
-.choose-button:disabled {
+.choose-button:disabled,
+.level-button:disabled {
     opacity: 0.5;
     cursor: default;
 }
 
-.choose-button:disabled::before {
+.choose-button:disabled::before,
+.level-button:disabled::before {
     background-color: var(--color-navy);
 }
 
@@ -280,4 +287,39 @@
 
 .game-container .start-screen.is-choose ~ .fullscreen-button {
     right: calc(var(--frame-padding) + var(--pause-button-gap) * 2 + 40px);
+}
+
+.level-choice {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.start-screen.is-levels .level-choice {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.start-screen.is-ready .start-title,
+.start-screen.is-levels .start-title {
+    transition: transform 1s ease-in-out, filter 0.6s linear;
+}
+
+.start-screen.is-ready .title-line,
+.start-screen.is-levels .title-line {
+    transition: transform 1s ease-in-out;
+}
+
+.start-screen.is-ready .start-wizard-area,
+.start-screen.is-ready .start-buttons,
+.start-screen.is-levels .start-wizard-area,
+.start-screen.is-levels .start-buttons {
+    transition: opacity 0.5s linear;
 }

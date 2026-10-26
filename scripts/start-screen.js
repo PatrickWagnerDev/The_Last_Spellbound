@@ -31,7 +31,7 @@ function leavePressScreen(){
 }
 
 function playStartIntro(){
-    setStartPhase(['is-waiting', 'is-ready'], 'is-intro');
+    setStartPhase(['is-waiting', 'is-ready', 'is-levels'], 'is-intro');
 }
 
 function finishStartIntro(){

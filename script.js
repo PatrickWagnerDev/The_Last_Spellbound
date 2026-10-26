@@ -5,9 +5,9 @@ let soundManager = new SoundManager();
 let levelProgress = new LevelProgress();
 let selectedCharacter = 'fireWizard';
 
-function getStartLevelData(){
-    const START_LEVEL = LEVEL_LIST[GAME_SETTINGS.debug.startLevel - 1];
-    return GAME_SETTINGS.debug.startInBossLevel ? START_LEVEL.getNextLevel() : START_LEVEL;
+function getStartLevelData(levelNumber){
+    const LEVEL_DATA = LEVEL_LIST[levelNumber - 1];
+    return GAME_SETTINGS.debug.startInBossLevel ? LEVEL_DATA.getNextLevel() : LEVEL_DATA;
 }
 
 function init(){
@@ -20,12 +20,12 @@ function init(){
     loadStartAssets().catch(() => {}).then(showPressScreen);
 }
 
-function startGame(){
-    fadeThroughBlack(finishStartGame);
+function startLevel(levelNumber){
+    fadeThroughBlack(() => finishStartGame(levelNumber));
 }
 
-function finishStartGame(){
-    createWorld(getStartLevelData());
+function finishStartGame(levelNumber){
+    createWorld(getStartLevelData(levelNumber));
     updateStartScreenUi(false);
 }
 

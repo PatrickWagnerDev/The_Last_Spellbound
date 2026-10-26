@@ -192,9 +192,8 @@ While the transition runs, the level is switched under the covered canvas. The s
 
 | Variable | Default | Effect |
 |---|---|---|
-| `startLevel` | `1` | Number of the level (1 to 3) that "Start Game" loads, to test a level without playing the ones before. Set to `1` for release. |
 | `unlockAllLevels` | `false` | Unlocks all levels in the level selection to test them without playing the ones before. Set to `false` for release. |
-| `startInBossLevel` | `false` | Starts the game directly in the boss part of the start level to test the boss. Set to `false` for release. |
+| `startInBossLevel` | `false` | Starts the chosen level directly in its boss part to test the boss. Set to `false` for release. |
 | `showHitboxes` | `false` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 
 ## Sounds

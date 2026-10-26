@@ -33,7 +33,7 @@
             <div class="start-content">
                 <h1 class="start-title"><span class="title-line">The Last</span>Spellbound</h1>
                 <div class="start-buttons">
-                    <button class="start-button" onclick="startGame()">
+                    <button class="start-button" onclick="openLevelChoice()">
                         <span class="menu-label">Start Game</span>
                     </button>
                     <button class="start-button" onclick="openDialog('controls-screen')">
@@ -59,6 +59,20 @@
                 </div>
                 <button id="choose-button" class="choose-button" disabled onclick="chooseCharacter()">
                     <span class="menu-label">Choose</span>
+                </button>
+            </div>
+            <div class="level-choice">
+                <button class="start-button level-button" data-level="1" onclick="startLevel(1)">
+                    <span class="menu-label">Level 1</span>
+                </button>
+                <button class="start-button level-button" data-level="2" onclick="startLevel(2)">
+                    <span class="menu-label">Level 2</span>
+                </button>
+                <button class="start-button level-button" data-level="3" onclick="startLevel(3)">
+                    <span class="menu-label">Level 3</span>
+                </button>
+                <button class="start-button back-button" onclick="closeLevelChoice()">
+                    <span class="menu-label">Back</span>
                 </button>
             </div>
             <p class="press-hint">Press any key</p>
@@ -310,6 +324,7 @@
     <script src="./scripts/screens.js"></script>
     <script src="./scripts/character-effect.js"></script>
     <script src="./scripts/character-choice.js"></script>
+    <script src="./scripts/level-choice.js"></script>
     <script src="./scripts/start-screen.js"></script>
     <script src="./scripts/dialogs.js"></script>
     <script src="./scripts/menu-sounds.js"></script>
