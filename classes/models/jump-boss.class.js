@@ -97,6 +97,13 @@ class JumpBoss extends Boss {
         }
     }
 
+    endSprint(){
+        if(this.isSprinting()){
+            this.sprintTicksLeft = 0;
+            this.sprintCooldownLeft = this.settings.sprintCooldownTicks;
+        }
+    }
+
     hurtCharacter(damage){
         const PLAYER_CHARACTER = this.world.character;
         if(!PLAYER_CHARACTER.canBeHurt()){
@@ -161,7 +168,11 @@ class JumpBoss extends Boss {
             soundManager.playSound('land');
         }
         if(this.landTicks >= this.settings.jumpLandTicks){
-            this.startChase();
+            this.endJump();
         }
+    }
+
+    endJump(){
+        this.startChase();
     }
 }

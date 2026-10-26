@@ -40,7 +40,8 @@ class Boss extends SightEnemy {
         const BOSS_RECT = this.getHitbox();
         const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
         const SIGHT_ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
-        return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE };
+        const SIGHT_BELOW = (this.settings.sightBelowTiles ?? 0) * TILE_SIZE;
+        return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE + SIGHT_BELOW };
     }
 
     updateWait(){

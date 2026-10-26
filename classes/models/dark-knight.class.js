@@ -11,6 +11,8 @@ const DARK_KNIGHT_SPRITES = {
     death: { path: './assets/image/05-mega-boss/1/Death.png', frames: 8 }
 };
 
+const JUMP_ALIGN_TOLERANCE = 4;
+
 const DARK_KNIGHT_CONFIG = {
     settings: GAME_SETTINGS.darkKnight,
     sprites: DARK_KNIGHT_SPRITES,
@@ -27,6 +29,8 @@ class DarkKnight extends JumpBoss {
     attackName = 'thrust';
     hasAttackHit = false;
     lastStep = 0;
+    currentNode = null;
+    afterJumpState = 'chase';
     cooldownsLeft = { thrust: 0, walkThrust: 0, upSlash: 0, aura: 0 };
 
     constructor(column, row){
@@ -36,11 +40,12 @@ class DarkKnight extends JumpBoss {
     }
 
     getStateUpdates(){
-        return { ...super.getStateUpdates(), attack: () => this.updateAttack() };
+        return { ...super.getStateUpdates(), attack: () => this.updateAttack(), return: () => this.updateReturn() };
     }
 
     updateBehavior(){
         const START_X = this.x;
+        this.updateNode();
         super.updateBehavior();
         this.lastStep = this.x - START_X;
     }
@@ -59,6 +64,87 @@ class DarkKnight extends JumpBoss {
         this.faceCharacter();
         this.markNoticed();
         this.startChase();
+    }
+
+    getNav(){
+        this.platformNav ??= new PlatformNav(this.world.level, this.settings);
+        return this.platformNav;
+    }
+
+    updateNode(){
+        if(!this.onGround){
+            return;
+        }
+        const FOUND_NODE = this.getNav().getNodeAt(getRectCenterX(this.getHitbox()), this.y + this.height);
+        this.currentNode = FOUND_NODE ?? this.currentNode;
+    }
+
+    walkTowardCharacter(){
+        const GOAL_NODE = this.getNav().getGoalNode(this.world.character.getHitbox());
+        const PATH_STEP = GOAL_NODE && this.getNav().findNextStep(this.currentNode, GOAL_NODE);
+        if(PATH_STEP){
+            this.followStep(PATH_STEP, true);
+        } else {
+            super.walkTowardCharacter();
+        }
+    }
+
+    followStep(step, canSprint){
+        const CENTER_X = getRectCenterX(this.getHitbox());
+        if(step.kind === 'jump' && Math.abs(CENTER_X - step.takeoffX) <= JUMP_ALIGN_TOLERANCE){
+            this.otherDirection = step.direction < 0;
+            this.afterJumpState = this.state;
+            this.setState('jump');
+            return;
+        }
+        this.otherDirection = this.getStepDirection(step, CENTER_X) < 0;
+        this.speed = this.getStepSpeed(step, canSprint);
+        this.showMoveAnimation();
+        this.moveForward();
+    }
+
+    getStepDirection(step, centerX){
+        return step.kind === 'jump' ? Math.sign(step.takeoffX - centerX) : step.direction;
+    }
+
+    getStepSpeed(step, canSprint){
+        if(step.kind !== 'walk' || !canSprint){
+            this.endSprint();
+            return this.settings.speed;
+        }
+        this.updateSprint();
+        return this.isSprinting() ? this.settings.sprintSpeed : this.settings.speed;
+    }
+
+    isOnBottomLevel(){
+        return this.currentNode?.row === this.getNav().bottomRow;
+    }
+
+    loseSight(){
+        if(this.isOnBottomLevel()){
+            super.loseSight();
+        } else {
+            this.setState('return');
+        }
+    }
+
+    updateReturn(){
+        const RETURN_STEP = this.getNav().findNextStep(this.currentNode, 'ground');
+        if(this.isCharacterInSight()){
+            this.startSneer();
+        } else if(RETURN_STEP){
+            this.followStep(RETURN_STEP, false);
+        } else {
+            super.loseSight();
+        }
+    }
+
+    endJump(){
+        if(this.afterJumpState === 'return'){
+            this.setState('return');
+        } else {
+            super.endJump();
+        }
     }
 
     isReady(attackName){

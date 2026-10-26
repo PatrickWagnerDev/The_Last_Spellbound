@@ -173,17 +173,21 @@ The demon uses the sounds `attack` (club swing), `jump` and `land` of the charac
 | `deathTicks` | `90` | Time from the death of the knight until the death animation ends (90 ticks = 1.5 seconds). |
 | `sightTiles` | `7` | How far the knight notices the character to the left and to the right of its hitbox, in tiles. It stands in its idle pose until it sees the character for the first time and then chases without a sneer. |
 | `sightAboveTiles` | `5` | How far above its hitbox the knight notices the character, in tiles, so it sees the character on platforms. Below it the area reaches down to the ground. |
-| `loseSightTicks` | `240` | How long the character has to stay outside the area while the knight chases it before the knight gives up and walks away on its patrol (240 ticks = 4 seconds). |
-| `maxJumpGapTiles` | `2` | Widest gap in tiles the knight jumps over while it chases the character. At wider gaps and at the end of the level it stops at the edge. On patrol it turns at every gap. |
+| `sightBelowTiles` | `4` | How far below its hitbox the knight notices the character, in tiles, so it also sees the character on the floor while it stands on a platform. The other bosses have no value here and see down to their own feet. |
+| `loseSightTicks` | `240` | How long the character has to stay outside the area while the knight chases it before the knight gives up and walks away on its patrol (240 ticks = 4 seconds). If it stands on a platform it then goes back to the lowest row (by walking, falling and jumping) and patrols there. If it sees the character on the way, it chases again. |
+| `maxJumpGapTiles` | `2` | Widest gap in tiles the knight recognizes at an edge. When there is no way to the character it jumps over such gaps and stops at wider gaps and at the end of the level. On patrol it turns at every gap. |
+| `maxPlatformTiles` | `4` | How many tiles above the lowest row of the map the knight uses platforms (4 means up to the 5th row from the bottom). Above that it never goes, it waits below the character and attacks upwards. |
 | `jumpWindupTicks` | `18` | Ticks of the crouch before the jump (18 ticks = 0.3 seconds), the first three frames of the jump sheet are spread over it. |
 | `jumpPower` | `11.5` | Initial upward speed of the jump in px per tick, the same as the character. Together with `physics.gravityForce` it sets the height and the duration of the jump. |
-| `jumpSpeed` | `3.5` | Forward speed during the jump in px per tick. The reach is about `jumpSpeed * 46` px, it has to be larger than the gap plus the run-up of 24 px. |
+| `jumpSpeed` | `3.5` | Forward speed during the jump in px per tick. The reach is about `jumpSpeed * 46` px, it has to be larger than the gap plus the run-up of 24 px. It also decides which platforms the knight can reach. |
 | `jumpLandTicks` | `18` | Ticks the knight stays in the landing pose after the jump (18 ticks = 0.3 seconds). |
 | `sprintSpeed` | `3.5` | Speed of the sprint in px per tick. |
 | `sprintFps` | `12` | Animation speed of the sprint in frames per second. |
 | `sprintMinTiles` | `3` | The knight only sprints when the character is farther away than this, in tiles. |
 | `sprintTicks` | `150` | Duration of one sprint (150 ticks = 2.5 seconds). At an edge it cannot pass the knight keeps running on the spot until the sprint is over, so it can never run off an edge. |
 | `sprintCooldownTicks` | `720` | Pause after a sprint before the knight can sprint again (720 ticks = 12 seconds). |
+
+The knight follows the character with a map of the level (`platform-nav.class.js`): every walkable tile in the lowest `maxPlatformTiles + 1` rows is a place to stand, and the knight can walk, fall off an edge or jump from one place to another. The jumps are calculated with the same physics as in the game (`jumpPower`, `jumpSpeed`, `physics.gravityForce`). One jump lifts it at most about two tiles higher (the jump of the character reaches 2.75 tiles), higher platforms need steps in between. It looks for the cheapest way to the place below the character.
 
 The four attacks are in `attacks`. Every attack has the same values:
 
@@ -358,7 +362,7 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `dark-knight.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `dark-knight.class.js`, `platform-nav.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
