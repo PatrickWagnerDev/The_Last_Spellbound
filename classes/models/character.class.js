@@ -13,6 +13,7 @@ class Character extends CharacterActions{
         this.sprites = CHARACTER_SPRITES[characterId];
         this.traits = CHARACTER_TRAITS[characterId];
         this.hitbox = HITBOX_STANDING;
+        this.supportBox = HITBOX_STANDING;
         this.frameCount = this.sprites.idle.frames;
         this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
         this.startAnimation();
@@ -80,6 +81,9 @@ class Character extends CharacterActions{
 
     updatePhysics(){
         this.applyGravity();
+        if(this.onGround){
+            this.supportBox = this.hitbox;
+        }
         this.updateCoyoteTime();
         this.updateJumpPhase();
     }
@@ -156,7 +160,7 @@ class Character extends CharacterActions{
     }
 
     getSupportXs(){
-        const CENTER_X = getRectCenterX(this.getHitbox());
+        const CENTER_X = getRectCenterX(this.getBoxRect(this.supportBox));
         const EDGE_TOLERANCE = this.settings.edgeTolerance;
         return [CENTER_X - EDGE_TOLERANCE, CENTER_X, CENTER_X + EDGE_TOLERANCE];
     }
