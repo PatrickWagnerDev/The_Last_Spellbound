@@ -16,7 +16,8 @@ function init(){
     addMenuSounds();
     initFullscreen();
     initTouchControls();
-    document.querySelector('.start-buttons').addEventListener('animationend', finishStartIntro);
+    updateBadgeUi();
+    document.getElementById('start-screen').addEventListener('animationend', handleIntroEnd);
     loadStartAssets().catch(() => {}).then(showPressScreen);
 }
 
@@ -40,6 +41,7 @@ function showStartScreen(){
     updateGameOverUi(false);
     updatePauseUi();
     updateStartScreenUi(true);
+    updateBadgeUi();
     playStartIntro();
     soundManager.playMusic('menuMusic');
 }

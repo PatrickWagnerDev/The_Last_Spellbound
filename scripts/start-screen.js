@@ -38,6 +38,17 @@ function finishStartIntro(){
     setStartPhase(['is-intro', 'is-settle'], 'is-ready');
 }
 
+function updateBadgeUi(){
+    document.getElementById('start-screen').classList.toggle('is-complete', levelProgress.areAllCleared());
+}
+
+function handleIntroEnd(event){
+    const IS_COMPLETE = document.getElementById('start-screen').classList.contains('is-complete');
+    if(event.target.matches(IS_COMPLETE ? '.boss-badge' : '.start-buttons')){
+        finishStartIntro();
+    }
+}
+
 function updateStartScreenUi(isOpen){
     toggleScreen('start-screen', isOpen, 'game-container', 'is-start-screen');
 }

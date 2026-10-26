@@ -30,4 +30,8 @@ class LevelProgress {
     isUnlocked(levelNumber){
         return levelNumber === 1 || GAME_SETTINGS.debug.unlockAllLevels || this.clearedLevels.includes(levelNumber - 1);
     }
+
+    areAllCleared(){
+        return GAME_SETTINGS.debug.unlockAllLevels || LEVEL_LIST.every(level => this.clearedLevels.includes(level.levelNumber));
+    }
 }

@@ -22,6 +22,7 @@
 .menu-label,
 .game-over-title,
 .start-title,
+.badge-text,
 .press-hint {
     font-family: var(--font-pixel);
     -webkit-font-smoothing: none;

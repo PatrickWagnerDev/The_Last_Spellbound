@@ -13,6 +13,7 @@ The game currently offers the following features:
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health and the energy of the player in the corner and the health of the boss over its head.
 - **Game Screens** – Start with a "Press any key" page, use the start screen, the pause menu, the game-over screen and the victory screen, and go on with the next level, retry or return to the start screen. The game is over when the player falls out of the level.
+- **Boss Killer Badge** – When all levels are cleared, a spinning coin with the text "Boss Killer" appears in the main menu.
 - **Level Selection** – Choose the level on a selection page after "Start Game". A level is unlocked when the boss of the previous level is defeated; the progress is saved in Local Storage.
 - **Character Selection** – Choose between the Fire Wizard and the Lightning Mage on a selection page before the game starts. Both play the same and only differ in their look and in a few sounds.
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.

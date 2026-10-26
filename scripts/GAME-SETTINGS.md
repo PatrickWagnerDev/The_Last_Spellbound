@@ -305,7 +305,7 @@ While the transition runs, the level is switched under the covered canvas. The s
 
 | Variable | Default | Effect |
 |---|---|---|
-| `unlockAllLevels` | `false` | Unlocks all levels in the level selection to test them without playing the ones before. Set to `false` for release. |
+| `unlockAllLevels` | `false` | Unlocks all levels in the level selection to test them without playing the ones before. It also shows the Boss Killer coin in the main menu as if all levels were cleared. Set to `false` for release. |
 | `startInBossLevel` | `false` | Starts the chosen level directly in its boss part to test the boss. Set to `false` for release. |
 | `showHitboxes` | `false` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 

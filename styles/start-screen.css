@@ -323,3 +323,55 @@
 .start-screen.is-levels .start-buttons {
     transition: opacity 0.5s linear;
 }
+
+.boss-badge {
+    position: absolute;
+    left: 50%;
+    top: 232px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.badge-coin {
+    width: 128px;
+    height: 128px;
+    margin: -20px 0 -32px;
+    background-image: url('../assets/image/06-tileset/Objects_Animated/Coin.png');
+    background-size: 1024px 128px;
+    image-rendering: pixelated;
+    animation: coin-spin 0.8s steps(8) infinite;
+}
+
+.badge-text {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--color-title-light);
+    text-shadow: var(--shadow-title-small);
+}
+
+@keyframes coin-spin {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -1024px 0;
+    }
+}
+
+.start-screen.is-complete.is-ready .boss-badge {
+    opacity: 1;
+}
+
+.start-screen.is-complete.is-settle .boss-badge {
+    animation: start-fade-in 0.8s linear 3.2s both;
+}
+
+.start-screen.is-complete.is-intro .boss-badge {
+    animation: start-fade-in 0.8s linear 3.6s both;
+}
