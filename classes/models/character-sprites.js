@@ -27,14 +27,12 @@ const CHARACTER_SPRITES = {
 
 const CHARACTER_TRAITS = {
     fireWizard: {
-        label: 'Fire Wizard',
         flightFrames: 5,
         jumpFrames: { crouch: [0, 1, 2], up: 3, apex: 4, down: 5, land: [6, 7, 8] },
         projectileOffsetX: 0,
         selectEffect: { prefix: './assets/image/08-magic-effects/PNG/Explosion/Explosion', suffix: '.png', frames: 9, bounds: { x: 53, y: 60, width: 155, height: 136 } }
     },
     lightningMage: {
-        label: 'Lightning Mage',
         flightFrames: 5,
         jumpFrames: { crouch: [0, 1, 2], up: 3, apex: 4, down: 6, land: [6, 7, 7] },
         projectileOffsetX: 26,

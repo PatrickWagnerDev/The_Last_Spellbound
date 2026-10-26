@@ -50,13 +50,11 @@
             <div class="character-choice">
                 <img id="character-effect" class="character-effect" alt="" hidden>
                 <div class="character-cards" role="radiogroup" aria-label="Choose your character" onkeydown="moveCharacterMark(event)">
-                    <button class="character-card" role="radio" aria-checked="false" data-character="fireWizard" onclick="markCharacter('fireWizard')">
+                    <button class="character-card" role="radio" aria-checked="false" aria-label="Fire Wizard" data-character="fireWizard" onclick="markCharacter('fireWizard')">
                         <span class="character-head"></span>
-                        <span class="menu-label">Fire Wizard</span>
                     </button>
-                    <button class="character-card" role="radio" aria-checked="false" data-character="lightningMage" onclick="markCharacter('lightningMage')">
+                    <button class="character-card" role="radio" aria-checked="false" aria-label="Lightning Mage" data-character="lightningMage" onclick="markCharacter('lightningMage')">
                         <span class="character-head"></span>
-                        <span class="menu-label">Lightning Mage</span>
                     </button>
                 </div>
                 <button id="choose-button" class="choose-button" disabled onclick="chooseCharacter()">

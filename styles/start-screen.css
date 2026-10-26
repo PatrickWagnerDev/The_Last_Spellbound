@@ -215,14 +215,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
     width: 176px;
-    padding: 12px 0 10px;
+    padding: 12px 0;
     transition: opacity 0.3s linear;
-}
-
-.character-card .menu-label {
-    font-size: 20px;
 }
 
 .character-card.is-marked {
@@ -237,10 +232,10 @@
     width: 144px;
     height: 144px;
     background-image: url('../assets/image/01-wizard/Fire Wizard/Idle.png');
-    background-size: 2688px 384px;
+    background-size: 3584px 512px;
+    background-position: -134px -236px;
     background-repeat: no-repeat;
     image-rendering: pixelated;
-    animation: head-idle 1.4s steps(7) infinite;
 }
 
 .character-card[data-character="lightningMage"] .character-head {
@@ -270,14 +265,4 @@
     position: absolute;
     image-rendering: pixelated;
     pointer-events: none;
-}
-
-@keyframes head-idle {
-    from {
-        background-position: -90px -168px;
-    }
-
-    to {
-        background-position: -2778px -168px;
-    }
 }
