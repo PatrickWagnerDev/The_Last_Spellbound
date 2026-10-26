@@ -5,7 +5,8 @@ let soundManager = new SoundManager();
 let selectedCharacter = 'fireWizard';
 
 function getStartLevelData(){
-    return GAME_SETTINGS.debug.startInBossLevel ? LEVEL_ONE_BOSS : LEVEL_ONE;
+    const START_LEVEL = LEVEL_LIST[GAME_SETTINGS.debug.startLevel - 1];
+    return GAME_SETTINGS.debug.startInBossLevel ? START_LEVEL.getNextLevel() : START_LEVEL;
 }
 
 function init(){

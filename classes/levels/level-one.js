@@ -1,4 +1,5 @@
 const LEVEL_ONE = {
+    levelNumber: 1,
     mapRows: [
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 61, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX],
         [XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, 62, XX, XX, XX, XX, XX, XX, XX, XX],
@@ -15,7 +16,7 @@ const LEVEL_ONE = {
         { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees3.png', factor: 0 },
         { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees2.png', factor: 0.25 },
         { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/trees1.png', factor: 0.5 },
-        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/bushes.png', factor: 1 }
+        { path: './assets/image/07-forest-backgrounds/PNG/Forest1/Small/bushes.png', factor: 0.75 }
     ],
     music: 'forestMusic',
     getNextLevel: () => LEVEL_ONE_BOSS
