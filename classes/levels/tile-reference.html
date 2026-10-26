@@ -58,6 +58,11 @@
             background-image: url('../../assets/image/03-monsters/2 Mage/Idle.png');
         }
 
+        .demon-image {
+            background-image: url('../../assets/image/04-bosses/2 Demon/Demon_Boss.png');
+            background-size: 64px 64px;
+        }
+
         .player-image {
             background-image: url('../../assets/image/01-wizard/Fire Wizard/Idle.png');
             background-size: 448px 64px;
@@ -273,7 +278,7 @@
         <h2>Markers</h2>
         <p class="marker-note">
             Enter the number in the map where the figure stands. It stands with its feet on the bottom edge of that cell.
-            Numbers 60 to 68 are items (60 is the key, 61 is the pizza, 62 is the donut, 63 is the chest), number 69 is the start of the player, normal enemies use the numbers 70 to 89, boss enemies use the numbers 90 to 99 (90 is the mage boss).
+            Numbers 60 to 68 are items (60 is the key, 61 is the pizza, 62 is the donut, 63 is the chest), number 69 is the start of the player, normal enemies use the numbers 70 to 89, boss enemies use the numbers 90 to 99 (90 is the mage boss, 91 is the demon boss).
         </p>
         <div class="tile-grid">
             <div class="tile-cell">
@@ -300,6 +305,11 @@
                 <div class="marker-image boss-image"></div>
                 <span class="tile-number">90</span>
                 <span>Mage boss</span>
+            </div>
+            <div class="tile-cell">
+                <div class="marker-image demon-image"></div>
+                <span class="tile-number">91</span>
+                <span>Demon boss</span>
             </div>
             <div class="tile-cell">
                 <div class="marker-image player-image"></div>

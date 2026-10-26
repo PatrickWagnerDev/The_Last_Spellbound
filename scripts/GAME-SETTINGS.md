@@ -124,6 +124,41 @@ The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the
 | `rayScale` | `3` | Size factor of the ray (the image is 14x14 px, so the full ray is 42 px thick). |
 | `rayMaxHeight` | `48` | The boss only uses the ray when the feet of the character are at most this high above the feet of the boss (in px), so only on the ground. |
 
+## demonBoss
+
+| Variable | Default | Effect |
+|---|---|---|
+| `width` | `288` | Drawn width in px. The sprite frame is 96x96, multiples of 96 keep the pixels even. If you change it, also adjust the hitbox and the club hit box in `demon-boss.class.js`. |
+| `height` | `288` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `30` | Health points of the demon, twice as many as the mage boss. The health display shows two rows of five bars, the upper row empties first. |
+| `speed` | `0.5` | Walking speed in px per tick, the same as the bear and the mage boss. The demon walks all the time and only stands during the sneer, the club attack and the jump. |
+| `animationFps` | `8` | Animation speed of walking in frames per second. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). A hit during a jump does not push the demon, so it cannot fall into the gap. |
+| `knockbackSpeed` | `1` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. |
+| `deathTicks` | `90` | Time from the death of the demon until the death animation ends (90 ticks = 1.5 seconds). |
+| `sightTiles` | `7` | How far the demon notices the character to the left and to the right of its hitbox, in tiles, the same as the mage boss. |
+| `sightAboveTiles` | `2` | How far above its hitbox the demon notices the character, in tiles. Below it the area reaches down to the ground. |
+| `loseSightTicks` | `60` | How long the character has to stay outside the area while the demon chases it before the demon gives up and walks away on its patrol (60 ticks = 1 second). The demon does not stand still to search. |
+| `sneerTicks` | `60` | Duration of the sneer when the demon notices the character (60 ticks = 1 second). The boss music starts and the health display appears at the first sneer. |
+| `meleeRangeTiles` | `2` | How far in front of its hitbox the demon starts the club attack, in tiles. |
+| `meleeTicks` | `48` | Duration of the club attack (48 ticks = 0.8 seconds), the 8 frames are spread over it. The demon turns to the character only during the wind-up. |
+| `meleeHitStartTick` | `24` | Tick at which the club hit box (orange with `debug.showHitboxes`) becomes active, the big swing frame. |
+| `meleeHitEndTick` | `42` | Tick at which the club hit box ends. One attack can hit at most once. Rolling and the grace time after a hit protect the character. |
+| `meleeDamage` | `2` | Damage of a club hit. |
+| `meleeCooldownTicks` | `90` | Pause after a club attack before the demon can attack again (90 ticks = 1.5 seconds). |
+| `maxJumpGapTiles` | `2` | Widest gap in tiles the demon jumps over while it chases the character. At wider gaps it stops at the edge. On patrol it turns at every gap like the bears. |
+| `jumpWindupTicks` | `12` | Ticks the demon crouches before the jump (12 ticks = 0.2 seconds). |
+| `jumpPower` | `9` | Initial upward speed of the jump in px per tick. Together with `physics.gravityForce` it sets the height and the duration of the jump (36 ticks in the air). |
+| `jumpSpeed` | `5` | Forward speed during the jump in px per tick. The reach is about `jumpSpeed * 36` px, it has to be larger than the gap plus the run-up of 24 px. |
+| `jumpLandTicks` | `12` | Ticks the demon stays in the landing pose after the jump (12 ticks = 0.2 seconds). |
+| `sprintSpeed` | `3` | Speed of the sprint in px per tick. |
+| `sprintFps` | `12` | Animation speed of the sprint in frames per second. |
+| `sprintMinTiles` | `3` | The demon only sprints when the character is farther away than this, in tiles. |
+| `sprintTicks` | `60` | Duration of one sprint (60 ticks = 1 second). |
+| `sprintCooldownTicks` | `300` | Pause after a sprint before the demon can sprint again (300 ticks = 5 seconds). |
+
+The demon uses the sounds `attack` (club swing), `jump` and `land` of the character and `bossDeath`, `enemyHit` of the mage boss. Its music is `demonMusic`.
+
 ## fireball
 
 | Variable | Default | Effect |
@@ -211,7 +246,8 @@ While the transition runs, the level is switched under the covered canvas. The s
 | `bossBarScale` | `1` | Size factor of one bar of the boss health display (the bar image is 96x12 px). The boss health is shown as several of these bars in a row at the bottom center of the canvas. It appears when the boss has seen the character for the first time. |
 | `bossBarGap` | `0` | Space between two bars of the boss health display in px. |
 | `bossBarMargin` | `12` | Distance of the boss health display from the bottom edge of the canvas in px. |
-| `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is `mageBoss.maxHealth` divided by this value (15 / 3 = 5 bars). |
+| `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is the `maxHealth` of the boss divided by this value (mage boss 15 / 3 = 5 bars, demon 30 / 3 = 10 bars). |
+| `bossBarsPerRow` | `5` | Bars of the boss health display in one row. A boss with more bars gets more rows above each other (the demon has two rows), the upper row empties first. |
 | `pauseOverlayAlpha` | `0.5` | Opacity of the black layer over the canvas while the game is paused with the pause button or the Esc key (0 = invisible, 1 = fully black). |
 
 ## debug
@@ -263,7 +299,8 @@ The progress (the cleared levels) is saved in the local storage under `spellboun
 |---|---|---|
 | `menuMusic` | `0.1` | Main menu |
 | `forestMusic` | `0.3` | Level one |
-| `bossMusic` | `0.1` | The boss sees the character for the first time |
+| `bossMusic` | `0.1` | The mage boss sees the character for the first time |
+| `demonMusic` | `0.1` | The demon sees the character for the first time |
 
 `LOOP_RATES` sets the playback speed of a loop (`1` is the speed of the file). The footsteps use `1.1` to match the walk animation.
 
@@ -273,7 +310,7 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |

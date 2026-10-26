@@ -16,12 +16,7 @@ const BOSS_FIREBALL_SPAWN = {
 
 const BOSS_RAY_SPAWN = { offsetX: 11, offsetY: 45.5 };
 
-class MageBoss extends SightEnemy {
-    isBoss = true;
-    state = 'wait';
-    stateTicks = 0;
-    vanishSide = 1;
-    outOfSightTicks = 0;
+class MageBoss extends Boss {
     attackVariant = 'attack2';
     fireballCooldownLeft = 0;
     rayCooldownLeft = 0;
@@ -33,25 +28,15 @@ class MageBoss extends SightEnemy {
             frameSize: 64,
             hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
             spriteFacesLeft: true,
-            deathSound: 'bossDeath'
+            deathSound: 'bossDeath',
+            music: 'bossMusic'
         });
         this.otherDirection = true;
         this.startAnimation();
     }
 
-    updateBehavior(){
-        this.stateTicks++;
-        this.updateCooldowns();
-        const STATE_UPDATES = {
-            wait: () => this.updateWait(),
-            patrol: () => this.updatePatrol(),
-            sneer: () => this.updateSneer(),
-            chase: () => this.updateChase(),
-            attack: () => this.updateAttack(),
-            ray: () => this.updateRayAttack(),
-            search: () => this.updateSearch()
-        };
-        STATE_UPDATES[this.state]();
+    getStateUpdates(){
+        return { ...super.getStateUpdates(), attack: () => this.updateAttack(), ray: () => this.updateRayAttack() };
     }
 
     updateCooldowns(){
@@ -59,80 +44,20 @@ class MageBoss extends SightEnemy {
         this.rayCooldownLeft = tickDown(this.rayCooldownLeft);
     }
 
-    setState(stateName){
-        this.state = stateName;
-        this.stateTicks = 0;
+    onFirstNotice(){
+        this.rayCooldownLeft = this.settings.rayCooldownTicks;
+        super.onFirstNotice();
     }
 
-    getSightRect(){
-        const BOSS_RECT = this.getHitbox();
-        const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
-        const SIGHT_ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
-        return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE };
-    }
-
-    updateWait(){
-        this.showLoopState('idle', this.settings.animationFps);
-        if(this.isCharacterInSight()){
-            this.rayCooldownLeft = this.settings.rayCooldownTicks;
-            this.startSneer();
-            soundManager.playMusic('bossMusic');
+    tryStartAttack(){
+        if(!this.isCharacterInSight()){
+            return false;
         }
-    }
-
-    updatePatrol(){
-        if(this.isCharacterInSight()){
-            this.startSneer();
-            return;
+        if(this.canUseRay()){
+            this.startRay();
+            return true;
         }
-        this.showLoopState('walk', this.settings.animationFps);
-        this.patrolPlatform();
-    }
-
-    startSneer(){
-        this.faceCharacter();
-        this.setState('sneer');
-    }
-
-    updateSneer(){
-        this.faceCharacter();
-        this.showProgressState('sneer', this.stateTicks, this.settings.sneerTicks);
-        if(this.stateTicks >= this.settings.sneerTicks){
-            this.startChase();
-        }
-    }
-
-    startChase(){
-        this.outOfSightTicks = 0;
-        this.setState('chase');
-    }
-
-    trackSight(){
-        if(this.isCharacterInSight()){
-            this.outOfSightTicks = 0;
-            this.vanishSide = this.getCharacterOffset() >= 0 ? 1 : -1;
-        } else {
-            this.outOfSightTicks++;
-        }
-    }
-
-    updateChase(){
-        this.trackSight();
-        if(this.outOfSightTicks >= this.settings.loseSightTicks){
-            this.setState('search');
-            return;
-        }
-        this.faceCharacter();
-        if(!this.tryStartAttack()){
-            this.walkTowardCharacter();
-        }
-    }
-
-    walkTowardCharacter(){
-        this.showLoopState('walk', this.settings.animationFps);
-        if(Math.abs(this.getCharacterOffset()) > 4 && !this.shouldTurn()){
-            this.moveForward();
-        }
+        return this.tryStartFireball();
     }
 
     getCharacterFeetHeight(){
@@ -151,17 +76,6 @@ class MageBoss extends SightEnemy {
 
     canUseRay(){
         return this.rayCooldownLeft === 0 && this.getCharacterFeetHeight() <= this.settings.rayMaxHeight;
-    }
-
-    tryStartAttack(){
-        if(!this.isCharacterInSight()){
-            return false;
-        }
-        if(this.canUseRay()){
-            this.startRay();
-            return true;
-        }
-        return this.tryStartFireball();
     }
 
     startRay(){
@@ -224,27 +138,5 @@ class MageBoss extends SightEnemy {
         const CENTER_X = this.x + (this.otherDirection ? SPAWN_OFFSET.offsetX : this.frameWidth - SPAWN_OFFSET.offsetX) * SCALE_FACTOR;
         this.world.addProjectile(new EnemyFireball(BOSS_FIREBALL, CENTER_X, this.y + SPAWN_OFFSET.offsetY * SCALE_FACTOR, this.otherDirection));
         this.fireballCooldownLeft = this.settings.fireballCooldownTicks;
-    }
-
-    updateSearch(){
-        if(this.isCharacterInSight()){
-            this.startSneer();
-            return;
-        }
-        this.showLoopState('idle', this.settings.animationFps);
-        this.lookAround();
-        if(this.stateTicks >= this.settings.searchTicks){
-            this.otherDirection = this.vanishSide > 0;
-            this.setState('patrol');
-        }
-    }
-
-    lookAround(){
-        const LOOKS_TO_VANISH_SIDE = Math.floor(this.stateTicks / this.settings.lookSwitchTicks) % 2 === 0;
-        this.otherDirection = LOOKS_TO_VANISH_SIDE ? this.vanishSide < 0 : this.vanishSide > 0;
-    }
-
-    finishDeath(){
-        this.stopAnimation();
     }
 }

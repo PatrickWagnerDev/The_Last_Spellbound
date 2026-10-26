@@ -9,7 +9,7 @@ class Hud {
     keyIcon = this.createKeyIcon();
     energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
     healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
-    bossBars = this.createBossBars();
+    bossBars = [];
 
     constructor(world){
         this.world = world;
@@ -27,8 +27,8 @@ class Hud {
         return KEY_ICON;
     }
 
-    createBossBars(){
-        const BAR_COUNT = GAME_SETTINGS.mageBoss.maxHealth / GAME_SETTINGS.ui.bossBarHealthPerBar;
+    createBossBars(maxHealth){
+        const BAR_COUNT = maxHealth / GAME_SETTINGS.ui.bossBarHealthPerBar;
         const BAR_OPTIONS = { scale: GAME_SETTINGS.ui.bossBarScale };
         return Array.from({ length: BAR_COUNT }, () => new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, 0, 0, BAR_OPTIONS));
     }
@@ -75,23 +75,31 @@ class Hud {
         return this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
     }
 
+    getBarsPerRow(){
+        return Math.min(GAME_SETTINGS.ui.bossBarsPerRow, this.bossBars.length);
+    }
+
     getBossBarsStartX(){
-        const BARS_WIDTH = this.bossBars.length * this.getBossBarStep() - GAME_SETTINGS.ui.bossBarGap;
+        const BARS_WIDTH = this.getBarsPerRow() * this.getBossBarStep() - GAME_SETTINGS.ui.bossBarGap;
         return (this.world.canvas.width - BARS_WIDTH) / 2;
     }
 
     drawBossBars(ctx){
         const BOSS_ENEMY = this.world.findBoss();
-        if(!BOSS_ENEMY || (BOSS_ENEMY.state === 'wait' && BOSS_ENEMY.health === BOSS_ENEMY.maxHealth)){
+        if(!BOSS_ENEMY || (!BOSS_ENEMY.hasNoticed && BOSS_ENEMY.health === BOSS_ENEMY.maxHealth)){
             return;
+        }
+        if(this.bossBars.length === 0){
+            this.bossBars = this.createBossBars(BOSS_ENEMY.maxHealth);
         }
         this.bossBars.forEach((bar, barIndex) => this.drawBossBar(ctx, bar, BOSS_ENEMY, barIndex));
     }
 
     drawBossBar(ctx, bar, boss, barIndex){
         const HEALTH_PER_BAR = GAME_SETTINGS.ui.bossBarHealthPerBar;
-        bar.x = this.getBossBarsStartX() + barIndex * this.getBossBarStep();
-        bar.y = this.world.canvas.height - bar.height - GAME_SETTINGS.ui.bossBarMargin;
+        const ROW_INDEX = Math.floor(barIndex / this.getBarsPerRow());
+        bar.x = this.getBossBarsStartX() + (barIndex % this.getBarsPerRow()) * this.getBossBarStep();
+        bar.y = this.world.canvas.height - bar.height - GAME_SETTINGS.ui.bossBarMargin - ROW_INDEX * (bar.height + GAME_SETTINGS.ui.bossBarGap);
         bar.setValue(clampValue(boss.health - barIndex * HEALTH_PER_BAR, 0, HEALTH_PER_BAR), HEALTH_PER_BAR);
         bar.drawObject(ctx);
     }

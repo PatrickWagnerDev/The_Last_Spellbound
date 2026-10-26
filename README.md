@@ -8,7 +8,7 @@ The game currently offers the following features:
 
 - **Character Movement** – Walk, jump and roll through a side-scrolling game world.
 - **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy.
-- **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, and the mage boss, who chases the player and attacks with a fireball and a ray.
+- **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, the mage boss, who chases the player and attacks with a fireball and a ray, and the demon boss, who sprints, jumps over gaps and fights with a club.
 - **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
@@ -60,6 +60,7 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [Boss Battle Loop #3](https://freesound.org/people/Sirkoto51/sounds/443128/) | Sirkoto51 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Button_Hover (mp3)](https://freesound.org/people/deadsillyrabbit/sounds/251390/) | deadsillyrabbit | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [buzzer](https://freesound.org/people/Loyalty_Freak_Music/sounds/407466/) | Loyalty_Freak_Music | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Dope Video Game Boss Music](https://freesound.org/people/Seth_Makes_Sounds/sounds/683457/) | Seth_Makes_Sounds | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Dual Energy Daggers 5](https://freesound.org/people/ejfortin/sounds/49667/) | ejfortin | [Sampling+ 1.0](http://creativecommons.org/licenses/sampling+/1.0/) |
 | [Electronic Victory Sound](https://freesound.org/people/yokomatsuko/sounds/856038/) | yokomatsuko | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Enimey_Dead](https://freesound.org/people/bigspider95/sounds/500272/) | bigspider95 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -88,7 +89,7 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [Tab rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873105/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Unpause rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873112/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 
-Two more tracks are prepared for future bosses and not used in the game yet: [Super Mega Ultimate Final Boss Battle](https://freesound.org/people/FoolBoyMedia/sounds/530064/) by FoolBoyMedia ([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)) and [Dope Video Game Boss Music](https://freesound.org/people/Seth_Makes_Sounds/sounds/683457/) by Seth_Makes_Sounds ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)).
+One more track is prepared for a future boss and not used in the game yet: [Super Mega Ultimate Final Boss Battle](https://freesound.org/people/FoolBoyMedia/sounds/530064/) by FoolBoyMedia ([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)).
 
 The chest sound and the prepared FoolBoyMedia track are licensed for non-commercial use only. This project is a student project without a commercial purpose.
 

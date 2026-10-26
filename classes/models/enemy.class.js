@@ -37,6 +37,10 @@ class Enemy extends MovableObject {
             return;
         }
         soundManager.playSound('enemyHit');
+        this.reactToHit(source);
+    }
+
+    reactToHit(source){
         this.startKnockback(source);
         this.otherDirection = this.knockbackDirection > 0;
     }
