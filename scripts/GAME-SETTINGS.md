@@ -301,6 +301,8 @@ The progress (the cleared levels) is saved in the local storage under `spellboun
 | `forestMusic` | `0.3` | Level one |
 | `bossMusic` | `0.1` | The mage boss sees the character for the first time |
 | `demonMusic` | `0.1` | The demon sees the character for the first time |
+| `levelTwoMusic` | `0.3` | Level two |
+| `levelThreeMusic` | `0.3` | Level three |
 
 `LOOP_RATES` sets the playback speed of a loop (`1` is the speed of the file). The footsteps use `1.1` to match the walk animation.
 

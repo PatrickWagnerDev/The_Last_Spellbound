@@ -33,13 +33,17 @@ const MUSIC_VOLUMES = {
     menuMusic: 0.1,
     forestMusic: 0.3,
     bossMusic: 0.1,
-    demonMusic: 0.1
+    demonMusic: 0.1,
+    levelTwoMusic: 0.3,
+    levelThreeMusic: 0.3
 };
 const MUSIC_PATHS = {
     menuMusic: './assets/sounds/628385__davo32__metal-forest.mp3',
     forestMusic: './assets/sounds/785711__16pixel__fantasy-forest.mp3',
     bossMusic: './assets/sounds/443128__sirkoto51__boss-battle-loop-3.mp3',
-    demonMusic: './assets/sounds/683457__seth_makes_sounds__dope-video-game-boss-music.mp3'
+    demonMusic: './assets/sounds/683457__seth_makes_sounds__dope-video-game-boss-music.mp3',
+    levelTwoMusic: './assets/sounds/727920__ehved__forest-theme-orchestral-loop.mp3',
+    levelThreeMusic: './assets/sounds/807111__cvltiv8r__somber-piano-chord-progression-d-76bpm.mp3'
 };
 const SOUND_PATHS = {
     menuClick: './assets/sounds/873105__heyheytheree__tab-rpg-psx-ui-sfx-free.mp3',

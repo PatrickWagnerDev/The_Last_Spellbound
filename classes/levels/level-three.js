@@ -19,6 +19,6 @@ const LEVEL_THREE = {
         { path: './assets/image/07-forest-backgrounds/PNG/Forest3/Small/trees1.png', factor: 0.5 },
         { path: './assets/image/07-forest-backgrounds/PNG/Forest3/Small/trees_rocks1.png', factor: 0.75 }
     ],
-    music: 'forestMusic',
+    music: 'levelThreeMusic',
     getNextLevel: () => LEVEL_THREE_BOSS
 };

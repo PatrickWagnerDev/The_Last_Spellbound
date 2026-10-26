@@ -68,6 +68,7 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [Fireball Cast 3](https://freesound.org/people/LiamG_SFX/sounds/334237/) | LiamG_SFX | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Fireball Explosion](https://freesound.org/people/Blankened/sounds/431174/) | Blankened | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Firework Single ( Explosion )](https://freesound.org/people/EminYILDIRIM/sounds/553153/) | EminYILDIRIM | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [forest theme orchestral loop](https://freesound.org/people/Ehved/sounds/727920/) | Ehved | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Hit_Hurt7](https://freesound.org/people/n_audioman/sounds/273563/) | n_audioman | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [hurt_player](https://freesound.org/people/FullStackSound/sounds/662465/) | FullStackSound | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Interface, magic, fireball, bell, spell](https://freesound.org/people/FALL-E/sounds/714744/) | FALL-E | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -83,6 +84,7 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [Retro Collection 3](https://freesound.org/people/Xiko__/sounds/711129/) | Xiko__ | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Roll](https://freesound.org/people/DrMrSir/sounds/529563/) | DrMrSir | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [SNORE-03_44100](https://freesound.org/people/stevielematt/sounds/760036/) | stevielematt | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Somber Piano Chord Progression D 76bpm](https://freesound.org/people/CVLTIV8R/sounds/807111/) | CVLTIV8R | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [steps](https://freesound.org/people/benzix2/sounds/417291/) | benzix2 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
 | [Sword Swing 1](https://freesound.org/people/Nomagician/sounds/840716/) | Nomagician | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Sword_Thunder01](https://freesound.org/people/SonoFxAudio/sounds/649360/) | SonoFxAudio | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
