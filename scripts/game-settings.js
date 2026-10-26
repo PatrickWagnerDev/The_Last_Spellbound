@@ -153,7 +153,7 @@ const GAME_SETTINGS = {
         knockbackSpeed: 1,
         deathTicks: 90,
         sightTiles: 7,
-        sightAboveTiles: 5,
+        sightAboveTiles: 3,
         sightBelowTiles: 4,
         loseSightTicks: 240,
         maxJumpGapTiles: 2,
