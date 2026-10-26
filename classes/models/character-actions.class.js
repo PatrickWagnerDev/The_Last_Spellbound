@@ -37,6 +37,10 @@ class CharacterActions extends CharacterMovement{
         return super.isReadyOnGround() && !this.isHurt() && !this.isRolling();
     }
 
+    isInCoyoteTime(){
+        return super.isInCoyoteTime() && !this.isHurt() && !this.isRolling();
+    }
+
     isBusy(){
         return this.isRolling() || this.isAttacking() || this.isCasting() || this.isHurt();
     }

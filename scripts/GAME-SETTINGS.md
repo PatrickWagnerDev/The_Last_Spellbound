@@ -42,6 +42,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `jumpSpeed` | `11.5` | Initial upward speed of a jump, about 138 px with the default gravity. Reaches a platform 2 tiles (96 px) up, but not 4 tiles (192 px). Raise it to jump higher. |
 | `crouchTicks` | `6` | Ticks of the crouch animation before take-off (60 ticks = 1 second). Higher = longer delay between key press and jump. Walking is locked meanwhile. |
 | `landTicks` | `9` | Ticks of the landing animation after touching the ground. Walking is locked meanwhile. |
+| `coyoteTicks` | `6` | Ticks after walking off a platform during which the character can still jump (6 = 0.1 seconds, 0 turns it off). The jump starts at once, without the crouch. |
 | `apexSpeed` | `3` | Vertical speed range around the top of a jump in which the "top" frame is shown. Higher = that frame is shown longer. |
 | `restDelayTicks` | `600` | Ticks without any input before the character sits down (600 = 10 seconds). |
 | `restTicks` | `60` | Duration of the sit-down animation in ticks (60 = 1 second), independent of the number of frames. |

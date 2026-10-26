@@ -27,6 +27,7 @@ const GAME_SETTINGS = {
         jumpSpeed: 11.5,
         crouchTicks: 6,
         landTicks: 9,
+        coyoteTicks: 6,
         apexSpeed: 3,
         restDelayTicks: 600,
         restTicks: 60,

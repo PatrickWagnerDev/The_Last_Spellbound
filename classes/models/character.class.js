@@ -80,6 +80,7 @@ class Character extends CharacterActions{
 
     updatePhysics(){
         this.applyGravity();
+        this.updateCoyoteTime();
         this.updateJumpPhase();
     }
 

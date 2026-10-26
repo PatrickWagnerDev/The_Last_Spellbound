@@ -4,6 +4,7 @@ class CharacterMovement extends MovableObject{
     height = this.settings.height;
     speed = this.settings.speed;
     jumpPhase = 'none';
+    coyoteTicksLeft = 0;
     phaseTicks = 0;
     idleTicks = 0;
     previousKeys = {};
@@ -48,6 +49,14 @@ class CharacterMovement extends MovableObject{
         return false;
     }
 
+    isInCoyoteTime(){
+        return this.coyoteTicksLeft > 0 && this.jumpPhase === 'air';
+    }
+
+    canJump(){
+        return this.isReadyOnGround() || this.isInCoyoteTime();
+    }
+
     moveByKeyboard(){
         if(this.isMovementLocked()){
             return;
@@ -68,9 +77,21 @@ class CharacterMovement extends MovableObject{
     }
 
     handleJump(){
-        if(this.wantsJump() && this.isReadyOnGround()){
-            this.startPhase('crouch');
+        if(this.wantsJump() && this.canJump()){
+            this.startJump();
         }
+    }
+
+    startJump(){
+        if(this.isReadyOnGround()){
+            this.startPhase('crouch');
+        } else {
+            this.launchJump();
+        }
+    }
+
+    updateCoyoteTime(){
+        this.coyoteTicksLeft = this.onGround ? this.settings.coyoteTicks : tickDown(this.coyoteTicksLeft);
     }
 
     startPhase(phaseName){
@@ -80,6 +101,7 @@ class CharacterMovement extends MovableObject{
 
     launchJump(){
         this.speedY = this.settings.jumpSpeed;
+        this.coyoteTicksLeft = 0;
         this.startPhase('air');
         soundManager.playSound('jump');
     }
