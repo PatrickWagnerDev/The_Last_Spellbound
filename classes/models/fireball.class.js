@@ -1,4 +1,3 @@
-const IMAGE_FIREBALL = './assets/image/01-wizard/Fire Wizard/Charge.png';
 const FIREBALL_SPAWN = { offsetX: 16, offsetY: 28 };
 
 class Fireball extends Projectile {
@@ -16,7 +15,10 @@ class Fireball extends Projectile {
     distance = 0;
 
     constructor(owner){
-        super().loadImage(IMAGE_FIREBALL);
+        super().loadImage(owner.sprites.projectile.path);
+        this.frameCount = owner.sprites.projectile.frames;
+        this.flightFrames = owner.traits.flightFrames;
+        this.visualOffsetX = owner.traits.projectileOffsetX;
         this.otherDirection = owner.isFlipped();
         this.x = owner.x + (this.otherDirection ? owner.width - FIREBALL_SPAWN.offsetX - this.width : FIREBALL_SPAWN.offsetX);
         this.y = owner.y + FIREBALL_SPAWN.offsetY;
@@ -37,7 +39,7 @@ class Fireball extends Projectile {
     flyForward(){
         this.moveForward();
         this.distance += this.speed;
-        this.currentFrame = Math.floor(this.stateTicks / getTicksPerFrame(this.settings.flightFps)) % 5;
+        this.currentFrame = Math.floor(this.stateTicks / getTicksPerFrame(this.settings.flightFps)) % this.flightFrames;
         this.checkImpact();
     }
 
@@ -52,22 +54,26 @@ class Fireball extends Projectile {
         }
     }
 
+    drawFrame(ctx, drawX){
+        super.drawFrame(ctx, drawX + this.visualOffsetX);
+    }
+
     startState(stateName){
         this.state = stateName;
         this.stateTicks = 0;
     }
 
     updateImpact(){
-        const FRAME_INDEX = Math.floor(this.stateTicks / getTicksPerFrame(this.settings.impactFps));
-        if(FRAME_INDEX > 6){
+        if(this.stateTicks >= this.settings.impactTicks){
             this.removeSelf();
             return;
         }
-        this.currentFrame = 5 + FRAME_INDEX;
+        const IMPACT_FRAMES = this.frameCount - this.flightFrames;
+        this.currentFrame = this.flightFrames + getProgressFrame(this.stateTicks, this.settings.impactTicks, IMPACT_FRAMES);
     }
 
     updateVanish(){
-        this.currentFrame = 4;
+        this.currentFrame = this.flightFrames - 1;
         if(this.stateTicks >= getTicksPerFrame(this.settings.flightFps)){
             this.removeSelf();
         }

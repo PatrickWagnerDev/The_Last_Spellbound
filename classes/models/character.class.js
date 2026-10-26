@@ -8,9 +8,10 @@ class Character extends CharacterActions{
     invincibleTicks = 0;
     keyCount = 0;
 
-    constructor(spriteSet = CHARACTER_SPRITES.fireWizard){
+    constructor(characterId = 'fireWizard'){
         super();
-        this.sprites = spriteSet;
+        this.sprites = CHARACTER_SPRITES[characterId];
+        this.traits = CHARACTER_TRAITS[characterId];
         this.hitbox = HITBOX_STANDING;
         this.frameCount = this.sprites.idle.frames;
         this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
@@ -102,7 +103,7 @@ class Character extends CharacterActions{
     }
 
     isSleeping(){
-        const SIT_TICKS = this.settings.restDelayTicks + this.settings.restFrameTicks * this.sprites.rest.frames;
+        const SIT_TICKS = this.settings.restDelayTicks + this.settings.restTicks;
         return !this.world.isGameEnded && this.getSpriteState() === 'rest' && this.idleTicks >= SIT_TICKS;
     }
 
@@ -150,7 +151,7 @@ class Character extends CharacterActions{
     }
 
     getDeathTicks(){
-        return this.settings.deadFrameTicks * this.sprites.dead.frames;
+        return this.settings.deathTicks;
     }
 
     getSupportXs(){
@@ -173,6 +174,10 @@ class Character extends CharacterActions{
         return ACTIVE_STATE ? ACTIVE_STATE[0] : 'idle';
     }
 
+    getWalkFps(){
+        return this.sprites.walk.frames / (this.settings.walkCycleTicks / TICKS_PER_SECOND);
+    }
+
     getStateHitbox(stateName){
         return STANDING_STATES.includes(stateName) ? HITBOX_STANDING : HITBOX_WALKING;
     }
@@ -188,8 +193,8 @@ class Character extends CharacterActions{
             attack: () => this.showProgressState('attack', this.getAttackElapsed(), this.settings.attackTicks),
             cast: () => this.showProgressState('cast', this.getCastElapsed(), this.settings.castTicks),
             jump: () => this.showFrameState('jump', this.getJumpFrame()),
-            walk: () => this.showLoopState('walk', this.settings.walkFps),
-            rest: () => this.showProgressState('rest', this.idleTicks - this.settings.restDelayTicks, this.settings.restFrameTicks * this.sprites.rest.frames),
+            walk: () => this.showLoopState('walk', this.getWalkFps()),
+            rest: () => this.showProgressState('rest', this.idleTicks - this.settings.restDelayTicks, this.settings.restTicks),
             idle: () => this.showLoopState('idle', this.settings.idleFps)
         };
         SPRITE_PLAYERS[this.getSpriteState()]();

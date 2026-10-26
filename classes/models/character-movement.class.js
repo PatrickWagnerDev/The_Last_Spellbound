@@ -103,27 +103,22 @@ class CharacterMovement extends MovableObject{
     }
 
     getJumpFrame(){
+        const JUMP_FRAMES = this.traits.jumpFrames;
         if(this.jumpPhase === 'crouch'){
-            return this.getPhaseFrame(0, this.settings.crouchTicks);
+            return JUMP_FRAMES.crouch[getProgressFrame(this.phaseTicks, this.settings.crouchTicks, JUMP_FRAMES.crouch.length)];
         }
         if(this.jumpPhase === 'land'){
-            return this.getPhaseFrame(6, this.settings.landTicks);
+            return JUMP_FRAMES.land[getProgressFrame(this.phaseTicks, this.settings.landTicks, JUMP_FRAMES.land.length)];
         }
         return this.getAirFrame();
     }
 
-    getPhaseFrame(startFrame, totalTicks){
-        return startFrame + getProgressFrame(this.phaseTicks, totalTicks, 3);
-    }
-
     getAirFrame(){
+        const JUMP_FRAMES = this.traits.jumpFrames;
         if(this.speedY > this.settings.apexSpeed){
-            return 3;
+            return JUMP_FRAMES.up;
         }
-        if(this.speedY < -this.settings.apexSpeed){
-            return 5;
-        }
-        return 4;
+        return this.speedY < -this.settings.apexSpeed ? JUMP_FRAMES.down : JUMP_FRAMES.apex;
     }
 
     updateIdleTicks(){

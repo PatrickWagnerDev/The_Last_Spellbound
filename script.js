@@ -2,6 +2,7 @@ let gameCanvas;
 let gameWorld;
 let gameKeyboard = new Keyboard();
 let soundManager = new SoundManager();
+let selectedCharacter = 'fireWizard';
 
 function getStartLevelData(){
     return GAME_SETTINGS.debug.startInBossLevel ? LEVEL_ONE_BOSS : LEVEL_ONE;
@@ -43,7 +44,7 @@ function showStartScreen(){
 
 function createWorld(levelData){
     releaseAllKeys();
-    gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameEnd);
+    gameWorld = new World(gameCanvas, gameKeyboard, levelData, showGameEnd, selectedCharacter);
     soundManager.playMusic(levelData.music);
 }
 

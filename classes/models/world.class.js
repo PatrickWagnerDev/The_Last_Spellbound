@@ -7,7 +7,6 @@ class World {
     frameRequest;
     onGameEnd;
     isGameEnded = false;
-    character = new Character();
     hud = new Hud(this);
     ctx;
     canvas;
@@ -18,12 +17,13 @@ class World {
     transition = null;
     showHitboxes = GAME_SETTINGS.debug.showHitboxes;
 
-    constructor(canvas, keyboard, levelData, onGameEnd){
+    constructor(canvas, keyboard, levelData, onGameEnd, characterId){
         this.onGameEnd = onGameEnd;
         this.setLevel(levelData);
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.character = new Character(characterId);
         this.character.placeAt(this.level.playerStart);
         this.setWorld();
         this.drawWorld();

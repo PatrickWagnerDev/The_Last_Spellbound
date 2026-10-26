@@ -27,7 +27,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `maxHealth` | `3` | Health points of the character at the start. Each hit costs `combat.hitDamage`. At 0 the character is dead and cannot be controlled any more. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a hit (60 ticks = 1 second). Walking and jumping are locked meanwhile and the character is pushed away from the enemy. |
 | `knockbackSpeed` | `5` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (60 px by default). |
-| `deadFrameTicks` | `10` | Ticks per frame of the death animation (6 frames, 10 = 1 second in total). The animation plays once and stays on the last frame. |
+| `deathTicks` | `60` | Duration of the death animation in ticks (60 = 1 second), independent of the number of frames. The animation plays once and stays on the last frame. |
 | `rollTicks` | `36` | Duration of the roll (60 ticks = 1 second). The roll starts with S or the down arrow on the ground, cannot be cancelled and cannot be started in the air. The character cannot be hurt while rolling. |
 | `rollSpeed` | `5` | Speed of the roll in px per tick. Distance in px is `rollSpeed * rollTicks` (180 px by default). |
 | `rollCooldownTicks` | `30` | Pause after a roll before the next one is possible (30 ticks = 0.5 seconds). Without it, holding the key would make the character invulnerable all the time. `0` turns the pause off. |
@@ -44,9 +44,9 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `landTicks` | `9` | Ticks of the landing animation after touching the ground. Walking is locked meanwhile. |
 | `apexSpeed` | `3` | Vertical speed range around the top of a jump in which the "top" frame is shown. Higher = that frame is shown longer. |
 | `restDelayTicks` | `600` | Ticks without any input before the character sits down (600 = 10 seconds). |
-| `restFrameTicks` | `15` | Ticks per frame of the sit-down animation (4 frames, 15 = 1 second in total). |
+| `restTicks` | `60` | Duration of the sit-down animation in ticks (60 = 1 second), independent of the number of frames. |
 | `idleFps` | `5` | Animation speed of the idle sprite in frames per second. |
-| `walkFps` | `8` | Animation speed of the walk sprite in frames per second. |
+| `walkCycleTicks` | `45` | Ticks one full walk cycle takes, independent of the number of frames (45 ticks are 6 frames at 8 frames per second). The footstep sound is tuned to this speed. |
 | `edgeTolerance` | `12` | How far in px the character can be past the edge of a platform before it falls (the support is checked at the center of the hitbox and 12 px to each side). It also lets a jump land on a platform that was just missed. Enemies do not use it. |
 | `leftWallX` | `-60` | Smallest allowed x of the character box. `0` stops the box at the level start, a negative value lets the figure walk closer to the edge (`-60` matches the figure inside the sprite). |
 | `rightWallOffset` | `60` | How many px the character box may reach past the level end. Counterpart to `leftWallX`. |
@@ -105,7 +105,7 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `speed` | `6` | Flight speed in px per tick (6 = 360 px per second). |
 | `range` | `420` | Distance in px after which a fireball that has hit nothing vanishes (it stops on its last flight frame and disappears without the impact animation). |
 | `flightFps` | `12` | Animation speed of the flight frames (5 frames) in frames per second. |
-| `impactFps` | `14` | Animation speed of the impact frames (7 frames) in frames per second. The impact animation only plays when an enemy is hit. |
+| `impactTicks` | `30` | Duration of the impact animation in ticks (30 = 0.5 seconds), independent of the number of frames. The impact animation only plays when an enemy is hit. |
 
 ## item
 
@@ -243,6 +243,7 @@ These values are fixed in the code on purpose.
 | What | Where | Why |
 |---|---|---|
 | Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| `CHARACTER_TRAITS` (flight frames of the fireball, jump frames of each character) | `character-sprites.js` | They are facts of the sprite sheets of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |

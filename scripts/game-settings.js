@@ -12,7 +12,7 @@ const GAME_SETTINGS = {
         maxHealth: 3,
         hurtTicks: 24,
         knockbackSpeed: 5,
-        deadFrameTicks: 10,
+        deathTicks: 60,
         rollTicks: 36,
         rollSpeed: 5,
         rollCooldownTicks: 30,
@@ -29,9 +29,9 @@ const GAME_SETTINGS = {
         landTicks: 9,
         apexSpeed: 3,
         restDelayTicks: 600,
-        restFrameTicks: 15,
+        restTicks: 60,
         idleFps: 5,
-        walkFps: 8,
+        walkCycleTicks: 45,
         edgeTolerance: 12,
         leftWallX: -60,
         rightWallOffset: 60
@@ -81,7 +81,7 @@ const GAME_SETTINGS = {
         speed: 6,
         range: 420,
         flightFps: 12,
-        impactFps: 14
+        impactTicks: 30
     },
     item: {
         pickupFps: 14
