@@ -245,7 +245,7 @@ These values are fixed in the code on purpose.
 | What | Where | Why |
 |---|---|---|
 | Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
-| `CHARACTER_TRAITS` (flight frames of the fireball, jump frames of each character) | `character-sprites.js` | They are facts of the sprite sheets of each character. |
+| `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |
 | Tile map with the markers for items (60 key, 61 pizza, 62 donut, 63 chest, up to 68), the player start (69), enemies (70 to 89) and bosses (90 to 99), parallax factors | `classes/levels/level-one.js`, `level-one-boss.js` | They belong to the level. The numbers are listed in `classes/levels/tile-reference.html`. |
