@@ -56,6 +56,7 @@
     text-align: right;
     color: var(--color-title-light);
     text-shadow: var(--shadow-title-small), 6px 6px 0 var(--color-navy), 10px 10px 12px rgba(0, 0, 0, 0.5);
+    transition: filter 0.5s linear;
 }
 
 .start-buttons {
@@ -78,7 +79,8 @@
     pointer-events: none;
 }
 
-.start-screen.is-press .start-title {
+.start-screen.is-press .start-title,
+.start-screen.is-choose .start-title {
     transform: translate(calc(50% - 328px), calc(-50% + 176px)) scale(1.5);
 }
 
@@ -89,7 +91,8 @@
     line-height: inherit;
 }
 
-.start-screen.is-press .title-line {
+.start-screen.is-press .title-line,
+.start-screen.is-choose .title-line {
     transform: translateX(calc(var(--title-line-shift) * -1));
 }
 
@@ -100,7 +103,11 @@
 .start-screen.is-press .start-wizard-area,
 .start-screen.is-press .start-buttons,
 .start-screen.is-press + .mute-button,
-.start-screen.is-press ~ .fullscreen-button {
+.start-screen.is-press ~ .fullscreen-button,
+.start-screen.is-choose .start-wizard-area,
+.start-screen.is-choose .start-buttons,
+.start-screen.is-choose + .mute-button,
+.start-screen.is-choose ~ .fullscreen-button {
     opacity: 0;
 }
 
@@ -109,7 +116,7 @@
 }
 
 .start-screen.is-settle .start-title {
-    transition: transform 1s ease-in-out;
+    transition: transform 1s ease-in-out, filter 0.6s linear;
 }
 
 .start-screen.is-settle .start-wizard-area {
@@ -170,5 +177,132 @@
 
     to {
         opacity: 1;
+    }
+}
+
+.start-screen[data-character="lightningMage"] .start-wizard {
+    background-image: url('../assets/image/01-wizard/Lightning Mage/Idle.png');
+}
+
+.start-screen.is-choose .start-title {
+    filter: blur(6px);
+}
+
+.character-choice {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.start-screen.is-choose .character-choice {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.character-cards {
+    display: flex;
+    gap: 56px;
+}
+
+.character-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 176px;
+    padding: 12px 0 10px;
+    transition: opacity 0.3s linear;
+}
+
+.character-card .menu-label {
+    font-size: 20px;
+}
+
+.character-card.is-marked {
+    background-color: var(--color-title-light);
+}
+
+.character-cards:has(.is-marked) .character-card:not(.is-marked) {
+    opacity: 0.6;
+}
+
+.character-head {
+    width: 144px;
+    height: 144px;
+    background-image: url('../assets/image/01-wizard/Fire Wizard/Idle.png');
+    background-size: 2688px 384px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    animation: head-idle 1.4s steps(7) infinite;
+}
+
+.character-card[data-character="lightningMage"] .character-head {
+    background-image: url('../assets/image/01-wizard/Lightning Mage/Idle.png');
+    transform: scaleX(-1);
+}
+
+.choose-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 44px;
+    padding: 0 4px;
+}
+
+.choose-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.choose-button:disabled::before {
+    background-color: var(--color-navy);
+}
+
+.character-glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.start-screen[data-marked] .character-glow {
+    opacity: 1;
+    animation: glow-pulse 1.6s ease-in-out infinite alternate;
+}
+
+.start-screen[data-marked="fireWizard"] .character-glow {
+    background: radial-gradient(circle at 36% 46%, rgba(255, 140, 40, 0.55), transparent 55%);
+}
+
+.start-screen[data-marked="lightningMage"] .character-glow {
+    background: radial-gradient(circle at 64% 46%, rgba(150, 190, 255, 0.55), transparent 55%);
+}
+
+@keyframes head-idle {
+    from {
+        background-position: -90px -168px;
+    }
+
+    to {
+        background-position: -2778px -168px;
+    }
+}
+
+@keyframes glow-pulse {
+    from {
+        filter: brightness(0.85);
+    }
+
+    to {
+        filter: brightness(1.25);
     }
 }

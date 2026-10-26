@@ -47,6 +47,22 @@
                     </button>
                 </div>
             </div>
+            <div class="character-choice">
+                <div class="character-glow"></div>
+                <div class="character-cards" role="radiogroup" aria-label="Choose your character" onkeydown="moveCharacterMark(event)">
+                    <button class="character-card" role="radio" aria-checked="false" data-character="fireWizard" onclick="markCharacter('fireWizard')">
+                        <span class="character-head"></span>
+                        <span class="menu-label">Fire Wizard</span>
+                    </button>
+                    <button class="character-card" role="radio" aria-checked="false" data-character="lightningMage" onclick="markCharacter('lightningMage')">
+                        <span class="character-head"></span>
+                        <span class="menu-label">Lightning Mage</span>
+                    </button>
+                </div>
+                <button id="choose-button" class="choose-button" disabled onclick="chooseCharacter()">
+                    <span class="menu-label">Choose</span>
+                </button>
+            </div>
             <p class="press-hint">Press any key</p>
         </div>
         <button id="mute-button" class="mute-button" aria-label="Mute sound" aria-pressed="false" onclick="toggleMute()"></button>

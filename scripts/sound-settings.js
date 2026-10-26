@@ -65,3 +65,8 @@ const SOUND_PATHS = {
     bossFireball: './assets/sounds/714744__fall-e__interface-magic-fireball-bell-spell.mp3',
     bossRay: './assets/sounds/169679__beman87__laser-shotgun-loading.mp3'
 };
+
+const CHARACTER_SOUNDS = {
+    fireWizard: {},
+    lightningMage: {}
+};

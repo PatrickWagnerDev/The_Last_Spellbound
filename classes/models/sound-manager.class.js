@@ -5,6 +5,7 @@ class SoundManager {
         this.isMuted = this.readMuteState();
         this.music = null;
         this.loops = {};
+        this.characterSounds = {};
         this.sounds = this.loadSounds();
     }
 
@@ -12,6 +13,15 @@ class SoundManager {
         const SOUNDS = {};
         Object.entries(SOUND_PATHS).forEach(([soundName, soundPath]) => SOUNDS[soundName] = new Audio(soundPath));
         return SOUNDS;
+    }
+
+    setCharacter(characterId){
+        this.characterSounds = {};
+        Object.entries(CHARACTER_SOUNDS[characterId]).forEach(([soundName, soundPath]) => this.characterSounds[soundName] = new Audio(soundPath));
+    }
+
+    getSound(soundName){
+        return this.characterSounds[soundName] ?? this.sounds[soundName];
     }
 
     readMuteState(){
@@ -66,7 +76,7 @@ class SoundManager {
         if(this.isMuted){
             return;
         }
-        const SOUND_CLONE = this.sounds[soundName].cloneNode();
+        const SOUND_CLONE = this.getSound(soundName).cloneNode();
         SOUND_CLONE.volume = SOUND_VOLUMES[soundName];
         SOUND_CLONE.play().catch(() => {});
     }
@@ -75,7 +85,7 @@ class SoundManager {
         if(this.loops[soundName]){
             return;
         }
-        const LOOP_CLONE = this.sounds[soundName].cloneNode();
+        const LOOP_CLONE = this.getSound(soundName).cloneNode();
         LOOP_CLONE.loop = true;
         LOOP_CLONE.volume = SOUND_VOLUMES[soundName];
         LOOP_CLONE.playbackRate = LOOP_RATES[soundName] ?? 1;

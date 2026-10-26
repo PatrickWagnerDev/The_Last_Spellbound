@@ -67,7 +67,9 @@
 .menu-button,
 .start-button,
 .page-button,
-.close-button {
+.close-button,
+.choose-button,
+.character-card {
     position: relative;
     z-index: 0;
     border: none;
@@ -79,7 +81,9 @@
 .menu-button::before,
 .start-button::before,
 .page-button::before,
-.close-button::before {
+.close-button::before,
+.choose-button::before,
+.character-card::before {
     content: '';
     position: absolute;
     inset: 4px;
@@ -92,10 +96,14 @@
 .start-button:hover::before,
 .page-button:hover::before,
 .close-button:hover::before,
+.choose-button:hover::before,
+.character-card:hover::before,
 .menu-button:focus-visible::before,
 .start-button:focus-visible::before,
 .page-button:focus-visible::before,
-.close-button:focus-visible::before {
+.close-button:focus-visible::before,
+.choose-button:focus-visible::before,
+.character-card:focus-visible::before {
     background-color: var(--color-navy-hover);
 }
 

@@ -1,4 +1,4 @@
-const MENU_BUTTON_SELECTOR = '.start-button, .close-button, .page-button, .menu-button';
+const MENU_BUTTON_SELECTOR = '.start-button, .close-button, .page-button, .menu-button, .choose-button, .character-card';
 const HOVER_QUERY = window.matchMedia('(hover: hover)');
 
 function playHoverSound(event){
