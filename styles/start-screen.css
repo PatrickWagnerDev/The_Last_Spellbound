@@ -105,9 +105,7 @@
 .start-screen.is-press + .mute-button,
 .start-screen.is-press ~ .fullscreen-button,
 .start-screen.is-choose .start-wizard-area,
-.start-screen.is-choose .start-buttons,
-.start-screen.is-choose + .mute-button,
-.start-screen.is-choose ~ .fullscreen-button {
+.start-screen.is-choose .start-buttons {
     opacity: 0;
 }
 
@@ -265,4 +263,21 @@
     position: absolute;
     image-rendering: pixelated;
     pointer-events: none;
+}
+
+.game-container .start-screen.is-choose + .mute-button,
+.game-container .start-screen.is-choose ~ .fullscreen-button {
+    top: calc(var(--frame-padding) + var(--pause-button-gap));
+    bottom: auto;
+    left: auto;
+    pointer-events: auto;
+    transition: opacity 0.5s linear;
+}
+
+.game-container .start-screen.is-choose + .mute-button {
+    right: calc(var(--frame-padding) + var(--pause-button-gap));
+}
+
+.game-container .start-screen.is-choose ~ .fullscreen-button {
+    right: calc(var(--frame-padding) + var(--pause-button-gap) * 2 + 40px);
 }
