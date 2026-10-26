@@ -13,7 +13,7 @@ The game currently offers the following features:
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
 - **Game Screens** – Start with a "Press any key" page, use the start screen, the pause menu, the game-over screen and the victory screen, and retry or return to the start screen.
-- **Character Selection** – Choose between the Fire Wizard and the Lightning Mage on a selection page before the game starts. Both play the same and only differ in their look.
+- **Character Selection** – Choose between the Fire Wizard and the Lightning Mage on a selection page before the game starts. Both play the same and only differ in their look and in a few sounds.
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 - **Audio** – Enjoy background music for the start screen, the level and the boss fight, sound effects for the character, the enemies and the menus, and a mute button that is saved in Local Storage.
 - **Responsive Layout** – The game scales down on small screens and shows an orientation notice on touch devices in portrait mode.
@@ -59,11 +59,13 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [Boss Battle Loop #3](https://freesound.org/people/Sirkoto51/sounds/443128/) | Sirkoto51 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Button_Hover (mp3)](https://freesound.org/people/deadsillyrabbit/sounds/251390/) | deadsillyrabbit | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [buzzer](https://freesound.org/people/Loyalty_Freak_Music/sounds/407466/) | Loyalty_Freak_Music | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Dual Energy Daggers 5](https://freesound.org/people/ejfortin/sounds/49667/) | ejfortin | [Sampling+ 1.0](http://creativecommons.org/licenses/sampling+/1.0/) |
 | [Electronic Victory Sound](https://freesound.org/people/yokomatsuko/sounds/856038/) | yokomatsuko | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Enimey_Dead](https://freesound.org/people/bigspider95/sounds/500272/) | bigspider95 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Fantasy Forest](https://freesound.org/people/16Pixel/sounds/785711/) | 16Pixel | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Fireball Cast 3](https://freesound.org/people/LiamG_SFX/sounds/334237/) | LiamG_SFX | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Fireball Explosion](https://freesound.org/people/Blankened/sounds/431174/) | Blankened | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Firework Single ( Explosion )](https://freesound.org/people/EminYILDIRIM/sounds/553153/) | EminYILDIRIM | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Hit_Hurt7](https://freesound.org/people/n_audioman/sounds/273563/) | n_audioman | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [hurt_player](https://freesound.org/people/FullStackSound/sounds/662465/) | FullStackSound | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Interface, magic, fireball, bell, spell](https://freesound.org/people/FALL-E/sounds/714744/) | FALL-E | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -81,6 +83,7 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [SNORE-03_44100](https://freesound.org/people/stevielematt/sounds/760036/) | stevielematt | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [steps](https://freesound.org/people/benzix2/sounds/417291/) | benzix2 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
 | [Sword Swing 1](https://freesound.org/people/Nomagician/sounds/840716/) | Nomagician | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Sword_Thunder01](https://freesound.org/people/SonoFxAudio/sounds/649360/) | SonoFxAudio | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Tab rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873105/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Unpause rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873112/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 

@@ -213,7 +213,8 @@ The mute button (state in the local storage under `spellbound-muted`) mutes all 
 | `roll` | `0.4` | The dodge roll starts |
 | `attack` | `0.4` | The melee attack starts |
 | `cast` | `0.4` | The cast of the fireball starts |
-| `fireballImpact` | `0.4` | A fireball hits a target (character fireball on an enemy, boss fireball on the character) |
+| `fireballImpact` | `0.4` | The fireball of the boss hits the character |
+| `castImpact` | `0.4` | The fireball of the character hits an enemy |
 | `noEnergy` | `0.3` | The special attack key is pressed with an empty energy bar |
 | `walk` | `0.5` | Footsteps, loop while the character walks on the ground (speed `1.1` from `LOOP_RATES`) |
 | `hurt` | `0.4` | The character takes damage |

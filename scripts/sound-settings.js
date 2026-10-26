@@ -11,6 +11,7 @@ const SOUND_VOLUMES = {
     attack: 0.4,
     cast: 0.4,
     fireballImpact: 0.4,
+    castImpact: 0.4,
     noEnergy: 0.3,
     walk: 0.5,
     hurt: 0.4,
@@ -51,6 +52,7 @@ const SOUND_PATHS = {
     attack: './assets/sounds/840716__nomagician__sword-swing-1.mp3',
     cast: './assets/sounds/334237__liamg_sfx__fireball-cast-3.mp3',
     fireballImpact: './assets/sounds/431174__blankened__fireball-explosion.mp3',
+    castImpact: './assets/sounds/431174__blankened__fireball-explosion.mp3',
     noEnergy: './assets/sounds/407466__loyalty_freak_music__buzzer.mp3',
     walk: './assets/sounds/417291__benzix2__steps.mp3',
     hurt: './assets/sounds/662465__fullstacksound__hurt_player.mp3',
@@ -68,5 +70,9 @@ const SOUND_PATHS = {
 
 const CHARACTER_SOUNDS = {
     fireWizard: {},
-    lightningMage: {}
+    lightningMage: {
+        cast: { path: './assets/sounds/649360__sonofxaudio__sword_thunder01.mp3', volume: 0.5 },
+        castImpact: { path: './assets/sounds/553153__eminyildirim__firework-single-explosion.mp3', volume: 0.5 },
+        attack: { path: './assets/sounds/49667__ejfortin__dual-energy-daggers-5.mp3', volume: 0.08 }
+    }
 };
