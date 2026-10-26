@@ -29,6 +29,9 @@ function showGameEnd(isVictory){
     updateGameOverUi(true);
     soundManager.stopMusic();
     soundManager.playSound(isVictory ? 'victory' : 'gameOver');
+    if(isVictory){
+        levelProgress.markCleared(gameWorld.levelData.levelNumber);
+    }
 }
 
 function updatePauseUi(){

@@ -2,6 +2,7 @@ let gameCanvas;
 let gameWorld;
 let gameKeyboard = new Keyboard();
 let soundManager = new SoundManager();
+let levelProgress = new LevelProgress();
 let selectedCharacter = 'fireWizard';
 
 function getStartLevelData(){

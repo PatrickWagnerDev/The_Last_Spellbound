@@ -193,14 +193,17 @@ While the transition runs, the level is switched under the covered canvas. The s
 | Variable | Default | Effect |
 |---|---|---|
 | `startLevel` | `1` | Number of the level (1 to 3) that "Start Game" loads, to test a level without playing the ones before. Set to `1` for release. |
+| `unlockAllLevels` | `false` | Unlocks all levels in the level selection to test them without playing the ones before. Set to `false` for release. |
 | `startInBossLevel` | `false` | Starts the game directly in the boss part of the start level to test the boss. Set to `false` for release. |
-| `showHitboxes` | `true` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
+| `showHitboxes` | `false` | Draws the hitboxes (green, red while an enemy touches the character), the sword hit box while it can hit (orange) and the fireballs (orange). Set to `false` for release. |
 
 ## Sounds
 
 The volumes, paths and the loop speed live in `scripts/sound-settings.js`, the playing is done by `classes/models/sound-manager.class.js`.
 Every value is between `0` and `1`. For sound effects `0.5` is the maximum. A new sound needs an entry in `SOUND_PATHS` and in `SOUND_VOLUMES` (music in `MUSIC_PATHS` and `MUSIC_VOLUMES`).
 The mute button (state in the local storage under `spellbound-muted`) mutes all sounds, music and loops.
+
+The progress (the cleared levels) is saved in the local storage under `spellbound-cleared-levels`.
 
 | Sound | Default volume | Plays when |
 |---|---|---|

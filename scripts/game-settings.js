@@ -137,6 +137,7 @@ const GAME_SETTINGS = {
     },
     debug: {
         startLevel: 1,
+        unlockAllLevels: false,
         startInBossLevel: false,
         showHitboxes: false
     }
