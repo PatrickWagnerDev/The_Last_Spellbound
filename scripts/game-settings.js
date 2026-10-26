@@ -219,8 +219,8 @@ const GAME_SETTINGS = {
         pauseOverlayAlpha: 0.5
     },
     debug: {
-        unlockAllLevels: false,
+        unlockAllLevels: true,
         startInBossLevel: false,
-        showHitboxes: false
+        showHitboxes: true
     }
 };
