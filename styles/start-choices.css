@@ -1,0 +1,113 @@
+.character-choice {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.start-screen.is-choose .character-choice {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.character-cards {
+    display: flex;
+    gap: 56px;
+}
+
+.character-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 176px;
+    padding: 12px 0;
+    transition: opacity 0.3s linear;
+}
+
+.character-card.is-marked {
+    background-color: var(--color-title-light);
+}
+
+.character-cards:has(.is-marked) .character-card:not(.is-marked) {
+    opacity: 0.6;
+}
+
+.character-head {
+    width: 144px;
+    height: 144px;
+    background-size: 3584px 512px;
+    background-position: -134px -236px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.character-card[data-character="lightningMage"] .character-head {
+    transform: scaleX(-1);
+}
+
+.choose-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 44px;
+    padding: 0 4px;
+}
+
+.choose-button:disabled,
+.level-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.choose-button:disabled::before,
+.level-button:disabled::before {
+    background-color: var(--color-navy);
+}
+
+.character-effect {
+    position: absolute;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.game-container .start-screen.is-choose + .mute-button,
+.game-container .start-screen.is-choose ~ .fullscreen-button {
+    top: var(--button-top);
+    bottom: auto;
+    left: auto;
+    pointer-events: auto;
+    transition: opacity 0.5s linear;
+}
+
+.game-container .start-screen.is-choose + .mute-button {
+    right: var(--button-right-one);
+}
+
+.game-container .start-screen.is-choose ~ .fullscreen-button {
+    right: var(--button-right-two);
+}
+
+.level-choice {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+}
+
+.start-screen.is-levels .level-choice {
+    opacity: 1;
+    pointer-events: auto;
+}

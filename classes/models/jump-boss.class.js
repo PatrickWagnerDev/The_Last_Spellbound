@@ -29,11 +29,9 @@ class JumpBoss extends Boss {
     }
 
     getGapAhead(){
-        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
-        const PROBE_X = getRectCenterX(this.getHitbox()) + STEP_DIRECTION * EDGE_PROBE_DISTANCE;
         const PROBE_Y = this.y + this.height + 1;
         let gapTiles = 0;
-        while(gapTiles <= this.settings.maxJumpGapTiles && !this.world.level.isWalkableAt(PROBE_X + STEP_DIRECTION * gapTiles * TILE_SIZE, PROBE_Y)){
+        while(gapTiles <= this.settings.maxJumpGapTiles && !this.world.level.isWalkableAt(this.getProbeX(EDGE_PROBE_DISTANCE + gapTiles * TILE_SIZE), PROBE_Y)){
             gapTiles++;
         }
         return gapTiles;
@@ -134,11 +132,7 @@ class JumpBoss extends Boss {
     }
 
     getAirFrame(){
-        const AIR_FRAMES = this.jumpFrames;
-        if(AIR_FRAMES.apex !== undefined && Math.abs(this.speedY) <= APEX_SPEED_LIMIT){
-            return AIR_FRAMES.apex;
-        }
-        return this.speedY > 0 ? AIR_FRAMES.up : AIR_FRAMES.down;
+        return pickAirFrame(this.jumpFrames, this.speedY, APEX_SPEED_LIMIT);
     }
 
     getLandFrame(){

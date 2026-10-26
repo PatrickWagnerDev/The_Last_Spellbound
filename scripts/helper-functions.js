@@ -22,6 +22,13 @@ function getProgressFrame(elapsedTicks, totalTicks, frameTotal){
     return Math.min(Math.floor(elapsedTicks / (totalTicks / frameTotal)), frameTotal - 1);
 }
 
+function pickAirFrame(frames, speedY, apexSpeed){
+    if(frames.apex !== undefined && Math.abs(speedY) <= apexSpeed){
+        return frames.apex;
+    }
+    return speedY > 0 ? frames.up : frames.down;
+}
+
 function getRectCenterX(rect){
     return rect.x + rect.width / 2;
 }

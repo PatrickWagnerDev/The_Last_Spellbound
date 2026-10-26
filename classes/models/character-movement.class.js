@@ -136,11 +136,7 @@ class CharacterMovement extends MovableObject{
     }
 
     getAirFrame(){
-        const JUMP_FRAMES = this.traits.jumpFrames;
-        if(this.speedY > this.settings.apexSpeed){
-            return JUMP_FRAMES.up;
-        }
-        return this.speedY < -this.settings.apexSpeed ? JUMP_FRAMES.down : JUMP_FRAMES.apex;
+        return pickAirFrame(this.traits.jumpFrames, this.speedY, this.settings.apexSpeed);
     }
 
     updateIdleTicks(){

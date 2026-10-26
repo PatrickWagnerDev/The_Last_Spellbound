@@ -117,9 +117,8 @@ class MageBoss extends Boss {
     }
 
     spawnRay(){
-        const SCALE_FACTOR = this.width / this.frameWidth;
-        const ORIGIN_X = this.x + (this.otherDirection ? BOSS_RAY_SPAWN.offsetX : this.frameWidth - BOSS_RAY_SPAWN.offsetX) * SCALE_FACTOR;
-        this.world.addProjectile(new BossRay(this, ORIGIN_X, this.y + BOSS_RAY_SPAWN.offsetY * SCALE_FACTOR));
+        const ORIGIN_POINT = this.getSpawnPoint(BOSS_RAY_SPAWN);
+        this.world.addProjectile(new BossRay(this, ORIGIN_POINT.x, ORIGIN_POINT.y));
     }
 
     updateAttack(){
@@ -133,10 +132,7 @@ class MageBoss extends Boss {
     }
 
     spawnFireball(){
-        const SPAWN_OFFSET = BOSS_FIREBALL_SPAWN[this.attackVariant];
-        const SCALE_FACTOR = this.width / this.frameWidth;
-        const CENTER_X = this.x + (this.otherDirection ? SPAWN_OFFSET.offsetX : this.frameWidth - SPAWN_OFFSET.offsetX) * SCALE_FACTOR;
-        this.world.addProjectile(new EnemyFireball(BOSS_FIREBALL, CENTER_X, this.y + SPAWN_OFFSET.offsetY * SCALE_FACTOR, this.otherDirection));
+        this.spawnEnemyFireball(BOSS_FIREBALL, BOSS_FIREBALL_SPAWN[this.attackVariant]);
         this.fireballCooldownLeft = this.settings.fireballCooldownTicks;
     }
 }

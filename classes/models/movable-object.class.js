@@ -142,6 +142,15 @@ class MovableObject extends DrawableObject{
         this.health = Math.min(this.health + amount, this.maxHealth);
     }
 
+    hasFallenOut(){
+        return !this.isDead() && this.getHitbox().y > this.world.level.height;
+    }
+
+    dieByFall(){
+        this.takeDamage(this.maxHealth);
+        this.deadTicks = this.getDeathTicks();
+    }
+
     isDead(){
         return this.health <= 0;
     }

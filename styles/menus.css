@@ -136,10 +136,7 @@
     image-rendering: pixelated;
 }
 
-.icon-continue {
-    background-image: url('../assets/image/09-ui/3 Icons/Icons_25.png');
-}
-
+.icon-continue,
 .icon-next {
     background-image: url('../assets/image/09-ui/3 Icons/Icons_25.png');
 }

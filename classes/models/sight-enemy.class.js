@@ -20,6 +20,17 @@ class SightEnemy extends Enemy {
         return { x: OWN_RECT.x - SIGHT_RANGE, y: OWN_RECT.y - SIGHT_ABOVE, width: OWN_RECT.width + 2 * SIGHT_RANGE, height: OWN_RECT.height + SIGHT_ABOVE + SIGHT_BELOW };
     }
 
+    getSpawnPoint(spawnOffset){
+        const SCALE_FACTOR = this.width / this.frameWidth;
+        const SPAWN_X = this.x + (this.otherDirection ? spawnOffset.offsetX : this.frameWidth - spawnOffset.offsetX) * SCALE_FACTOR;
+        return { x: SPAWN_X, y: this.y + spawnOffset.offsetY * SCALE_FACTOR };
+    }
+
+    spawnEnemyFireball(fireballConfig, spawnOffset){
+        const SPAWN_POINT = this.getSpawnPoint(spawnOffset);
+        this.world.addProjectile(new EnemyFireball(fireballConfig, SPAWN_POINT.x, SPAWN_POINT.y, this.otherDirection));
+    }
+
     drawDebugArea(ctx){
         this.drawRect(ctx, this.getSightRect(), 'yellow');
     }

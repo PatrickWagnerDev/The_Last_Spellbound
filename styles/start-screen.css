@@ -21,11 +21,15 @@
     bottom: 0;
     width: 896px;
     height: 896px;
-    background-image: url('../assets/image/01-wizard/Fire Wizard/Idle.png');
     background-size: 6272px 896px;
     background-repeat: no-repeat;
     image-rendering: pixelated;
     animation: wizard-idle 1.4s steps(7) infinite;
+}
+
+.start-wizard,
+.character-head {
+    background-image: url('../assets/image/01-wizard/Fire Wizard/Idle.png');
 }
 
 @keyframes wizard-idle {
@@ -117,7 +121,9 @@
     animation: start-fade-in 0.8s linear 1.6s both, press-blink 1.4s steps(1) 2.4s infinite;
 }
 
-.start-screen.is-settle .start-title {
+.start-screen.is-settle .start-title,
+.start-screen.is-ready .start-title,
+.start-screen.is-levels .start-title {
     transition: transform 1s ease-in-out, filter 0.6s linear;
 }
 
@@ -182,134 +188,14 @@
     }
 }
 
-.start-screen[data-character="lightningMage"] .start-wizard {
+.start-screen[data-character="lightningMage"] .start-wizard,
+.character-card[data-character="lightningMage"] .character-head {
     background-image: url('../assets/image/01-wizard/Lightning Mage/Idle.png');
 }
 
 .start-screen.is-choose .start-title,
 .start-screen.is-levels .start-title {
     filter: blur(6px);
-}
-
-.character-choice {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s linear;
-}
-
-.start-screen.is-choose .character-choice {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.character-cards {
-    display: flex;
-    gap: 56px;
-}
-
-.character-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 176px;
-    padding: 12px 0;
-    transition: opacity 0.3s linear;
-}
-
-.character-card.is-marked {
-    background-color: var(--color-title-light);
-}
-
-.character-cards:has(.is-marked) .character-card:not(.is-marked) {
-    opacity: 0.6;
-}
-
-.character-head {
-    width: 144px;
-    height: 144px;
-    background-image: url('../assets/image/01-wizard/Fire Wizard/Idle.png');
-    background-size: 3584px 512px;
-    background-position: -134px -236px;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-}
-
-.character-card[data-character="lightningMage"] .character-head {
-    background-image: url('../assets/image/01-wizard/Lightning Mage/Idle.png');
-    transform: scaleX(-1);
-}
-
-.choose-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 180px;
-    height: 44px;
-    padding: 0 4px;
-}
-
-.choose-button:disabled,
-.level-button:disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-.choose-button:disabled::before,
-.level-button:disabled::before {
-    background-color: var(--color-navy);
-}
-
-.character-effect {
-    position: absolute;
-    image-rendering: pixelated;
-    pointer-events: none;
-}
-
-.game-container .start-screen.is-choose + .mute-button,
-.game-container .start-screen.is-choose ~ .fullscreen-button {
-    top: calc(var(--frame-padding) + var(--pause-button-gap));
-    bottom: auto;
-    left: auto;
-    pointer-events: auto;
-    transition: opacity 0.5s linear;
-}
-
-.game-container .start-screen.is-choose + .mute-button {
-    right: calc(var(--frame-padding) + var(--pause-button-gap));
-}
-
-.game-container .start-screen.is-choose ~ .fullscreen-button {
-    right: calc(var(--frame-padding) + var(--pause-button-gap) * 2 + 40px);
-}
-
-.level-choice {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s linear;
-}
-
-.start-screen.is-levels .level-choice {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.start-screen.is-ready .start-title,
-.start-screen.is-levels .start-title {
-    transition: transform 1s ease-in-out, filter 0.6s linear;
 }
 
 .start-screen.is-ready .title-line,

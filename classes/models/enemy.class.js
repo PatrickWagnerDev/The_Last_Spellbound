@@ -64,12 +64,10 @@ class Enemy extends MovableObject {
     }
 
     checkFall(){
-        if(this.isDead() || this.getHitbox().y <= this.world.level.height){
-            return;
+        if(this.hasFallenOut()){
+            this.dieByFall();
+            soundManager.playSound(this.deathSound);
         }
-        this.takeDamage(this.maxHealth);
-        this.deadTicks = this.getDeathTicks();
-        soundManager.playSound(this.deathSound);
     }
 
     updateBehavior(){
@@ -85,10 +83,13 @@ class Enemy extends MovableObject {
         this.moveForward();
     }
 
-    hasGroundAhead(){
+    getProbeX(distance){
         const STEP_DIRECTION = this.otherDirection ? -1 : 1;
-        const PROBE_X = getRectCenterX(this.getHitbox()) + STEP_DIRECTION * EDGE_PROBE_DISTANCE;
-        return this.world.level.isWalkableAt(PROBE_X, this.y + this.height + 1);
+        return getRectCenterX(this.getHitbox()) + STEP_DIRECTION * distance;
+    }
+
+    hasGroundAhead(){
+        return this.world.level.isWalkableAt(this.getProbeX(EDGE_PROBE_DISTANCE), this.y + this.height + 1);
     }
 
     drawFrame(ctx, drawX){

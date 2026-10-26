@@ -5,6 +5,10 @@
     --menu-width: 576px;
     --menu-height: 386px;
     --pause-button-gap: 12px;
+    --button-top: calc(var(--frame-padding) + var(--pause-button-gap));
+    --button-right-one: calc(var(--frame-padding) + var(--pause-button-gap));
+    --button-right-two: calc(var(--frame-padding) + var(--pause-button-gap) * 2 + 40px);
+    --button-right-three: calc(var(--frame-padding) + var(--pause-button-gap) * 3 + 80px);
     --font-pixel: 'Straight Pixel Gothic', sans-serif;
     --font-ui: 'Planes ValMore', sans-serif;
     --color-plate: #667291;

@@ -96,9 +96,7 @@ class Mage extends SightEnemy {
     }
 
     spawnFireball(){
-        const SCALE_FACTOR = this.width / this.frameWidth;
-        const CENTER_X = this.x + (this.otherDirection ? MAGE_FIREBALL_SPAWN.offsetX : this.frameWidth - MAGE_FIREBALL_SPAWN.offsetX) * SCALE_FACTOR;
-        this.world.addProjectile(new EnemyFireball(MAGE_FIREBALL, CENTER_X, this.y + MAGE_FIREBALL_SPAWN.offsetY * SCALE_FACTOR, this.otherDirection));
+        this.spawnEnemyFireball(MAGE_FIREBALL, MAGE_FIREBALL_SPAWN);
         this.attackCooldownLeft = this.settings.attackCooldownTicks;
     }
 }

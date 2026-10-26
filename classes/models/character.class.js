@@ -39,9 +39,8 @@ class Character extends CharacterActions{
     }
 
     checkFall(){
-        if(!this.isDead() && this.getHitbox().y > this.world.level.height){
-            this.takeDamage(this.maxHealth);
-            this.deadTicks = this.getDeathTicks();
+        if(this.hasFallenOut()){
+            this.dieByFall();
             this.stopAnimation();
         }
     }

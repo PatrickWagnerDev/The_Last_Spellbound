@@ -22,8 +22,8 @@ body {
 .mute-button,
 .fullscreen-button {
     position: absolute;
-    top: calc(var(--frame-padding) + var(--pause-button-gap));
-    right: calc(var(--frame-padding) + var(--pause-button-gap));
+    top: var(--button-top);
+    right: var(--button-right-one);
     width: 40px;
     height: 40px;
     padding: 0;
@@ -62,7 +62,7 @@ body {
 }
 
 .mute-button {
-    right: calc(var(--frame-padding) + var(--pause-button-gap) * 2 + 40px);
+    right: var(--button-right-two);
     background-image: url('./assets/image/09-ui/3 Icons/Icons_31.png');
     background-size: 24px 24px;
     background-position: center;
@@ -75,7 +75,7 @@ body {
 }
 
 .fullscreen-button {
-    right: calc(var(--frame-padding) + var(--pause-button-gap) * 3 + 80px);
+    right: var(--button-right-three);
     background-image: url('./assets/image/09-ui/3 Icons/Icons_55.png');
     background-size: 24px 24px;
     background-position: center;
