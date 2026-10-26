@@ -8,7 +8,7 @@ The game currently offers the following features:
 
 - **Character Movement** – Walk, jump and roll through a side-scrolling game world.
 - **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy. Enemies that are pushed into a gap die.
-- **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, the mage boss, who chases the player and attacks with a fireball and a ray, and the demon boss, who sprints, jumps over gaps and fights with a club.
+- **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, the mage boss, who chases the player and attacks with a fireball and a ray, the demon boss, who sprints, jumps over gaps and fights with a club, and the dark knight, who sprints, jumps over gaps and attacks with four different sword attacks.
 - **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
@@ -86,12 +86,11 @@ The music and sound effects come from [Freesound.org](https://freesound.org) (my
 | [SNORE-03_44100](https://freesound.org/people/stevielematt/sounds/760036/) | stevielematt | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Somber Piano Chord Progression D 76bpm](https://freesound.org/people/CVLTIV8R/sounds/807111/) | CVLTIV8R | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [steps](https://freesound.org/people/benzix2/sounds/417291/) | benzix2 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Super Mega Ultimate Final Boss Battle](https://freesound.org/people/FoolBoyMedia/sounds/530064/) | FoolBoyMedia | [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) |
 | [Sword Swing 1](https://freesound.org/people/Nomagician/sounds/840716/) | Nomagician | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Sword_Thunder01](https://freesound.org/people/SonoFxAudio/sounds/649360/) | SonoFxAudio | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Tab rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873105/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Unpause rpg (PSX UI SFX Free)](https://freesound.org/people/heyheytheree/sounds/873112/) | heyheytheree | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
-
-One more track is prepared for a future boss and not used in the game yet: [Super Mega Ultimate Final Boss Battle](https://freesound.org/people/FoolBoyMedia/sounds/530064/) by FoolBoyMedia ([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)).
 
 The chest sound and the prepared FoolBoyMedia track are licensed for non-commercial use only. This project is a student project without a commercial purpose.
 

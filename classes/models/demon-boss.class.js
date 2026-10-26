@@ -9,69 +9,37 @@ const DEMON_BOSS_SPRITES = {
 };
 
 const DEMON_MELEE_HITBOX = { offsetX: -48, offsetY: 120, width: 135, height: 165 };
-const DEMON_BODY_SHIFT = 48;
-const EDGE_PROBE_DISTANCE = 24;
 
-class DemonBoss extends Boss {
+const DEMON_BOSS_CONFIG = {
+    settings: GAME_SETTINGS.demonBoss,
+    sprites: DEMON_BOSS_SPRITES,
+    frameSize: 96,
+    hitbox: { offsetX: 70.5, offsetY: 138, width: 147, height: 150 },
+    spriteFacesLeft: true,
+    deathSound: 'bossDeath',
+    music: 'demonMusic',
+    bodyShift: -48,
+    jumpFrames: { windup: [0], up: 1, down: 2, land: [3] }
+};
+
+class DemonBoss extends JumpBoss {
     state = 'patrol';
     meleeCooldownLeft = 0;
-    sprintCooldownLeft = 0;
-    sprintTicksLeft = 0;
-    landTicks = 0;
     hasMeleeHit = false;
 
     constructor(column, row){
-        super(column, row, {
-            settings: GAME_SETTINGS.demonBoss,
-            sprites: DEMON_BOSS_SPRITES,
-            frameSize: 96,
-            hitbox: { offsetX: 70.5, offsetY: 138, width: 147, height: 150 },
-            spriteFacesLeft: true,
-            deathSound: 'bossDeath',
-            music: 'demonMusic'
-        });
+        super(column, row, DEMON_BOSS_CONFIG);
         this.otherDirection = true;
         this.startAnimation();
     }
 
     getStateUpdates(){
-        return { ...super.getStateUpdates(), jump: () => this.updateJump(), melee: () => this.updateMelee() };
+        return { ...super.getStateUpdates(), melee: () => this.updateMelee() };
     }
 
     updateCooldowns(){
+        super.updateCooldowns();
         this.meleeCooldownLeft = tickDown(this.meleeCooldownLeft);
-        this.sprintCooldownLeft = tickDown(this.sprintCooldownLeft);
-    }
-
-    reactToHit(source){
-        if(this.state !== 'jump'){
-            super.reactToHit(source);
-        }
-    }
-
-    getGapAhead(){
-        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
-        const PROBE_X = getRectCenterX(this.getHitbox()) + STEP_DIRECTION * EDGE_PROBE_DISTANCE;
-        const PROBE_Y = this.y + this.height + 1;
-        let gapTiles = 0;
-        while(gapTiles <= this.settings.maxJumpGapTiles && !this.world.level.isWalkableAt(PROBE_X + STEP_DIRECTION * gapTiles * TILE_SIZE, PROBE_Y)){
-            gapTiles++;
-        }
-        return gapTiles;
-    }
-
-    shouldTurn(){
-        return this.getGapAhead() > 0;
-    }
-
-    updatePatrol(){
-        this.speed = this.settings.speed;
-        super.updatePatrol();
-    }
-
-    loseSight(){
-        this.otherDirection = this.vanishSide > 0;
-        this.setState('patrol');
     }
 
     getMeleeReach(){
@@ -87,38 +55,6 @@ class DemonBoss extends Boss {
         }
         this.startMelee();
         return true;
-    }
-
-    walkTowardCharacter(){
-        const GAP_TILES = this.getGapAhead();
-        if(GAP_TILES === 0){
-            this.moveTowardCharacter();
-        } else if(GAP_TILES <= this.settings.maxJumpGapTiles){
-            this.setState('jump');
-        } else {
-            this.showLoopState('walk', this.settings.animationFps);
-        }
-    }
-
-    moveTowardCharacter(){
-        if(Math.abs(this.getCharacterOffset()) <= 4){
-            this.showLoopState('walk', this.settings.animationFps);
-            return;
-        }
-        this.updateSprint();
-        const IS_SPRINTING = this.sprintTicksLeft > 0;
-        this.speed = IS_SPRINTING ? this.settings.sprintSpeed : this.settings.speed;
-        this.showLoopState(IS_SPRINTING ? 'run' : 'walk', IS_SPRINTING ? this.settings.sprintFps : this.settings.animationFps);
-        this.moveForward();
-    }
-
-    updateSprint(){
-        if(this.sprintTicksLeft > 0){
-            this.sprintTicksLeft--;
-            this.sprintCooldownLeft = this.sprintTicksLeft === 0 ? this.settings.sprintCooldownTicks : 0;
-        } else if(this.sprintCooldownLeft === 0 && Math.abs(this.getCharacterOffset()) > this.settings.sprintMinTiles * TILE_SIZE){
-            this.sprintTicksLeft = this.settings.sprintTicks;
-        }
     }
 
     startMelee(){
@@ -144,56 +80,6 @@ class DemonBoss extends Boss {
             this.meleeCooldownLeft = this.settings.meleeCooldownTicks;
             this.startChase();
         }
-    }
-
-    hitCharacter(rect, damage){
-        const PLAYER_CHARACTER = this.world.character;
-        if(!PLAYER_CHARACTER.canBeHurt() || !areRectsOverlapping(PLAYER_CHARACTER.getHitbox(), rect)){
-            return false;
-        }
-        PLAYER_CHARACTER.receiveHit(damage, this);
-        return true;
-    }
-
-    updateJump(){
-        if(this.stateTicks < this.settings.jumpWindupTicks){
-            this.showFrameState('jump', 0);
-        } else if(this.stateTicks === this.settings.jumpWindupTicks){
-            this.launchJump();
-        } else if(!this.onGround){
-            this.flyJump();
-        } else {
-            this.landJump();
-        }
-    }
-
-    launchJump(){
-        this.speedY = this.settings.jumpPower;
-        this.onGround = false;
-        this.landTicks = 0;
-        this.showFrameState('jump', 1);
-        soundManager.playSound('jump');
-    }
-
-    flyJump(){
-        this.speed = this.settings.jumpSpeed;
-        this.moveForward();
-        this.showFrameState('jump', this.speedY > 0 ? 1 : 2);
-    }
-
-    landJump(){
-        this.landTicks++;
-        this.showFrameState('jump', 3);
-        if(this.landTicks === 1){
-            soundManager.playSound('land');
-        }
-        if(this.landTicks >= this.settings.jumpLandTicks){
-            this.startChase();
-        }
-    }
-
-    drawFrame(ctx, drawX){
-        super.drawFrame(ctx, drawX - DEMON_BODY_SHIFT);
     }
 
     drawDebugArea(ctx){

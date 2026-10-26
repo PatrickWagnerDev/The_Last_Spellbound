@@ -159,6 +159,51 @@ The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the
 
 The demon uses the sounds `attack` (club swing), `jump` and `land` of the character and `bossDeath`, `enemyHit` of the mage boss. Its music is `demonMusic`.
 
+## darkKnight
+
+| Variable | Default | Effect |
+|---|---|---|
+| `width` | `256` | Drawn width in px. The sprite frame is 256x256, so the knight is drawn at the original size. If you change it, also adjust the hitbox in `dark-knight.class.js`. |
+| `height` | `256` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `45` | Health points of the knight. The health display shows 15 bars in three rows of five, the upper row empties first. |
+| `speed` | `0.5` | Walking speed in px per tick, the same as the other enemies. |
+| `animationFps` | `8` | Animation speed of walking in frames per second. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). A hit during a jump does not push the knight. |
+| `knockbackSpeed` | `1` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. |
+| `deathTicks` | `90` | Time from the death of the knight until the death animation ends (90 ticks = 1.5 seconds). |
+| `sightTiles` | `7` | How far the knight notices the character to the left and to the right of its hitbox, in tiles. It stands in its idle pose until it sees the character for the first time and then chases without a sneer. |
+| `sightAboveTiles` | `5` | How far above its hitbox the knight notices the character, in tiles, so it sees the character on platforms. Below it the area reaches down to the ground. |
+| `loseSightTicks` | `240` | How long the character has to stay outside the area while the knight chases it before the knight gives up and walks away on its patrol (240 ticks = 4 seconds). |
+| `maxJumpGapTiles` | `2` | Widest gap in tiles the knight jumps over while it chases the character. At wider gaps and at the end of the level it stops at the edge. On patrol it turns at every gap. |
+| `jumpWindupTicks` | `18` | Ticks of the crouch before the jump (18 ticks = 0.3 seconds), the first three frames of the jump sheet are spread over it. |
+| `jumpPower` | `11.5` | Initial upward speed of the jump in px per tick, the same as the character. Together with `physics.gravityForce` it sets the height and the duration of the jump. |
+| `jumpSpeed` | `3.5` | Forward speed during the jump in px per tick. The reach is about `jumpSpeed * 46` px, it has to be larger than the gap plus the run-up of 24 px. |
+| `jumpLandTicks` | `18` | Ticks the knight stays in the landing pose after the jump (18 ticks = 0.3 seconds). |
+| `sprintSpeed` | `3.5` | Speed of the sprint in px per tick. |
+| `sprintFps` | `12` | Animation speed of the sprint in frames per second. |
+| `sprintMinTiles` | `3` | The knight only sprints when the character is farther away than this, in tiles. |
+| `sprintTicks` | `150` | Duration of one sprint (150 ticks = 2.5 seconds). At an edge it cannot pass the knight keeps running on the spot until the sprint is over, so it can never run off an edge. |
+| `sprintCooldownTicks` | `720` | Pause after a sprint before the knight can sprint again (720 ticks = 12 seconds). |
+
+The four attacks are in `attacks`. Every attack has the same values:
+
+| Value | Effect |
+|---|---|
+| `ticks` | Duration of the attack, the 8 frames of its sheet are spread over it. |
+| `hitStartTick` / `hitEndTick` | The ticks in which the attack can hit (shown in orange with `debug.showHitboxes`). One attack can hit at most once. Rolling and the grace time after a hit protect the character. |
+| `damage` | Damage of a hit. |
+| `cooldownTicks` | Pause after the attack before the knight can use it again. |
+| `reachTiles` | Reach of the attack in tiles (see below). |
+
+| Attack | Sheet | When the knight uses it | Default |
+|---|---|---|---|
+| `upSlash` | `Attack3.png` | The feet of the character are above its head, at most `reachTiles` above and one tile to each side. The zone above the knight is hit. | 2 tiles, damage 1, pause 120 ticks |
+| `aura` | `Special.png` | The character is within `reachTiles` around the knight (a circle, also behind it). It has a long wind-up until `hitStartTick` as a warning, the first one comes 15 seconds after the knight sees the character for the first time. | 3 tiles, damage 2, pause 900 ticks (15 seconds) |
+| `thrust` | `Attack.png` | The character is within `reachTiles` in front of the knight and the knight is standing still. It stops and stabs. | 2 tiles, damage 1, pause 90 ticks |
+| `walkThrust` | `Walk_Attack.png` | The same as `thrust`, but the knight was moving in the last tick. It walks on while it stabs (never over an edge). | 2 tiles, damage 1, pause 90 ticks |
+
+The knight uses the sounds `attack` (all slashes and stabs), `bossRay` (the aura), `jump` and `land` of the character and the mage boss and `bossDeath`, `enemyHit`. Its music is `knightMusic`.
+
 ## fireball
 
 | Variable | Default | Effect |
@@ -301,6 +346,7 @@ The progress (the cleared levels) is saved in the local storage under `spellboun
 | `forestMusic` | `0.3` | Level one |
 | `bossMusic` | `0.1` | The mage boss sees the character for the first time |
 | `demonMusic` | `0.1` | The demon sees the character for the first time |
+| `knightMusic` | `0.1` | The knight sees the character for the first time |
 | `levelTwoMusic` | `0.3` | Level two |
 | `levelThreeMusic` | `0.3` | Level three |
 
@@ -312,7 +358,7 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `dark-knight.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |

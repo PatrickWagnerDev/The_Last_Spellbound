@@ -9,6 +9,7 @@ class Boss extends SightEnemy {
     constructor(column, row, config){
         super(column, row, config);
         this.musicName = config.music;
+        this.bodyShift = config.bodyShift ?? 0;
     }
 
     updateBehavior(){
@@ -61,6 +62,10 @@ class Boss extends SightEnemy {
     startSneer(){
         this.faceCharacter();
         this.setState('sneer');
+        this.markNoticed();
+    }
+
+    markNoticed(){
         if(!this.hasNoticed){
             this.hasNoticed = true;
             this.onFirstNotice();
@@ -140,5 +145,9 @@ class Boss extends SightEnemy {
 
     finishDeath(){
         this.stopAnimation();
+    }
+
+    drawFrame(ctx, drawX){
+        super.drawFrame(ctx, drawX + this.bodyShift);
     }
 }

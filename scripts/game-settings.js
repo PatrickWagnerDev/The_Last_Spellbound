@@ -128,6 +128,35 @@ const GAME_SETTINGS = {
         sprintTicks: 60,
         sprintCooldownTicks: 300
     },
+    darkKnight: {
+        width: 256,
+        height: 256,
+        maxHealth: 45,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 1,
+        deathTicks: 90,
+        sightTiles: 7,
+        sightAboveTiles: 5,
+        loseSightTicks: 240,
+        maxJumpGapTiles: 2,
+        jumpWindupTicks: 18,
+        jumpPower: 11.5,
+        jumpSpeed: 3.5,
+        jumpLandTicks: 18,
+        sprintSpeed: 3.5,
+        sprintFps: 12,
+        sprintMinTiles: 3,
+        sprintTicks: 150,
+        sprintCooldownTicks: 720,
+        attacks: {
+            thrust: { ticks: 48, hitStartTick: 24, hitEndTick: 42, damage: 1, cooldownTicks: 90, reachTiles: 2 },
+            walkThrust: { ticks: 48, hitStartTick: 24, hitEndTick: 42, damage: 1, cooldownTicks: 90, reachTiles: 2 },
+            upSlash: { ticks: 48, hitStartTick: 12, hitEndTick: 30, damage: 1, cooldownTicks: 120, reachTiles: 2 },
+            aura: { ticks: 120, hitStartTick: 60, hitEndTick: 96, damage: 2, cooldownTicks: 900, reachTiles: 3 }
+        }
+    },
     fireball: {
         damage: 15,
         speed: 6,
