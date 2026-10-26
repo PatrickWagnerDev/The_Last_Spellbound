@@ -48,7 +48,7 @@ The font `assets/fonts/Straight pixel gothic.otf` is the Straight Pixel Gothic F
 
 The font `assets/fonts/Planes_ValMore.ttf` is part of the Game UI Pixel Art pack (781165) from Craftpix.net.
 
-The images in `assets/image/07-forest-backgrounds/PNG/Forest1/Small`, `Forest2/Small` and `Forest3/Small` are copies of the Bright layers of Forest1, Forest2 and Forest3 (Pixel Art Forest 2D Backgrounds, 661711) from Craftpix.net, scaled down to 720x480 px so that the game runs smoothly on mobile devices.
+The images in `assets/image/07-forest-backgrounds/PNG/Forest1/Small`, `Forest2/Small` and `Forest3/Small` are copies of the Bright layers of Forest1, Forest2 and Forest3 (Pixel Art Forest 2D Backgrounds, 661711) from Craftpix.net, scaled down to 720x480 px so that the game runs smoothly on mobile devices. The original layers are not part of this repository.
 
 The icon `assets/icons/Fullscreen_exit.png` is derived from an icon of the Game UI Pixel Art pack (781165) from Craftpix.net: the two arrows of the fullscreen icon were turned around.
 
