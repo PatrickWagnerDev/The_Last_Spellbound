@@ -8,7 +8,7 @@ The game currently offers the following features:
 
 - **Character Movement** – Walk, jump and roll through a side-scrolling game world.
 - **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy.
-- **Enemies** – Meet patrolling bears and the mage boss, who chases the player and attacks with a fireball and a ray.
+- **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, and the mage boss, who chases the player and attacks with a fireball and a ray.
 - **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.

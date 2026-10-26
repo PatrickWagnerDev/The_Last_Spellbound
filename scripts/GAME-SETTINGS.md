@@ -65,6 +65,32 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 | `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. Distance in px is about `knockbackSpeed * hurtTicks / 2` (48 px by default). |
 | `deathTicks` | `60` | Time from the death of an enemy until it disappears (60 ticks = 1 second). The 6 death frames are spread over it. A dead enemy does no damage and cannot be hit again. |
 
+## mage
+
+| Variable | Default | Effect |
+|---|---|---|
+| `width` | `64` | Drawn width in px. The sprite frame is 32x32, multiples of 32 keep the pixels even. If you change it, also adjust the hitbox in `mage.class.js`. |
+| `height` | `64` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `1` | Health points of the mage. Each hit costs the damage of the attacker, so every hit kills it (it can shoot from a distance, the bear needs two hits). |
+| `speed` | `0.5` | Walking speed in px per tick, the same as the bear. The mage patrols a platform like the bear and only stops when it sees the character. |
+| `animationFps` | `8` | Animation speed in frames per second. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
+| `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. |
+| `deathTicks` | `60` | Time from the death of the mage until it disappears (60 ticks = 1 second). The 6 death frames are spread over it. It uses the death sound of the bear. |
+| `sightTiles` | `5` | How far the mage notices the character in front of it, in tiles (5 tiles = 240 px). |
+| `sightBehindTiles` | `1` | How far the mage notices the character behind it, in tiles (1 tile = 48 px), so it does not ignore a character that stands right behind it. |
+| `sightAboveTiles` | `2` | How far above its hitbox the mage notices the character, in tiles. The character is seen as soon as its hitbox touches the area. |
+| `sightBelowTiles` | `2` | How far below its hitbox the mage notices the character, in tiles, for the case that the mage stands on a platform. The area is drawn in yellow while `debug.showHitboxes` is on. |
+| `loseSightTicks` | `120` | How long the character has to stay outside the area before the mage gives up and goes back to patrolling (120 ticks = 2 seconds). The mage stands still during that time. |
+| `attackTicks` | `48` | Duration of the attack animation (48 ticks = 0.8 seconds), the 8 frames are spread over it. The mage stands still meanwhile. |
+| `fireballReleaseTick` | `24` | Tick of the attack at which the fireball leaves the hand of the mage (frame 5, where the arm is stretched out). |
+| `attackCooldownTicks` | `180` | Pause after a fired fireball before the mage can shoot again (180 ticks = 3 seconds). It starts at 0, so the first shot follows right after the mage noticed the character. |
+| `fireballDamage` | `1` | Damage of one fireball of the mage. It flies straight ahead and has the same behavior as the fireball of the boss: no damage while rolling or during the grace time, no range. |
+| `fireballScale` | `4` | Size factor of the fireball of the mage (the image is 6x6 px, so the ball is 24 px). The speed is taken from `fireball.speed`. |
+| `fireballFps` | `12` | Animation speed of the 8 frames of the fireball in frames per second. |
+
+The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the boss.
+
 ## mageBoss
 
 | Variable | Default | Effect |
@@ -247,7 +273,7 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `boss-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |

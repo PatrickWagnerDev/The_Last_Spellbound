@@ -16,7 +16,7 @@ const BOSS_FIREBALL_SPAWN = {
 
 const BOSS_RAY_SPAWN = { offsetX: 11, offsetY: 45.5 };
 
-class MageBoss extends Enemy {
+class MageBoss extends SightEnemy {
     isBoss = true;
     state = 'wait';
     stateTicks = 0;
@@ -69,19 +69,6 @@ class MageBoss extends Enemy {
         const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
         const SIGHT_ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
         return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE };
-    }
-
-    isCharacterInSight(){
-        const PLAYER_CHARACTER = this.world.character;
-        return !PLAYER_CHARACTER.isDead() && areRectsOverlapping(PLAYER_CHARACTER.getHitbox(), this.getSightRect());
-    }
-
-    getCharacterOffset(){
-        return getRectCenterX(this.world.character.getHitbox()) - getRectCenterX(this.getHitbox());
-    }
-
-    faceCharacter(){
-        this.otherDirection = this.getCharacterOffset() < 0;
     }
 
     updateWait(){
@@ -235,7 +222,7 @@ class MageBoss extends Enemy {
         const SPAWN_OFFSET = BOSS_FIREBALL_SPAWN[this.attackVariant];
         const SCALE_FACTOR = this.width / this.frameWidth;
         const CENTER_X = this.x + (this.otherDirection ? SPAWN_OFFSET.offsetX : this.frameWidth - SPAWN_OFFSET.offsetX) * SCALE_FACTOR;
-        this.world.addProjectile(new BossFireball(CENTER_X, this.y + SPAWN_OFFSET.offsetY * SCALE_FACTOR, this.otherDirection));
+        this.world.addProjectile(new EnemyFireball(BOSS_FIREBALL, CENTER_X, this.y + SPAWN_OFFSET.offsetY * SCALE_FACTOR, this.otherDirection));
         this.fireballCooldownLeft = this.settings.fireballCooldownTicks;
     }
 
@@ -259,9 +246,5 @@ class MageBoss extends Enemy {
 
     finishDeath(){
         this.stopAnimation();
-    }
-
-    drawDebugArea(ctx){
-        this.drawRect(ctx, this.getSightRect(), 'yellow');
     }
 }

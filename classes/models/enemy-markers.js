@@ -1,1 +1,1 @@
-const ENEMY_MARKERS = { 70: Bear, 90: MageBoss };
+const ENEMY_MARKERS = { 70: Bear, 71: Mage, 90: MageBoss };

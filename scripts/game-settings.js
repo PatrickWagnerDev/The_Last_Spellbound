@@ -47,6 +47,27 @@ const GAME_SETTINGS = {
         knockbackSpeed: 4,
         deathTicks: 60
     },
+    mage: {
+        width: 64,
+        height: 64,
+        maxHealth: 1,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
+        deathTicks: 60,
+        sightTiles: 5,
+        sightBehindTiles: 1,
+        sightAboveTiles: 2,
+        sightBelowTiles: 2,
+        loseSightTicks: 120,
+        attackTicks: 48,
+        fireballReleaseTick: 24,
+        attackCooldownTicks: 180,
+        fireballDamage: 1,
+        fireballScale: 4,
+        fireballFps: 12
+    },
     mageBoss: {
         width: 192,
         height: 192,
