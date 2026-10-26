@@ -7,12 +7,12 @@ This project is a jump-and-run game built with HTML, CSS, and JavaScript as an e
 The game currently offers the following features:
 
 - **Character Movement** – Walk, jump and roll through a side-scrolling game world.
-- **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy.
+- **Combat System** – Defeat enemies with a melee attack or a fireball that costs energy. Enemies that are pushed into a gap die.
 - **Enemies** – Meet patrolling bears, mages that shoot fireballs when they see the player, the mage boss, who chases the player and attacks with a fireball and a ray, and the demon boss, who sprints, jumps over gaps and fights with a club.
 - **Collectibles** – Keys open the chest, pizza heals one heart and a donut refills the energy bar.
 - **Chest and Portal** – Open the chest to make a portal appear that leads to the boss level.
 - **Status Bars** – Monitor the health, the energy and the health of the boss.
-- **Game Screens** – Start with a "Press any key" page, use the start screen, the pause menu, the game-over screen and the victory screen, and go on with the next level, retry or return to the start screen.
+- **Game Screens** – Start with a "Press any key" page, use the start screen, the pause menu, the game-over screen and the victory screen, and go on with the next level, retry or return to the start screen. The game is over when the player falls out of the level.
 - **Level Selection** – Choose the level on a selection page after "Start Game". A level is unlocked when the boss of the previous level is defeated; the progress is saved in Local Storage.
 - **Character Selection** – Choose between the Fire Wizard and the Lightning Mage on a selection page before the game starts. Both play the same and only differ in their look and in a few sounds.
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.

@@ -35,6 +35,15 @@ class Character extends CharacterActions{
         this.updateInvincibility();
         this.updateHurt();
         this.checkCollisions();
+        this.checkFall();
+    }
+
+    checkFall(){
+        if(!this.isDead() && this.getHitbox().y > this.world.level.height){
+            this.takeDamage(this.maxHealth);
+            this.deadTicks = this.getDeathTicks();
+            this.stopAnimation();
+        }
     }
 
     updateDeadState(){

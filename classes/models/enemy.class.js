@@ -46,6 +46,7 @@ class Enemy extends MovableObject {
     }
 
     updateObject(){
+        this.checkFall();
         if(this.isDead()){
             this.updateDeath();
             return;
@@ -57,6 +58,15 @@ class Enemy extends MovableObject {
             return;
         }
         this.updateBehavior();
+    }
+
+    checkFall(){
+        if(this.isDead() || this.getHitbox().y <= this.world.level.height){
+            return;
+        }
+        this.takeDamage(this.maxHealth);
+        this.deadTicks = this.getDeathTicks();
+        soundManager.playSound(this.deathSound);
     }
 
     updateBehavior(){
