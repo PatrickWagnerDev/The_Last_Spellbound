@@ -18,6 +18,8 @@ const RED_CONFIG = {
 };
 
 class Red extends SightEnemy {
+    turnTicksLeft = this.settings.turnDelayTicks;
+
     constructor(column, row){
         super(column, row, RED_CONFIG);
         this.otherDirection = Math.random() < 0.5;
@@ -26,10 +28,24 @@ class Red extends SightEnemy {
 
     updateBehavior(){
         if(this.isCharacterInSight()){
+            this.reactToCharacter();
+        } else {
+            this.turnTicksLeft = this.settings.turnDelayTicks;
+            this.showLoopState('idle', this.settings.animationFps);
+        }
+    }
+
+    reactToCharacter(){
+        const IS_FACING = (this.getCharacterOffset() < 0) === this.otherDirection;
+        if(IS_FACING){
+            this.turnTicksLeft = this.settings.turnDelayTicks;
+            this.dashAtCharacter();
+        } else if(this.turnTicksLeft > 0){
+            this.turnTicksLeft--;
+            this.showLoopState('idle', this.settings.animationFps);
+        } else {
             this.faceCharacter();
             this.dashAtCharacter();
-        } else {
-            this.showLoopState('idle', this.settings.animationFps);
         }
     }
 

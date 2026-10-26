@@ -75,6 +75,7 @@ const GAME_SETTINGS = {
         speed: 3,
         animationFps: 8,
         dashFps: 14,
+        turnDelayTicks: 20,
         hurtTicks: 24,
         knockbackSpeed: 4,
         deathTicks: 60,

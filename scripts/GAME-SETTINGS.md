@@ -101,10 +101,11 @@ The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the
 | `speed` | `3` | Speed of its dash in px per tick, the same as the walking speed of the character (`character.speed`). It does not patrol, it stands still until it sees the character. |
 | `animationFps` | `8` | Animation speed of the idle pose in frames per second. |
 | `dashFps` | `14` | Animation speed of the walk animation while it dashes. |
+| `turnDelayTicks` | `20` | How long the red enemy stands still before it turns around when the character is on the other side of it (jumped over it, rolled through it or noticed behind it), 20 ticks are a third of a second. Then it dashes again. `0` turns it around at once. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
 | `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. |
 | `deathTicks` | `60` | Time from the death of the red enemy until it disappears (60 ticks = 1 second). It uses the death sound of the bear. |
-| `sightTiles` | `6` | How far the red enemy notices the character to the left and to the right of its hitbox, in tiles. As long as the character is in the area, it dashes towards the character and turns when the character passes it. When the character leaves the area, it stands still until it sees it again. |
+| `sightTiles` | `6` | How far the red enemy notices the character to the left and to the right of its hitbox, in tiles. As long as the character is in the area, it dashes towards the character and, after the short delay `turnDelayTicks`, turns when the character passes it. When the character leaves the area, it stands still until it sees it again. |
 | `sightAboveTiles` | `2` | How far above its hitbox it notices the character, in tiles. |
 | `sightBelowTiles` | `2` | How far below its hitbox it notices the character, in tiles, for the case that it stands on a platform. |
 
