@@ -91,6 +91,25 @@ Jump height in px is roughly `jumpSpeed * jumpSpeed / (2 * gravityForce) + jumpS
 
 The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the boss.
 
+## red
+
+| Variable | Default | Effect |
+|---|---|---|
+| `width` | `64` | Drawn width in px. The sprite frame is 32x32, multiples of 32 keep the pixels even. If you change it, also adjust the hitbox in `red.class.js`. |
+| `height` | `64` | Drawn height in px. Same note as `width`. |
+| `maxHealth` | `1` | Health points of the red enemy, every hit kills it. |
+| `speed` | `3` | Speed of its dash in px per tick, the same as the walking speed of the character (`character.speed`). It does not patrol, it stands still until it sees the character. |
+| `animationFps` | `8` | Animation speed of the idle pose in frames per second. |
+| `dashFps` | `14` | Animation speed of the walk animation while it dashes. |
+| `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
+| `knockbackSpeed` | `4` | Initial speed of the knockback in px per tick, it fades out linearly over `hurtTicks`. |
+| `deathTicks` | `60` | Time from the death of the red enemy until it disappears (60 ticks = 1 second). It uses the death sound of the bear. |
+| `sightTiles` | `6` | How far the red enemy notices the character to the left and to the right of its hitbox, in tiles. As long as the character is in the area, it dashes towards the character and turns when the character passes it. When the character leaves the area, it stands still until it sees it again. |
+| `sightAboveTiles` | `2` | How far above its hitbox it notices the character, in tiles. |
+| `sightBelowTiles` | `2` | How far below its hitbox it notices the character, in tiles, for the case that it stands on a platform. |
+
+The red enemy has no attack of its own, it hurts the character by touching it (like all enemies, `combat.hitDamage`). It stops at every edge and at a hole and waits there, it never runs off a platform.
+
 ## mageBoss
 
 | Variable | Default | Effect |
@@ -364,7 +383,7 @@ These values are fixed in the code on purpose.
 
 | What | Where | Why |
 |---|---|---|
-| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `dark-knight.class.js`, `platform-nav.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
+| Image paths and frame counts | `character-sprites.js`, `bear.class.js`, `mage.class.js`, `red.class.js`, `mage-boss.class.js`, `demon-boss.class.js`, `dark-knight.class.js`, `platform-nav.class.js`, `fireball.class.js`, `enemy-fireball.class.js`, `boss-ray.class.js`, `key.class.js`, `pizza.class.js`, `donut.class.js`, `chest.class.js`, `portal.class.js` | They are facts of the sprite sheets. A new character is a new entry in `CHARACTER_SPRITES`. |
 | `CHARACTER_TRAITS` (flight frames and draw offset of the fireball, jump frames and the effect images of the selection page of each character) | `character-sprites.js` | They are facts of the sprite sheets and the effect images of each character. |
 | Hitboxes of the character and the sword (`HITBOX_STANDING`, `HITBOX_WALKING`, `ATTACK_HITBOX`) | `character.class.js`, `character-actions.class.js` | They are shared by all characters, so every sprite set plays the same. They are measured from the fire wizard sprites. |
 | Hitbox of the bear, the mage boss, the fireball, the key and the chest, `FIREBALL_SPAWN`, `BOSS_FIREBALL_SPAWN`, `BOSS_RAY_SPAWN`, `RAY_STAGE_ROWS` | `bear.class.js`, `mage-boss.class.js`, `fireball.class.js`, `collectible.class.js`, `chest.class.js` | They are measured from the sprites. |

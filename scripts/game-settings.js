@@ -68,6 +68,20 @@ const GAME_SETTINGS = {
         fireballScale: 4,
         fireballFps: 12
     },
+    red: {
+        width: 64,
+        height: 64,
+        maxHealth: 1,
+        speed: 3,
+        animationFps: 8,
+        dashFps: 14,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
+        deathTicks: 60,
+        sightTiles: 6,
+        sightAboveTiles: 2,
+        sightBelowTiles: 2
+    },
     mageBoss: {
         width: 192,
         height: 192,

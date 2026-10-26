@@ -1,5 +1,4 @@
 const APEX_SPEED_LIMIT = 2;
-const EDGE_PROBE_DISTANCE = 24;
 
 class JumpBoss extends Boss {
     sprintCooldownLeft = 0;

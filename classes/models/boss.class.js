@@ -11,7 +11,6 @@ class Boss extends SightEnemy {
     constructor(column, row, config){
         super(column, row, config);
         this.musicName = config.music;
-        this.bodyShift = config.bodyShift ?? 0;
     }
 
     updateBehavior(){
@@ -43,14 +42,6 @@ class Boss extends SightEnemy {
     setState(stateName){
         this.state = stateName;
         this.stateTicks = 0;
-    }
-
-    getSightRect(){
-        const BOSS_RECT = this.getHitbox();
-        const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
-        const SIGHT_ABOVE = this.settings.sightAboveTiles * TILE_SIZE;
-        const SIGHT_BELOW = (this.settings.sightBelowTiles ?? 0) * TILE_SIZE;
-        return { x: BOSS_RECT.x - SIGHT_RANGE, y: BOSS_RECT.y - SIGHT_ABOVE, width: BOSS_RECT.width + 2 * SIGHT_RANGE, height: BOSS_RECT.height + SIGHT_ABOVE + SIGHT_BELOW };
     }
 
     updateWait(){
@@ -155,9 +146,5 @@ class Boss extends SightEnemy {
 
     finishDeath(){
         this.stopAnimation();
-    }
-
-    drawFrame(ctx, drawX){
-        super.drawFrame(ctx, drawX + this.bodyShift);
     }
 }

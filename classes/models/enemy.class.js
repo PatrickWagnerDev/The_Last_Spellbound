@@ -1,3 +1,5 @@
+const EDGE_PROBE_DISTANCE = 24;
+
 class Enemy extends MovableObject {
     isBoss = false;
 
@@ -21,6 +23,7 @@ class Enemy extends MovableObject {
         this.hitbox = config.hitbox;
         this.spriteFacesLeft = config.spriteFacesLeft;
         this.deathSound = config.deathSound;
+        this.bodyShift = config.bodyShift ?? 0;
     }
 
     applyStats(){
@@ -80,6 +83,16 @@ class Enemy extends MovableObject {
             this.otherDirection = !this.otherDirection;
         }
         this.moveForward();
+    }
+
+    hasGroundAhead(){
+        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
+        const PROBE_X = getRectCenterX(this.getHitbox()) + STEP_DIRECTION * EDGE_PROBE_DISTANCE;
+        return this.world.level.isWalkableAt(PROBE_X, this.y + this.height + 1);
+    }
+
+    drawFrame(ctx, drawX){
+        super.drawFrame(ctx, drawX + this.bodyShift);
     }
 
     shouldTurn(){
