@@ -266,25 +266,10 @@
     background-color: var(--color-navy);
 }
 
-.character-glow {
+.character-effect {
     position: absolute;
-    inset: 0;
-    opacity: 0;
+    image-rendering: pixelated;
     pointer-events: none;
-    transition: opacity 0.5s linear;
-}
-
-.start-screen[data-marked] .character-glow {
-    opacity: 1;
-    animation: glow-pulse 1.6s ease-in-out infinite alternate;
-}
-
-.start-screen[data-marked="fireWizard"] .character-glow {
-    background: radial-gradient(circle at 36% 46%, rgba(255, 140, 40, 0.55), transparent 55%);
-}
-
-.start-screen[data-marked="lightningMage"] .character-glow {
-    background: radial-gradient(circle at 64% 46%, rgba(150, 190, 255, 0.55), transparent 55%);
 }
 
 @keyframes head-idle {
@@ -294,15 +279,5 @@
 
     to {
         background-position: -2778px -168px;
-    }
-}
-
-@keyframes glow-pulse {
-    from {
-        filter: brightness(0.85);
-    }
-
-    to {
-        filter: brightness(1.25);
     }
 }

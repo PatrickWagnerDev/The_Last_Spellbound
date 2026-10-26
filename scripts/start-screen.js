@@ -1,6 +1,7 @@
 const PRESS_EVENTS = ['keydown', 'click'];
 
 function loadStartAssets(){
+    preloadEffectFrames();
     const IDLE_DECODES = Object.values(CHARACTER_SPRITES).map(sprites => createImage(sprites.idle.path).decode());
     return Promise.all([document.fonts.load('24px "Straight Pixel Gothic"'), document.fonts.load('16px "Planes ValMore"'), ...IDLE_DECODES]);
 }
@@ -31,6 +32,9 @@ function leavePressScreen(){
 
 function markCharacter(characterId){
     const START_SCREEN = document.getElementById('start-screen');
+    if(START_SCREEN.dataset.marked !== characterId){
+        playCharacterEffect(characterId);
+    }
     START_SCREEN.dataset.marked = characterId;
     document.querySelectorAll('.character-card').forEach(card => {
         const IS_MARKED = card.dataset.character === characterId;
@@ -57,6 +61,7 @@ function chooseCharacter(){
     selectedCharacter = START_SCREEN.dataset.marked;
     START_SCREEN.dataset.character = selectedCharacter;
     soundManager.setCharacter(selectedCharacter);
+    stopCharacterEffect();
     setStartPhase(['is-choose'], 'is-settle');
 }
 
