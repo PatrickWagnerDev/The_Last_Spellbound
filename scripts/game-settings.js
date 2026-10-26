@@ -78,7 +78,7 @@ const GAME_SETTINGS = {
         rayMaxHeight: 48
     },
     fireball: {
-        damage: 3,
+        damage: 15,
         speed: 6,
         range: 420,
         flightFps: 12,
@@ -117,7 +117,7 @@ const GAME_SETTINGS = {
     },
     energy: {
         maxCharges: 5,
-        startCharges: 1
+        startCharges: 5
     },
     ui: {
         statusBarScale: 2,

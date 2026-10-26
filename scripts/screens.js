@@ -23,10 +23,16 @@ function updateGameOverUi(isGameOver){
     toggleScreen('game-over-screen', isGameOver, 'game-container', 'is-game-over');
 }
 
+function updateNextLevelUi(isVictory){
+    const HAS_NEXT_LEVEL = gameWorld.levelData.levelNumber < LEVEL_LIST.length;
+    document.getElementById('next-level-button').hidden = !(isVictory && HAS_NEXT_LEVEL);
+}
+
 function showGameEnd(isVictory){
     releaseAllKeys();
     document.getElementById('game-over-title').textContent = isVictory ? 'VICTORY' : 'GAME OVER';
     updateGameOverUi(true);
+    updateNextLevelUi(isVictory);
     soundManager.stopMusic();
     soundManager.playSound(isVictory ? 'victory' : 'gameOver');
     if(isVictory){

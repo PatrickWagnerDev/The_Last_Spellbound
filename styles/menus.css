@@ -139,6 +139,14 @@
     background-image: url('../assets/image/09-ui/3 Icons/Icons_25.png');
 }
 
+.icon-next {
+    background-image: url('../assets/image/09-ui/3 Icons/Icons_25.png');
+}
+
+.menu-button[hidden] {
+    display: none;
+}
+
 .icon-retry {
     background-image: url('../assets/image/09-ui/3 Icons/Icons_45.png');
 }

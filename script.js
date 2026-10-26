@@ -81,6 +81,18 @@ function toggleMute(){
     releaseFocus();
 }
 
+function startNextLevel(){
+    fadeThroughBlack(startNextWorld);
+}
+
+function startNextWorld(){
+    const NEXT_LEVEL_NUMBER = gameWorld.levelData.levelNumber + 1;
+    gameWorld.stopWorld();
+    createWorld(getStartLevelData(NEXT_LEVEL_NUMBER));
+    updateGameOverUi(false);
+    updatePauseUi();
+}
+
 function restartLevel(){
     playUnpauseSound();
     fadeThroughBlack(restartWorld);
