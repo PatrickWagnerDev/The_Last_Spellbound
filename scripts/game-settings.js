@@ -71,7 +71,7 @@ const GAME_SETTINGS = {
     mageBoss: {
         width: 192,
         height: 192,
-        maxHealth: 15,
+        maxHealth: 9,
         speed: 0.5,
         animationFps: 8,
         hurtTicks: 24,
@@ -101,7 +101,7 @@ const GAME_SETTINGS = {
     demonBoss: {
         width: 288,
         height: 288,
-        maxHealth: 30,
+        maxHealth: 18,
         speed: 0.5,
         animationFps: 8,
         hurtTicks: 24,
@@ -131,7 +131,7 @@ const GAME_SETTINGS = {
     darkKnight: {
         width: 256,
         height: 256,
-        maxHealth: 45,
+        maxHealth: 27,
         speed: 0.5,
         animationFps: 8,
         hurtTicks: 24,
@@ -211,16 +211,18 @@ const GAME_SETTINGS = {
         keyIconScale: 2,
         blinkTicks: 60,
         blinkIntervalTicks: 6,
-        bossBarScale: 1,
+        bossBarScale: 0.5,
         bossBarGap: 0,
-        bossBarMargin: 12,
+        bossBarGapAbove: 10,
+        bossBarMinY: 4,
+        bossBarAlpha: 0.55,
         bossBarHealthPerBar: 3,
-        bossBarsPerRow: 5,
+        bossBarsPerRow: 3,
         pauseOverlayAlpha: 0.5
     },
     debug: {
         unlockAllLevels: true,
-        startInBossLevel: false,
+        startInBossLevel: true,
         showHitboxes: true
     }
 };

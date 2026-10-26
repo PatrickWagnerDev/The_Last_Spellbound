@@ -97,7 +97,7 @@ The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the
 |---|---|---|
 | `width` | `192` | Drawn width in px. The sprite frame is 64x64, multiples of 64 keep the pixels even. If you change it, also adjust the hitbox in `mage-boss.class.js`. |
 | `height` | `192` | Drawn height in px. Same note as `width`. |
-| `maxHealth` | `15` | Health points of the mage boss. Each hit costs the damage of the attacker (sword 1, fireball 3). |
+| `maxHealth` | `9` | Health points of the mage boss. Each hit costs the damage of the attacker (sword 1, fireball 3). The health display shows three bars (3 health points each) over its head. |
 | `speed` | `0.5` | Walking speed in px per tick, the same as the bear. Used for the patrol and for the chase of the character. |
 | `animationFps` | `8` | Animation speed in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). |
@@ -130,7 +130,7 @@ The mage uses the sounds `bossFireball` (shot) and `fireballImpact` (hit) of the
 |---|---|---|
 | `width` | `288` | Drawn width in px. The sprite frame is 96x96, multiples of 96 keep the pixels even. If you change it, also adjust the hitbox and the club hit box in `demon-boss.class.js`. |
 | `height` | `288` | Drawn height in px. Same note as `width`. |
-| `maxHealth` | `30` | Health points of the demon, twice as many as the mage boss. The health display shows two rows of five bars, the upper row empties first. |
+| `maxHealth` | `18` | Health points of the demon, twice as many as the mage boss. The health display shows two rows of three bars, the upper row empties first. |
 | `speed` | `0.5` | Walking speed in px per tick, the same as the bear and the mage boss. The demon walks all the time and only stands during the sneer, the club attack and the jump. |
 | `animationFps` | `8` | Animation speed of walking in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). A hit during a jump does not push the demon, so it cannot fall into the gap. |
@@ -165,7 +165,7 @@ The demon uses the sounds `attack` (club swing), `jump` and `land` of the charac
 |---|---|---|
 | `width` | `256` | Drawn width in px. The sprite frame is 256x256, so the knight is drawn at the original size. If you change it, also adjust the hitbox in `dark-knight.class.js`. |
 | `height` | `256` | Drawn height in px. Same note as `width`. |
-| `maxHealth` | `45` | Health points of the knight. The health display shows 15 bars in three rows of five, the upper row empties first. |
+| `maxHealth` | `27` | Health points of the knight, three times as many as the mage boss. The health display shows three rows of three bars, the upper row empties first. |
 | `speed` | `0.5` | Walking speed in px per tick, the same as the other enemies. |
 | `animationFps` | `8` | Animation speed of walking in frames per second. |
 | `hurtTicks` | `24` | Ticks of the hurt animation after a non-lethal hit (60 ticks = 1 second). A hit during a jump does not push the knight. |
@@ -292,11 +292,13 @@ While the transition runs, the level is switched under the covered canvas. The s
 | `keyIconScale` | `2` | Size factor of the key icons (the key image is 16x16 px). Whole numbers keep the pixels sharp. |
 | `blinkTicks` | `60` | How long a lost segment of a bar blinks before it stays empty (60 ticks = 1 second). |
 | `blinkIntervalTicks` | `6` | Ticks the blinking segment is visible or hidden (6 ticks = 0.1 second). |
-| `bossBarScale` | `1` | Size factor of one bar of the boss health display (the bar image is 96x12 px). The boss health is shown as several of these bars in a row at the bottom center of the canvas. It appears when the boss has seen the character for the first time. |
+| `bossBarScale` | `0.5` | Size factor of one bar of the boss health display (the bar image is 96x12 px, so a bar is 48x6 px). The bars float over the head of the boss and move with it. They appear when the boss has seen the character for the first time (or was hit) and disappear when it dies. |
 | `bossBarGap` | `0` | Space between two bars of the boss health display in px. |
-| `bossBarMargin` | `12` | Distance of the boss health display from the bottom edge of the canvas in px. |
-| `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is the `maxHealth` of the boss divided by this value (mage boss 15 / 3 = 5 bars, demon 30 / 3 = 10 bars). |
-| `bossBarsPerRow` | `5` | Bars of the boss health display in one row. A boss with more bars gets more rows above each other (the demon has two rows), the upper row empties first. |
+| `bossBarGapAbove` | `10` | Distance in px between the top of the hitbox of the boss and the lowest row of its health display. |
+| `bossBarMinY` | `4` | The health display is never drawn higher than this y in px, so it is not cut off at the top edge of the canvas. |
+| `bossBarAlpha` | `0.55` | Opacity of the boss health display (`1` is fully opaque, `0.55` is clearly transparent). |
+| `bossBarHealthPerBar` | `3` | Boss health points shown by one bar (3 segments). The number of bars is the `maxHealth` of the boss divided by this value (mage boss 9 / 3 = 3 bars, demon 18 / 3 = 6 bars, knight 27 / 3 = 9 bars). |
+| `bossBarsPerRow` | `3` | Bars of the boss health display in one row. A boss with more bars gets more rows above each other (the demon has two rows, the knight three), the upper row empties first. |
 | `pauseOverlayAlpha` | `0.5` | Opacity of the black layer over the canvas while the game is paused with the pause button or the Esc key (0 = invisible, 1 = fully black). |
 
 ## debug
