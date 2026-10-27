@@ -15,6 +15,13 @@ const KEY_MAP = {
     KeyC: 'SHOOT'
 };
 
+/**
+ * Passes a key press or release to the keyboard of the game, if the key belongs to the game. During a game
+ * the browser action of the key, such as scrolling, is prevented.
+ * @param {KeyboardEvent} event - The key event.
+ * @param {boolean} isPressed - True for a press, false for a release.
+ * @returns {void}
+ */
 function updateKey(event, isPressed){
     const KEY_NAME = KEY_MAP[event.code];
     if(!KEY_NAME){
@@ -26,12 +33,22 @@ function updateKey(event, isPressed){
     gameKeyboard[KEY_NAME] = isPressed;
 }
 
+/**
+ * Pauses the game when a touch device is turned to portrait.
+ * @param {MediaQueryListEvent} event - The change of the portrait query.
+ * @returns {void}
+ */
 function pauseInPortrait(event){
     if(event.matches && gameWorld && !gameWorld.isPaused){
         togglePause();
     }
 }
 
+/**
+ * Handles the Escape key: it closes an open dialog, otherwise it switches the pause. A held key counts once.
+ * @param {KeyboardEvent} event - The key event.
+ * @returns {void}
+ */
 function handlePauseKey(event){
     if(event.code !== 'Escape' || event.repeat){
         return;
@@ -43,6 +60,10 @@ function handlePauseKey(event){
     }
 }
 
+/**
+ * Releases all keys of the game and removes the pressed look of the touch buttons.
+ * @returns {void}
+ */
 function releaseAllKeys(){
     Object.keys(gameKeyboard).forEach(keyName => gameKeyboard[keyName] = false);
     document.querySelectorAll('.touch-button.is-pressed').forEach(button => button.classList.remove('is-pressed'));
