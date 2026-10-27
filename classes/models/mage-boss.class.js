@@ -16,26 +16,28 @@ const BOSS_FIREBALL_SPAWN = {
 
 const BOSS_RAY_SPAWN = { offsetX: 11, offsetY: 45.5 };
 
+const MAGE_BOSS_CONFIG = {
+    settings: GAME_SETTINGS.mageBoss,
+    sprites: MAGE_BOSS_SPRITES,
+    frameSize: 64,
+    hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
+    hurtboxes: [
+        { offsetX: 44, offsetY: 26, width: 83, height: 59 },
+        { offsetX: 44, offsetY: 89, width: 137, height: 53 },
+        { offsetX: 59, offsetY: 146, width: 95, height: 38 }
+    ],
+    spriteFacesLeft: true,
+    deathSound: 'bossDeath',
+    music: 'bossMusic'
+};
+
 class MageBoss extends Boss {
     attackVariant = 'attack2';
     fireballCooldownLeft = 0;
     rayCooldownLeft = 0;
 
     constructor(column, row){
-        super(column, row, {
-            settings: GAME_SETTINGS.mageBoss,
-            sprites: MAGE_BOSS_SPRITES,
-            frameSize: 64,
-            hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
-            hurtboxes: [
-                { offsetX: 44, offsetY: 26, width: 83, height: 59 },
-                { offsetX: 44, offsetY: 89, width: 137, height: 53 },
-                { offsetX: 59, offsetY: 146, width: 95, height: 38 }
-            ],
-            spriteFacesLeft: true,
-            deathSound: 'bossDeath',
-            music: 'bossMusic'
-        });
+        super(column, row, MAGE_BOSS_CONFIG);
         this.otherDirection = true;
         this.startAnimation();
     }
