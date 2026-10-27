@@ -435,3 +435,4 @@
 2026-10-27 | classes/models/mage-boss.class.js | JSDoc comments for the class, the constructor and all 14 other methods, approved and checked by the user (the ray geometry was checked against BossRay); no code changed
 2026-10-27 | classes/models/demon-boss.class.js | JSDoc comments for the class, the constructor and the 8 methods, approved and checked by the user (reach, hit window and cooldown values compared with the settings); no code changed
 2026-10-27 | classes/models/platform-nav.class.js | JSDoc comments for the class, the constructor and all 18 other methods in two blocks (map of ways, landing search and way finding), approved and checked by the user; no code changed
+2026-10-27 | classes/models/dark-knight.class.js | JSDoc comments for the class, the constructor and all 32 other methods in three blocks (basics, following the way and returning, the four attacks), approved and checked by the user; no code changed
