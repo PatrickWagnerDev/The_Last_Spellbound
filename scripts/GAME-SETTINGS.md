@@ -300,7 +300,7 @@ While the transition runs, the level is switched under the covered canvas. The s
 | Variable | Default | Effect |
 |---|---|---|
 | `maxCharges` | `5` | Number of fireball charges the character can hold. The energy bar fills and empties in steps of one charge. |
-| `startCharges` | `5` | Charges at the start of the game. Every fired fireball uses one charge, at 0 charges no fireball can be fired. There is no automatic recharge, charges will come from items later. |
+| `startCharges` | `1` | Charges at the start of the game. Every fired fireball uses one charge, at 0 charges no fireball can be fired. There is no automatic recharge, charges will come from items later. |
 
 ## ui
 
