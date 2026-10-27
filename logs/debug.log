@@ -419,3 +419,4 @@
 2026-10-27 | classes/models/drawable-object.class.js | JSDoc comments for the class and all 10 methods (loadImage, loadImages, setSprite, nextFrame, setProgressSprite, isFlipped, drawObject, drawFlipped, drawFrame, flipContext), each approved by the user; no code changed
 2026-10-27 | classes/models/movable-object.class.js | JSDoc comments for the class and all 35 methods in three blocks (game loop and sprites, movement and hitboxes, health and death), each block approved and checked by the user; no code changed
 2026-10-27 | classes/models/status-bar.class.js | JSDoc comments for the class, the constructor and the 6 methods (setValue, updateBlink, isBlinkVisible, getRatio, drawObject, drawFullPart), approved and checked by the user; no code changed
+2026-10-27 | classes/models/hud.class.js | JSDoc comments for the class, the constructor and the 13 other methods, approved and checked by the user; no code changed
