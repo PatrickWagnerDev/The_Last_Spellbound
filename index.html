@@ -24,7 +24,7 @@
 </head>
 
 <body onload="init()">
-    <div id="game-container" class="game-container is-start-screen" role="region" aria-label="The Last Spellbound">
+    <main id="game-container" class="game-container is-start-screen" aria-label="The Last Spellbound">
         <canvas id="game-canvas" width="720px" height="480px"></canvas>
         <button id="pause-button" class="pause-button" aria-label="Pause" onclick="togglePause()"></button>
         <div id="start-screen" class="start-screen is-open is-waiting">
@@ -293,7 +293,7 @@
             <p class="loading-text">Loading...</p>
             <p id="loading-hint" class="loading-hint" hidden>This takes longer than usual. Please reload the page.</p>
         </div>
-    </div>
+    </main>
 
     <div class="rotate-notice" role="alert">
         <span class="rotate-phone"></span>
