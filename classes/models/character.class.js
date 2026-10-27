@@ -203,6 +203,16 @@ class Character extends CharacterActions{
         this.contactBox = STANDING_STATES.includes(stateName) ? CONTACT_STANDING : CONTACT_WALKING;
     }
 
+    drawFrame(ctx, drawX){
+        super.drawFrame(ctx, drawX + this.getJumpShift());
+    }
+
+    getJumpShift(){
+        const JUMP_SHIFTS = this.traits.jumpShifts;
+        const IS_JUMPING = this.currentPath === this.sprites.jump.path;
+        return JUMP_SHIFTS && IS_JUMPING ? JUMP_SHIFTS[this.currentFrame] * this.width / this.frameWidth : 0;
+    }
+
     getContactRect(){
         return this.getBoxRect(this.contactBox);
     }

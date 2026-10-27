@@ -35,6 +35,7 @@ const CHARACTER_TRAITS = {
     lightningMage: {
         flightFrames: 5,
         jumpFrames: { crouch: [0, 1, 2], up: 3, apex: 4, down: 6, land: [6, 7, 7] },
+        jumpShifts: [-10, -10, -15, -16, -18, -16, -14, -20],
         projectileOffsetX: 26,
         selectEffect: { prefix: './assets/image/08-magic-effects/PNG/Lightning2/Lightning2_', suffix: '.png', frames: 10, bounds: { x: 86, y: 53, width: 90, height: 133 } }
     }
