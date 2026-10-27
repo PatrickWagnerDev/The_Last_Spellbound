@@ -27,6 +27,11 @@ class MageBoss extends Boss {
             sprites: MAGE_BOSS_SPRITES,
             frameSize: 64,
             hitbox: { offsetX: 42, offsetY: 15, width: 120, height: 174 },
+            hurtboxes: [
+                { offsetX: 44, offsetY: 26, width: 83, height: 59 },
+                { offsetX: 44, offsetY: 89, width: 137, height: 53 },
+                { offsetX: 59, offsetY: 146, width: 95, height: 38 }
+            ],
             spriteFacesLeft: true,
             deathSound: 'bossDeath',
             music: 'bossMusic'

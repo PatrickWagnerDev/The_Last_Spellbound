@@ -1,5 +1,7 @@
 const HITBOX_STANDING = { offsetX: 39, offsetY: 73, width: 40, height: 77 };
 const HITBOX_WALKING = { offsetX: 52, offsetY: 73, width: 40, height: 77 };
+const CONTACT_STANDING = { offsetX: 45, offsetY: 75, width: 28, height: 75 };
+const CONTACT_WALKING = { offsetX: 58, offsetY: 75, width: 28, height: 75 };
 const STANDING_STATES = ['idle', 'jump', 'hurt', 'dead', 'attack', 'cast'];
 
 class Character extends CharacterActions{
@@ -13,6 +15,7 @@ class Character extends CharacterActions{
         this.sprites = CHARACTER_SPRITES[characterId];
         this.traits = CHARACTER_TRAITS[characterId];
         this.hitbox = HITBOX_STANDING;
+        this.contactBox = CONTACT_STANDING;
         this.supportBox = HITBOX_STANDING;
         this.frameCount = this.sprites.idle.frames;
         this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
@@ -134,7 +137,7 @@ class Character extends CharacterActions{
     }
 
     handleCollision(object){
-        if(this.isColliding(object) && object instanceof Enemy){
+        if(object instanceof Enemy && object.touchesRect(this.getContactRect())){
             this.receiveHit(GAME_SETTINGS.combat.hitDamage, object);
         }
     }
@@ -197,6 +200,11 @@ class Character extends CharacterActions{
 
     applyStateHitbox(stateName){
         this.hitbox = this.getStateHitbox(stateName);
+        this.contactBox = STANDING_STATES.includes(stateName) ? CONTACT_STANDING : CONTACT_WALKING;
+    }
+
+    getContactRect(){
+        return this.getBoxRect(this.contactBox);
     }
 
     updateSprite(){

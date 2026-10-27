@@ -20,6 +20,7 @@ class Mage extends SightEnemy {
             sprites: MAGE_SPRITES,
             frameSize: 32,
             hitbox: { offsetX: 14, offsetY: 10, width: 48, height: 54 },
+            hurtboxes: [{ offsetX: 16, offsetY: 14, width: 44, height: 48 }],
             spriteFacesLeft: true,
             deathSound: 'bearDeath'
         });

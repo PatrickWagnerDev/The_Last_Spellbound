@@ -111,7 +111,7 @@ class JumpBoss extends Boss {
     }
 
     hitCharacter(rect, damage){
-        return areRectsOverlapping(this.world.character.getHitbox(), rect) && this.hurtCharacter(damage);
+        return areRectsOverlapping(this.world.character.getContactRect(), rect) && this.hurtCharacter(damage);
     }
 
     updateJump(){

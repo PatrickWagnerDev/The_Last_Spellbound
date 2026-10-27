@@ -10,7 +10,7 @@ class Projectile extends MovableObject {
 
     damagePlayer(damage, source){
         const PLAYER_CHARACTER = this.world.character;
-        if(!PLAYER_CHARACTER.canBeHurt() || !this.isColliding(PLAYER_CHARACTER)){
+        if(!PLAYER_CHARACTER.canBeHurt() || !areRectsOverlapping(this.getHitbox(), PLAYER_CHARACTER.getContactRect())){
             return false;
         }
         PLAYER_CHARACTER.receiveHit(damage, source);

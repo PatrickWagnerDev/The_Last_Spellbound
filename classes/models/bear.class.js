@@ -11,6 +11,7 @@ class Bear extends Enemy {
             sprites: BEAR_SPRITES,
             frameSize: 40,
             hitbox: { offsetX: 28, offsetY: 20, width: 48, height: 60 },
+            hurtboxes: [{ offsetX: 32, offsetY: 22, width: 42, height: 56 }],
             spriteFacesLeft: true,
             deathSound: 'bearDeath'
         });

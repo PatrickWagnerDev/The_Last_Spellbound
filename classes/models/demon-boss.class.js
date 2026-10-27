@@ -15,6 +15,11 @@ const DEMON_BOSS_CONFIG = {
     sprites: DEMON_BOSS_SPRITES,
     frameSize: 96,
     hitbox: { offsetX: 70.5, offsetY: 138, width: 147, height: 150 },
+    hurtboxes: [
+        { offsetX: 80, offsetY: 143, width: 134, height: 47 },
+        { offsetX: 83, offsetY: 194, width: 107, height: 47 },
+        { offsetX: 101, offsetY: 245, width: 89, height: 41 }
+    ],
     spriteFacesLeft: true,
     deathSound: 'bossDeath',
     music: 'demonMusic',

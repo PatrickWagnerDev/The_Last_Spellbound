@@ -12,6 +12,7 @@ const RED_CONFIG = {
     sprites: RED_SPRITES,
     frameSize: 32,
     hitbox: { offsetX: 12, offsetY: 8, width: 40, height: 56 },
+    hurtboxes: [{ offsetX: 16, offsetY: 10, width: 32, height: 52 }],
     spriteFacesLeft: true,
     deathSound: 'bearDeath',
     bodyShift: -8

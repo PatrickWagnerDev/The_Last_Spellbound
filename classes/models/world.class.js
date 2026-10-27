@@ -195,9 +195,11 @@ class World {
             return;
         }
         this.character.drawHitbox(this.ctx, 'lime');
+        this.character.drawRect(this.ctx, this.character.getContactRect(), 'cyan');
         this.character.drawAttackBox(this.ctx);
         this.level.enemies.forEach(enemy => {
-            enemy.drawHitbox(this.ctx, enemy.isColliding(this.character) ? 'red' : 'lime');
+            enemy.drawHitbox(this.ctx, 'lime');
+            enemy.drawHurtboxes(this.ctx, enemy.touchesRect(this.character.getContactRect()) ? 'red' : 'cyan');
             enemy.drawDebugArea(this.ctx);
         });
         this.projectiles.forEach(projectile => projectile.drawHitbox(this.ctx, 'orange'));

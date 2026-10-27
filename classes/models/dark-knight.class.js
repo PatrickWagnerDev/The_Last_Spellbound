@@ -18,6 +18,11 @@ const DARK_KNIGHT_CONFIG = {
     sprites: DARK_KNIGHT_SPRITES,
     frameSize: 256,
     hitbox: { offsetX: 104, offsetY: 134, width: 48, height: 120 },
+    hurtboxes: [
+        { offsetX: 117, offsetY: 162, width: 30, height: 24 },
+        { offsetX: 108, offsetY: 190, width: 39, height: 35 },
+        { offsetX: 114, offsetY: 229, width: 30, height: 25 }
+    ],
     spriteFacesLeft: false,
     deathSound: 'bossDeath',
     music: 'knightMusic',
@@ -204,7 +209,7 @@ class DarkKnight extends JumpBoss {
 
     isCharacterInRadius(){
         const BOSS_RECT = this.getHitbox();
-        const CHARACTER_RECT = this.world.character.getHitbox();
+        const CHARACTER_RECT = this.world.character.getContactRect();
         const CENTER_X = getRectCenterX(BOSS_RECT);
         const CENTER_Y = BOSS_RECT.y + BOSS_RECT.height / 2;
         const NEAR_X = clampValue(CENTER_X, CHARACTER_RECT.x, CHARACTER_RECT.x + CHARACTER_RECT.width);

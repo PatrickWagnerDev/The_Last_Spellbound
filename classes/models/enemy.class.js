@@ -21,6 +21,7 @@ class Enemy extends MovableObject {
         this.frameWidth = config.frameSize;
         this.frameHeight = config.frameSize;
         this.hitbox = config.hitbox;
+        this.hurtboxes = config.hurtboxes;
         this.spriteFacesLeft = config.spriteFacesLeft;
         this.deathSound = config.deathSound;
         this.bodyShift = config.bodyShift ?? 0;
@@ -90,6 +91,18 @@ class Enemy extends MovableObject {
 
     hasGroundAhead(){
         return this.world.level.isWalkableAt(this.getProbeX(EDGE_PROBE_DISTANCE), this.y + this.height + 1);
+    }
+
+    getHurtRects(){
+        return this.hurtboxes.map(box => this.getBoxRect(box));
+    }
+
+    touchesRect(rect){
+        return this.getHurtRects().some(hurtRect => areRectsOverlapping(hurtRect, rect));
+    }
+
+    drawHurtboxes(ctx, color){
+        this.getHurtRects().forEach(hurtRect => this.drawRect(ctx, hurtRect, color));
     }
 
     drawFrame(ctx, drawX){
