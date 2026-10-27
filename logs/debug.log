@@ -444,3 +444,4 @@
 2026-10-27 | classes/models/sound-manager.class.js | JSDoc comments for the class, the constructor and all 17 other methods in two blocks (loading, volume and mute; preloading, music and playing), approved and checked by the user; no code changed
 2026-10-27 | scripts/character-choice.js, character-effect.js, level-choice.js, dialogs.js | JSDoc comments for all 17 functions (3, 6, 3 and 5), approved and checked by the user; no code changed
 2026-10-27 | scripts/fullscreen.js, input.js, menu-sounds.js, touch-controls.js | JSDoc comments for all 13 functions (3, 4, 3 and 3), approved and checked by the user; no code changed
+2026-10-27 | scripts/screens.js, scripts/loading.js | JSDoc comments for all 17 functions (8 and 9), approved and checked by the user; no code changed
