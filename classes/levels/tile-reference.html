@@ -47,11 +47,15 @@
         .marker-image {
             width: 64px;
             height: 64px;
-            background-image: url('../../assets/image/03-monsters/1 Bear/Idle.png');
+            background-repeat: no-repeat;
             background-size: 256px 64px;
             background-position: 0 0;
             image-rendering: pixelated;
             outline: 1px solid #555555;
+        }
+
+        .bear-image {
+            background-image: url('../../assets/image/03-monsters/1 Bear/Idle.png');
         }
 
         .red-image {
@@ -64,17 +68,20 @@
 
         .demon-image {
             background-image: url('../../assets/image/04-bosses/2 Demon/Demon_Boss.png');
-            background-size: 64px 64px;
+            background-size: 119.04px 119.04px;
+            background-position: -46.1px -56.0px;
         }
 
         .knight-image {
             background-image: url('../../assets/image/05-mega-boss/1/Idle.png');
-            background-size: 512px 64px;
+            background-size: 1024px 128px;
+            background-position: -40.5px -65.0px;
         }
 
         .player-image {
             background-image: url('../../assets/image/01-wizard/Fire Wizard/Idle.png');
-            background-size: 448px 64px;
+            background-size: 842.24px 120.32px;
+            background-position: -15.0px -57.3px;
         }
 
         .key-image {
@@ -94,7 +101,8 @@
 
         .chest-image {
             background-image: url('../../assets/image/06-tileset/Objects_Animated/Golden_Chest_Open.png');
-            background-size: 512px 64px;
+            background-size: 609.28px 76.16px;
+            background-position: 1.1px -23.9px;
         }
 
         .boss-image {
@@ -105,6 +113,18 @@
         .marker-note {
             margin-bottom: 16px;
             max-width: 560px;
+        }
+
+        .marker-heading {
+            margin: 28px 0 12px;
+        }
+
+        .marker-grid {
+            grid-template-columns: repeat(auto-fill, 140px);
+        }
+
+        .marker-grid .tile-cell {
+            text-align: center;
         }
     </style>
 </head>
@@ -287,9 +307,9 @@
         <h2>Markers</h2>
         <p class="marker-note">
             Enter the number in the map where the figure stands. It stands with its feet on the bottom edge of that cell.
-            Numbers 60 to 68 are items (60 is the key, 61 is the pizza, 62 is the donut, 63 is the chest), number 69 is the start of the player, normal enemies use the numbers 70 to 89, boss enemies use the numbers 90 to 99 (90 is the mage boss, 91 is the demon boss, 92 is the dark knight).
         </p>
-        <div class="tile-grid">
+        <h3 class="marker-heading">Items (60 to 68)</h3>
+        <div class="tile-grid marker-grid">
             <div class="tile-cell">
                 <div class="marker-image key-image"></div>
                 <span class="tile-number">60</span>
@@ -310,30 +330,21 @@
                 <span class="tile-number">63</span>
                 <span>Chest (opens with a key)</span>
             </div>
-            <div class="tile-cell">
-                <div class="marker-image boss-image"></div>
-                <span class="tile-number">90</span>
-                <span>Mage boss</span>
-            </div>
-            <div class="tile-cell">
-                <div class="marker-image demon-image"></div>
-                <span class="tile-number">91</span>
-                <span>Demon boss</span>
-            </div>
-            <div class="tile-cell">
-                <div class="marker-image knight-image"></div>
-                <span class="tile-number">92</span>
-                <span>Dark knight</span>
-            </div>
+        </div>
+        <h3 class="marker-heading">Player (69)</h3>
+        <div class="tile-grid marker-grid">
             <div class="tile-cell">
                 <div class="marker-image player-image"></div>
                 <span class="tile-number">69</span>
                 <span>Player start</span>
             </div>
+        </div>
+        <h3 class="marker-heading">Enemies (70 to 89)</h3>
+        <div class="tile-grid marker-grid">
             <div class="tile-cell">
-                <div class="marker-image"></div>
+                <div class="marker-image bear-image"></div>
                 <span class="tile-number">70</span>
-                <span>Bear</span>
+                <span>Bear (patrols)</span>
             </div>
             <div class="tile-cell">
                 <div class="marker-image mage-image"></div>
@@ -344,6 +355,24 @@
                 <div class="marker-image red-image"></div>
                 <span class="tile-number">72</span>
                 <span>Red (waits and dashes at the player)</span>
+            </div>
+        </div>
+        <h3 class="marker-heading">Bosses (90 to 99)</h3>
+        <div class="tile-grid marker-grid">
+            <div class="tile-cell">
+                <div class="marker-image boss-image"></div>
+                <span class="tile-number">90</span>
+                <span>Mage boss (level 1)</span>
+            </div>
+            <div class="tile-cell">
+                <div class="marker-image demon-image"></div>
+                <span class="tile-number">91</span>
+                <span>Demon boss (level 2)</span>
+            </div>
+            <div class="tile-cell">
+                <div class="marker-image knight-image"></div>
+                <span class="tile-number">92</span>
+                <span>Dark knight (level 3)</span>
             </div>
         </div>
     </div>
