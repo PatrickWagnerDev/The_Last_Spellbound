@@ -421,3 +421,4 @@
 2026-10-27 | classes/models/status-bar.class.js | JSDoc comments for the class, the constructor and the 6 methods (setValue, updateBlink, isBlinkVisible, getRatio, drawObject, drawFullPart), approved and checked by the user; no code changed
 2026-10-27 | classes/models/hud.class.js | JSDoc comments for the class, the constructor and the 13 other methods, approved and checked by the user; no code changed
 2026-10-27 | classes/models/tile.class.js | JSDoc comments for the class and the constructor, approved and checked by the user (tile numbers checked against the tileset layout); no code changed
+2026-10-27 | classes/models/projectile.class.js | JSDoc comments for the class and the 3 methods (isOutOfLevel, removeSelf, damagePlayer), approved and checked by the user; no code changed
