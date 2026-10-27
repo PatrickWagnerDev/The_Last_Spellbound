@@ -43,6 +43,15 @@
     display: block;
 }
 
+.pause-menu .impressum-button {
+    right: 56px;
+    bottom: 88px;
+}
+
+.game-container:has(.pause-menu.is-open) .dialog-screen {
+    z-index: 1;
+}
+
 .window-title {
     position: absolute;
     top: 8px;
