@@ -1,3 +1,8 @@
+/**
+ * All tunable values of the game: physics, combat, character, enemies, bosses, display, energy and the debug
+ * switches. The meaning of every value is described in the documentation.
+ * @see scripts/GAME-SETTINGS.md
+ */
 const GAME_SETTINGS = {
     physics: {
         gravityForce: 0.5
