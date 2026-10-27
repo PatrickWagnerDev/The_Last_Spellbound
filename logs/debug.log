@@ -430,3 +430,4 @@
 2026-10-27 | classes/models/sight-enemy.class.js | JSDoc comments for the class and all 7 methods, approved and checked by the user; no code changed
 2026-10-27 | classes/models/boss.class.js | JSDoc comments for the class, the constructor and all 20 other methods in two blocks (state machine basics, chase search and death), approved and checked by the user; no code changed
 2026-10-27 | classes/models/jump-boss.class.js | JSDoc comments for the class, the constructor and all 24 other methods in two blocks (sprint edge and gap, sprint damage and jump), approved and checked by the user; no code changed
+2026-10-27 | classes/models/bear.class.js, classes/models/mage.class.js | JSDoc comments for the bear (class, constructor, 1 method) and the mage (class, constructor, 8 methods), approved and checked by the user; no code changed

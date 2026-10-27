@@ -8,12 +8,21 @@ const MAGE_SPRITES = {
 
 const MAGE_FIREBALL_SPAWN = { offsetX: 5, offsetY: 20.5 };
 
+/**
+ * The mage, a ranged enemy. It patrols until it sees the character, then it stands still, looks at the
+ * character and shoots a fireball whenever its waiting time is over. It patrols again after it lost sight.
+ */
 class Mage extends SightEnemy {
     state = 'patrol';
     stateTicks = 0;
     outOfSightTicks = 0;
     attackCooldownLeft = 0;
 
+    /**
+     * Creates a mage on a map cell, looking in a random direction, and starts its game loop.
+     * @param {number} column - Map column of the mage.
+     * @param {number} row - Map row of the mage.
+     */
     constructor(column, row){
         super(column, row, {
             settings: GAME_SETTINGS.mage,
@@ -28,6 +37,11 @@ class Mage extends SightEnemy {
         this.startAnimation();
     }
 
+    /**
+     * Counts the waiting time of the shot down and runs the update of the current state: attack, alert or
+     * patrol.
+     * @returns {void}
+     */
     updateBehavior(){
         this.attackCooldownLeft = tickDown(this.attackCooldownLeft);
         if(this.state === 'attack'){
@@ -39,6 +53,11 @@ class Mage extends SightEnemy {
         }
     }
 
+    /**
+     * Calculates the sight area: far in front of the mage, only a short distance behind it, and up and
+     * down by the settings.
+     * @returns {{x: number, y: number, width: number, height: number}} The sight rectangle.
+     */
     getSightRect(){
         const MAGE_RECT = this.getHitbox();
         const SIGHT_RANGE = this.settings.sightTiles * TILE_SIZE;
@@ -50,6 +69,11 @@ class Mage extends SightEnemy {
         return { x: MAGE_RECT.x - SIGHT_LEFT, y: MAGE_RECT.y - SIGHT_ABOVE, width: MAGE_RECT.width + SIGHT_LEFT + SIGHT_RIGHT, height: MAGE_RECT.height + SIGHT_ABOVE + SIGHT_BELOW };
     }
 
+    /**
+     * Runs a tick of the patrol state: the mage walks back and forth and becomes alert when it sees the
+     * character.
+     * @returns {void}
+     */
     updatePatrol(){
         this.showLoopState('walk', this.settings.animationFps);
         this.patrolPlatform();
@@ -59,6 +83,11 @@ class Mage extends SightEnemy {
         }
     }
 
+    /**
+     * Runs a tick of the alert state: the mage stands still, looks at the character and shoots when its
+     * waiting time is over, or counts the time out of sight.
+     * @returns {void}
+     */
     updateAlert(){
         this.showLoopState('idle', this.settings.animationFps);
         if(!this.isCharacterInSight()){
@@ -72,6 +101,10 @@ class Mage extends SightEnemy {
         }
     }
 
+    /**
+     * Counts the time out of sight and goes back to patrol when it has been too long.
+     * @returns {void}
+     */
     trackLostSight(){
         this.outOfSightTicks++;
         if(this.outOfSightTicks >= this.settings.loseSightTicks){
@@ -79,12 +112,21 @@ class Mage extends SightEnemy {
         }
     }
 
+    /**
+     * Starts the attack: switches to the attack state and plays the spell sound.
+     * @returns {void}
+     */
     startAttack(){
         this.state = 'attack';
         this.stateTicks = 0;
         soundManager.playSound('bossFireball');
     }
 
+    /**
+     * Runs a tick of the attack state: plays the shot animation once, releases the fireball at the right
+     * tick and returns to the alert state at the end.
+     * @returns {void}
+     */
     updateAttack(){
         this.stateTicks++;
         this.showProgressState('attack', this.stateTicks, this.settings.attackTicks);
@@ -96,6 +138,10 @@ class Mage extends SightEnemy {
         }
     }
 
+    /**
+     * Shoots the fireball from the tip of the staff and starts the waiting time until the next shot.
+     * @returns {void}
+     */
     spawnFireball(){
         this.spawnEnemyFireball(MAGE_FIREBALL, MAGE_FIREBALL_SPAWN);
         this.attackCooldownLeft = this.settings.attackCooldownTicks;
