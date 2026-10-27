@@ -29,6 +29,7 @@ class DarkKnight extends JumpBoss {
     attackName = 'thrust';
     hasAttackHit = false;
     lastStep = 0;
+    lastStepFrame = -1;
     currentNode = null;
     afterJumpState = 'chase';
     cooldownsLeft = { thrust: 0, walkThrust: 0, upSlash: 0, aura: 0 };
@@ -48,6 +49,17 @@ class DarkKnight extends JumpBoss {
         this.updateNode();
         super.updateBehavior();
         this.lastStep = this.x - START_X;
+        this.playStepSound();
+    }
+
+    playStepSound(){
+        const IS_RUNNING = this.currentPath === DARK_KNIGHT_SPRITES.run.path;
+        const IS_STEPPING = this.lastStep !== 0 && (IS_RUNNING || this.currentPath === DARK_KNIGHT_SPRITES.walk.path);
+        const IS_NEW_FRAME = this.currentFrame !== this.lastStepFrame;
+        this.lastStepFrame = this.currentFrame;
+        if(IS_STEPPING && IS_NEW_FRAME && this.settings.stepFrames.includes(this.currentFrame)){
+            soundManager.playSound('knightStep', IS_RUNNING ? this.settings.sprintStepRate : 1);
+        }
     }
 
     updateCooldowns(){
@@ -208,7 +220,7 @@ class DarkKnight extends JumpBoss {
         }
         this.speed = this.isSprinting() ? this.settings.sprintSpeed : this.settings.speed;
         this.setState('attack');
-        soundManager.playSound(attackName === 'aura' ? 'bossRay' : 'attack');
+        attackName === 'aura' ? soundManager.playSound('bossRay') : soundManager.playSound('knightSwing', this.settings.attackSoundRate, false);
     }
 
     isAttackActive(){

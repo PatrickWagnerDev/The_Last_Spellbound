@@ -25,7 +25,9 @@ const SOUND_VOLUMES = {
     bossDeath: 0.2,
     bossFireball: 0.4,
     bossRay: 0.3,
-    demonClub: 0.4
+    demonClub: 0.4,
+    knightStep: 0.4,
+    knightSwing: 0.4
 };
 const LOOP_RATES = {
     walk: 1.1
@@ -75,7 +77,9 @@ const SOUND_PATHS = {
     bossDeath: './assets/sounds/500272__bigspider95__enimey_dead.mp3',
     bossFireball: './assets/sounds/714744__fall-e__interface-magic-fireball-bell-spell.mp3',
     bossRay: './assets/sounds/169679__beman87__laser-shotgun-loading.mp3',
-    demonClub: './assets/sounds/577354__thecrow_br__club.mp3'
+    demonClub: './assets/sounds/577354__thecrow_br__club.mp3',
+    knightStep: './assets/sounds/512134__beezlefm__chainmail-rustle-sound.wav',
+    knightSwing: './assets/sounds/840716__nomagician__sword-swing-1.mp3'
 };
 
 const CHARACTER_SOUNDS = {

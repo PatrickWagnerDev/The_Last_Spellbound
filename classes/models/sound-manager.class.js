@@ -83,12 +83,14 @@ class SoundManager {
         window.addEventListener('keydown', RETRY_MUSIC);
     }
 
-    playSound(soundName){
+    playSound(soundName, playbackRate = 1, preservesPitch = true){
         if(this.isMuted){
             return;
         }
         const SOUND_CLONE = this.getSound(soundName).cloneNode();
         SOUND_CLONE.volume = this.getVolume(soundName);
+        SOUND_CLONE.preservesPitch = preservesPitch;
+        SOUND_CLONE.playbackRate = playbackRate;
         SOUND_CLONE.play().catch(() => {});
     }
 

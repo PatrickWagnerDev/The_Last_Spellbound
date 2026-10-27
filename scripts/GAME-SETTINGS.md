@@ -203,6 +203,9 @@ The demon uses the sounds `attack` (club swing), `jump` and `land` of the charac
 | `jumpLandTicks` | `18` | Ticks the knight stays in the landing pose after the jump (18 ticks = 0.3 seconds). |
 | `sprintSpeed` | `3.5` | Speed of the sprint in px per tick. |
 | `sprintFps` | `12` | Animation speed of the sprint in frames per second. |
+| `attackSoundRate` | `0.8` | Playback speed of the sword sound of the three melee attacks (the sword swing of the Fire Wizard, whichever character is played). Below 1 it plays slower and deeper, for example 0.7 for deeper still. The aura keeps its own sound. |
+| `stepFrames` | `[0, 4]` | Frames of the walk and run animation (0 to 7) in which a step sound plays, while the knight really moves. |
+| `sprintStepRate` | `1.5` | Playback speed of the step sound during the sprint (1 = normal), so that the steps fit the faster rhythm. |
 | `sprintMinTiles` | `3` | The knight only sprints when the character is farther away than this, in tiles. |
 | `sprintTicks` | `150` | Duration of one sprint (150 ticks = 2.5 seconds). At an edge it cannot pass the knight keeps running on the spot until the sprint is over, so it can never run off an edge. |
 | `sprintCooldownTicks` | `720` | Pause after a sprint before the knight can sprint again (720 ticks = 12 seconds). |
