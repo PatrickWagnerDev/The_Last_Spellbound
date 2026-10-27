@@ -124,7 +124,7 @@ simply repeating the technologies or features listed above.
 
 > **Current Status:** In Development
 
-The project is currently being developed. The gameplay, the menus, the dialogs, the audio, the fullscreen mode and the touch controls are finished, only the final cleanup is still open.
+The project is currently being developed. The gameplay, the menus, the dialogs, the audio, the fullscreen mode and the touch controls are finished, and the code check is done. Still open are my own final playtest and then the documentation of the code (JSDoc).
 
 <!--
 PROJECT STATUS:

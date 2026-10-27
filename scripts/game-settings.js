@@ -178,7 +178,7 @@ const GAME_SETTINGS = {
         }
     },
     fireball: {
-        damage: 15,
+        damage: 3,
         speed: 6,
         range: 420,
         flightFps: 12,
@@ -239,8 +239,8 @@ const GAME_SETTINGS = {
         pauseOverlayAlpha: 0.5
     },
     debug: {
-        unlockAllLevels: true,
-        startInBossLevel: true,
-        showHitboxes: true
+        unlockAllLevels: false,
+        startInBossLevel: false,
+        showHitboxes: false
     }
 };
