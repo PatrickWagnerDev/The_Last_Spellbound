@@ -426,3 +426,4 @@
 2026-10-27 | classes/models/character-movement.class.js | JSDoc comments for the class and all 23 methods in two blocks (inputs and states, movement and jump), approved and checked by the user (the overrides in CharacterActions were compared); no code changed
 2026-10-27 | classes/models/character-actions.class.js | JSDoc comments for the class and all 33 methods in two blocks (state, roll and overrides; attack, spell and energy), approved and checked by the user; no code changed
 2026-10-27 | classes/models/character.class.js | JSDoc comments for the class, the constructor and all 31 other methods in three blocks (tick flow, sounds damage and death, sprite choice hitboxes and drawing), approved and checked by the user; no code changed
+2026-10-27 | classes/models/enemy.class.js | JSDoc comments for the class, the constructor and all 19 other methods, approved and checked by the user; no code changed
