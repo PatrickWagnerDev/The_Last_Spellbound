@@ -108,12 +108,15 @@
 
 .start-screen.is-press .start-wizard-area,
 .start-screen.is-press .start-buttons,
+.start-screen.is-press .platform-note,
 .start-screen.is-press + .mute-button,
 .start-screen.is-press ~ .fullscreen-button,
 .start-screen.is-choose .start-wizard-area,
 .start-screen.is-choose .start-buttons,
+.start-screen.is-choose .platform-note,
 .start-screen.is-levels .start-wizard-area,
-.start-screen.is-levels .start-buttons {
+.start-screen.is-levels .start-buttons,
+.start-screen.is-levels .platform-note {
     opacity: 0;
 }
 
@@ -132,6 +135,7 @@
 }
 
 .start-screen.is-settle .start-buttons,
+.start-screen.is-settle .platform-note,
 .start-screen.is-settle + .mute-button,
 .start-screen.is-settle ~ .fullscreen-button {
     animation: start-fade-in 0.8s linear 2.2s both;
@@ -140,6 +144,7 @@
 .start-screen.is-waiting .start-title,
 .start-screen.is-waiting .start-wizard-area,
 .start-screen.is-waiting .start-buttons,
+.start-screen.is-waiting .platform-note,
 .start-screen.is-waiting + .mute-button,
 .start-screen.is-waiting ~ .fullscreen-button {
     opacity: 0;
@@ -155,6 +160,7 @@
 }
 
 .start-screen.is-intro .start-buttons,
+.start-screen.is-intro .platform-note,
 .start-screen.is-intro + .mute-button,
 .start-screen.is-intro ~ .fullscreen-button {
     animation: start-fade-in 0.8s linear 2.6s both;
@@ -205,9 +211,22 @@
 
 .start-screen.is-ready .start-wizard-area,
 .start-screen.is-ready .start-buttons,
+.start-screen.is-ready .platform-note,
 .start-screen.is-levels .start-wizard-area,
-.start-screen.is-levels .start-buttons {
+.start-screen.is-levels .start-buttons,
+.start-screen.is-levels .platform-note {
     transition: opacity 0.5s linear;
+}
+
+.platform-note {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-title-light);
+    text-shadow: var(--shadow-title-small);
+    pointer-events: none;
 }
 
 .boss-badge {
