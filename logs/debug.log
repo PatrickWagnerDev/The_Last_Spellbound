@@ -408,3 +408,4 @@
 2026-10-27 | index.html, styles/start-screen.css | Main menu: small note Optimized for Android and Windows in the bottom right corner (platform-note, 14 px, title colors); it fades with the menu buttons (hidden while waiting, during the press hint and in the character and level choice)
 2026-10-27 | scripts/game-settings.js | Debug mode reset to normal before the final check: unlockAllLevels, startInBossLevel and showHitboxes false, fireball.damage 3 (was the test value 15)
 2026-10-27 | README.md | Project Status text: the code check is done, the own final playtest and then the documentation of the code (JSDoc) are still open; the status stays In Development
+2026-10-27 | classes/levels/level-two.js, classes/levels/level-three.js | Map changes of the user after the playtest: enemies on platforms that were too small were fixed by changing the levels
