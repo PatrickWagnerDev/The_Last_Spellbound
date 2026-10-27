@@ -123,9 +123,9 @@ simply repeating the technologies or features listed above.
 
 ## Project Status
 
-> **Current Status:** In Development
+> **Current Status:** Submitted for Review
 
-The project is currently being developed. The gameplay, the menus, the dialogs, the audio, the fullscreen mode and the touch controls are finished, the code check is done and every function is documented with JSDoc. Still open is only my own final playtest.
+Development is complete and the project has been submitted for evaluation. The gameplay, the menus, the dialogs, the audio, the fullscreen mode and the touch controls are finished, the final playtest and the code check are done and every function is documented with JSDoc.
 
 <!--
 PROJECT STATUS:
