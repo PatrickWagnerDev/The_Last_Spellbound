@@ -1,3 +1,9 @@
+/**
+ * Marks a character on the selection page: plays its effect if it was not marked yet, shows the mark on its
+ * card and enables the Choose button.
+ * @param {string} characterId - 'fireWizard' or 'lightningMage'.
+ * @returns {void}
+ */
 function markCharacter(characterId){
     const START_SCREEN = document.getElementById('start-screen');
     if(START_SCREEN.dataset.marked !== characterId){
@@ -12,6 +18,11 @@ function markCharacter(characterId){
     document.getElementById('choose-button').disabled = false;
 }
 
+/**
+ * Moves the mark to the neighbor card with the arrow keys and stops at the first and the last card.
+ * @param {KeyboardEvent} event - The key press.
+ * @returns {void}
+ */
 function moveCharacterMark(event){
     const OFFSETS = { ArrowLeft: -1, ArrowRight: 1 };
     if(!(event.code in OFFSETS)){
@@ -24,6 +35,11 @@ function moveCharacterMark(event){
     markCharacter(NEXT_CARD.dataset.character);
 }
 
+/**
+ * Confirms the choice: the marked character becomes the selected one, its sounds are set, the effect ends
+ * and the start screen goes on to the main menu.
+ * @returns {void}
+ */
 function chooseCharacter(){
     const START_SCREEN = document.getElementById('start-screen');
     selectedCharacter = START_SCREEN.dataset.marked;
