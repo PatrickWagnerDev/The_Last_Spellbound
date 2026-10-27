@@ -18,15 +18,28 @@ const RED_CONFIG = {
     bodyShift: -8
 };
 
+/**
+ * The red enemy. It stands still until it sees the character and then dashes at it. It has no attack, it
+ * only hurts by touching. It stops at edges and waits a moment before it turns around.
+ */
 class Red extends SightEnemy {
     turnTicksLeft = this.settings.turnDelayTicks;
 
+    /**
+     * Creates a red enemy on a map cell, looking in a random direction, and starts its game loop.
+     * @param {number} column - Map column of the red enemy.
+     * @param {number} row - Map row of the red enemy.
+     */
     constructor(column, row){
         super(column, row, RED_CONFIG);
         this.otherDirection = Math.random() < 0.5;
         this.startAnimation();
     }
 
+    /**
+     * Reacts to the character if it is in sight, otherwise stands still and resets the turn delay.
+     * @returns {void}
+     */
     updateBehavior(){
         if(this.isCharacterInSight()){
             this.reactToCharacter();
@@ -36,6 +49,11 @@ class Red extends SightEnemy {
         }
     }
 
+    /**
+     * Decides what to do while the character is in sight: dash if it already looks at the character,
+     * otherwise wait for the turn delay, then turn around and dash.
+     * @returns {void}
+     */
     reactToCharacter(){
         const IS_FACING = (this.getCharacterOffset() < 0) === this.otherDirection;
         if(IS_FACING){
@@ -50,6 +68,11 @@ class Red extends SightEnemy {
         }
     }
 
+    /**
+     * Dashes one step towards the character with the fast walk animation, but stands still at an edge or
+     * when it has reached the character.
+     * @returns {void}
+     */
     dashAtCharacter(){
         if(this.hasGroundAhead() && Math.abs(this.getCharacterOffset()) > DASH_STOP_DISTANCE){
             this.showLoopState('walk', this.settings.dashFps);
