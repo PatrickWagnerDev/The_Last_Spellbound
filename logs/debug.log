@@ -415,3 +415,4 @@
 2026-10-27 | scripts/game-settings.js, scripts/GAME-SETTINGS.md | Test values of the user: unlockAllLevels, startInBossLevel and showHitboxes false again and energy.startCharges 1 (was the test value 5); documentation of startCharges set to 1
 2026-10-27 | index.html | Accessibility: the game container is now a main element (landmark) instead of a div with role region, label kept with aria-label
 2026-10-27 | classes/models/mage-boss.class.js | The config of the mage boss moved out of the constructor into the constant MAGE_BOSS_CONFIG (the constructor was 18 lines, now 5); values unchanged
+2026-10-27 | scripts/helper-functions.js | JSDoc comments for all 9 functions (createImage, waitForImages, tickDown, clampValue, getTicksPerFrame, getProgressFrame, pickAirFrame, getRectCenterX, areRectsOverlapping), each checked and approved by the user one by one; no code changed
