@@ -428,3 +428,4 @@
 2026-10-27 | classes/models/character.class.js | JSDoc comments for the class, the constructor and all 31 other methods in three blocks (tick flow, sounds damage and death, sprite choice hitboxes and drawing), approved and checked by the user; no code changed
 2026-10-27 | classes/models/enemy.class.js | JSDoc comments for the class, the constructor and all 19 other methods, approved and checked by the user; no code changed
 2026-10-27 | classes/models/sight-enemy.class.js | JSDoc comments for the class and all 7 methods, approved and checked by the user; no code changed
+2026-10-27 | classes/models/boss.class.js | JSDoc comments for the class, the constructor and all 20 other methods in two blocks (state machine basics, chase search and death), approved and checked by the user; no code changed
