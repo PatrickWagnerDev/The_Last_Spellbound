@@ -26,8 +26,11 @@ function startLevel(levelNumber){
 }
 
 function finishStartGame(levelNumber){
-    createWorld(getStartLevelData(levelNumber));
-    updateStartScreenUi(false);
+    const LEVEL_DATA = getStartLevelData(levelNumber);
+    return loadThenStart(LEVEL_DATA, () => {
+        createWorld(LEVEL_DATA);
+        updateStartScreenUi(false);
+    });
 }
 
 function goHome(){
@@ -88,11 +91,13 @@ function startNextLevel(){
 }
 
 function startNextWorld(){
-    const NEXT_LEVEL_NUMBER = gameWorld.levelData.levelNumber + 1;
+    const NEXT_LEVEL_DATA = getStartLevelData(gameWorld.levelData.levelNumber + 1);
     gameWorld.stopWorld();
-    createWorld(getStartLevelData(NEXT_LEVEL_NUMBER));
-    updateGameOverUi(false);
-    updatePauseUi();
+    return loadThenStart(NEXT_LEVEL_DATA, () => {
+        createWorld(NEXT_LEVEL_DATA);
+        updateGameOverUi(false);
+        updatePauseUi();
+    });
 }
 
 function restartLevel(){
@@ -103,7 +108,9 @@ function restartLevel(){
 function restartWorld(){
     const RESTART_DATA = gameWorld.restartLevelData;
     gameWorld.stopWorld();
-    createWorld(RESTART_DATA);
-    updateGameOverUi(false);
-    updatePauseUi();
+    return loadThenStart(RESTART_DATA, () => {
+        createWorld(RESTART_DATA);
+        updateGameOverUi(false);
+        updatePauseUi();
+    });
 }

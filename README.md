@@ -16,6 +16,7 @@ The game currently offers the following features:
 - **Boss Killer Badge** – When all levels are cleared, a spinning coin with the text "Boss Killer" appears in the main menu.
 - **Level Selection** – Choose the level on a selection page after "Start Game". A level is unlocked when the boss of the previous level is defeated; the progress is saved in Local Storage.
 - **Character Selection** – Choose between the Fire Wizard and the Lightning Mage on a selection page before the game starts. Both play the same and only differ in their look and in a few sounds.
+- **Loading Screen** – Before each level starts, a "Loading..." screen waits until the images and sounds of the level, its boss part and the menus are loaded, so slow connections do not show missing backgrounds or enemies.
 - **Game Instructions** – View the controls, the credits and the imprint in dialogs.
 - **Audio** – Enjoy background music for the start screen, the level and the boss fight, sound effects for the character, the enemies and the menus, and a mute button that is saved in Local Storage.
 - **Responsive Layout** – The game scales down on small screens and shows an orientation notice on touch devices in portrait mode.

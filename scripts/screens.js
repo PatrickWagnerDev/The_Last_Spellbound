@@ -14,8 +14,7 @@ function fadeThroughBlack(onBlack){
     const SCREEN_FADE = document.getElementById('screen-fade');
     SCREEN_FADE.classList.add('is-black');
     setTimeout(() => {
-        onBlack();
-        SCREEN_FADE.classList.remove('is-black');
+        Promise.resolve(onBlack()).then(() => SCREEN_FADE.classList.remove('is-black'));
     }, SCREEN_FADE_MS);
 }
 

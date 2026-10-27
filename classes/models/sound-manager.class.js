@@ -1,10 +1,12 @@
 const MUTE_STORAGE_KEY = 'spellbound-muted';
+const AUDIO_WAIT_MS = 10000;
 
 class SoundManager {
     constructor(){
         this.isMuted = this.readMuteState();
         this.music = null;
         this.loops = {};
+        this.musicCache = {};
         this.characterSounds = {};
         this.characterVolumes = {};
         this.sounds = this.loadSounds();
@@ -62,9 +64,30 @@ class SoundManager {
         PLAYERS.filter(Boolean).forEach(player => player.muted = this.isMuted);
     }
 
+    waitForAudio(audio){
+        return new Promise(resolve => {
+            if(audio.readyState >= 4){
+                resolve();
+                return;
+            }
+            ['canplaythrough', 'error'].forEach(eventName => audio.addEventListener(eventName, resolve, { once: true }));
+            setTimeout(resolve, AUDIO_WAIT_MS);
+        });
+    }
+
+    preloadAudio(musicNames){
+        musicNames.filter(soundName => !this.musicCache[soundName]).forEach(soundName => {
+            this.musicCache[soundName] = new Audio(MUSIC_PATHS[soundName]);
+        });
+        const SOUND_LIST = [...Object.values(this.sounds), ...Object.values(this.characterSounds)];
+        const MUSIC_LIST = musicNames.map(soundName => this.musicCache[soundName]);
+        return Promise.all([...SOUND_LIST, ...MUSIC_LIST].map(audio => this.waitForAudio(audio)));
+    }
+
     playMusic(soundName){
         this.stopMusic();
-        this.music = new Audio(MUSIC_PATHS[soundName]);
+        this.music = this.musicCache[soundName] ?? new Audio(MUSIC_PATHS[soundName]);
+        this.music.currentTime = 0;
         this.music.loop = true;
         this.music.volume = MUSIC_VOLUMES[soundName];
         this.music.muted = this.isMuted;

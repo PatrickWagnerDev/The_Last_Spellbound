@@ -1,9 +1,21 @@
 const TICKS_PER_SECOND = 60;
 
+const PENDING_IMAGES = new Set();
+
 function createImage(imagePath){
     const NEW_IMAGE = new Image();
+    const IMAGE_LOAD = new Promise(resolve => {
+        NEW_IMAGE.onload = resolve;
+        NEW_IMAGE.onerror = resolve;
+    });
+    PENDING_IMAGES.add(IMAGE_LOAD);
+    IMAGE_LOAD.then(() => PENDING_IMAGES.delete(IMAGE_LOAD));
     NEW_IMAGE.src = imagePath;
     return NEW_IMAGE;
+}
+
+function waitForImages(){
+    return PENDING_IMAGES.size === 0 ? Promise.resolve() : Promise.all([...PENDING_IMAGES]).then(waitForImages);
 }
 
 function tickDown(value){
