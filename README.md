@@ -54,13 +54,15 @@ The icon `assets/icons/Fullscreen_exit.png` is derived from an icon of the Game 
 
 ### Sound Credits
 
-The music and sound effects come from [Freesound.org](https://freesound.org) (my collection: [The Last Spellbound](https://freesound.org/collections/756488-the-last-spellbound/)). Many thanks to all the creators for sharing their sounds! Some sounds were converted to mp3 and shortened.
+The music and sound effects come from [Freesound.org](https://freesound.org) (my collection: [The Last Spellbound](https://freesound.org/collections/756488-the-last-spellbound/)). Many thanks to all the creators for sharing their sounds! Some sounds were converted to mp3, shortened or lowered in pitch.
 
 | Sound | Author | License |
 |---|---|---|
 | [Boss Battle Loop #3](https://freesound.org/people/Sirkoto51/sounds/443128/) | Sirkoto51 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Button_Hover (mp3)](https://freesound.org/people/deadsillyrabbit/sounds/251390/) | deadsillyrabbit | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [buzzer](https://freesound.org/people/Loyalty_Freak_Music/sounds/407466/) | Loyalty_Freak_Music | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [Chainmail Rustle Sound](https://freesound.org/people/beezlefm/sounds/512134/) | BeezleFM | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Club](https://freesound.org/people/thecrow_br/sounds/577354/) | thecrow_br | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Dope Video Game Boss Music](https://freesound.org/people/Seth_Makes_Sounds/sounds/683457/) | Seth_Makes_Sounds | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [Dual Energy Daggers 5](https://freesound.org/people/ejfortin/sounds/49667/) | ejfortin | [Sampling+ 1.0](http://creativecommons.org/licenses/sampling+/1.0/) |
 | [Electronic Victory Sound](https://freesound.org/people/yokomatsuko/sounds/856038/) | yokomatsuko | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
