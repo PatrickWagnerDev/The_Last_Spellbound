@@ -24,7 +24,8 @@ const SOUND_VOLUMES = {
     bearDeath: 0.4,
     bossDeath: 0.2,
     bossFireball: 0.4,
-    bossRay: 0.3
+    bossRay: 0.3,
+    demonClub: 0.4
 };
 const LOOP_RATES = {
     walk: 1.1
@@ -73,7 +74,8 @@ const SOUND_PATHS = {
     bearDeath: './assets/sounds/704635__zulfish__monster-dying.mp3',
     bossDeath: './assets/sounds/500272__bigspider95__enimey_dead.mp3',
     bossFireball: './assets/sounds/714744__fall-e__interface-magic-fireball-bell-spell.mp3',
-    bossRay: './assets/sounds/169679__beman87__laser-shotgun-loading.mp3'
+    bossRay: './assets/sounds/169679__beman87__laser-shotgun-loading.mp3',
+    demonClub: './assets/sounds/577354__thecrow_br__club.mp3'
 };
 
 const CHARACTER_SOUNDS = {

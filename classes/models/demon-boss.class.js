@@ -61,7 +61,7 @@ class DemonBoss extends JumpBoss {
         this.sprintTicksLeft = 0;
         this.hasMeleeHit = false;
         this.setState('melee');
-        soundManager.playSound('attack');
+        soundManager.playSound('demonClub');
     }
 
     isMeleeActive(){
