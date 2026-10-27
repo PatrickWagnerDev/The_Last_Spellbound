@@ -20,7 +20,7 @@ function markCharacter(characterId){
 
 /**
  * Moves the mark to the neighbor card with the arrow keys and stops at the first and the last card.
- * @param {KeyboardEvent} event - The key press.
+ * @param {KeyboardEvent} event - The key event.
  * @returns {void}
  */
 function moveCharacterMark(event){

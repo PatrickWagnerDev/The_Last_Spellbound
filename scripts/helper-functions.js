@@ -71,7 +71,7 @@ function getProgressFrame(elapsedTicks, totalTicks, frameTotal){
  * Picks the jump frame that fits the flight phase: rising, at the top or falling.
  * @param {{up: number, down: number, apex?: number}} frames - Frame indexes of the jump phases, apex is optional.
  * @param {number} speedY - Vertical speed, positive while moving up.
- * @param {number} apexSpeed - Speed below which the object counts as being at the top of the jump.
+ * @param {number} apexSpeed - Speed up to which the object counts as being at the top of the jump.
  * @returns {number} Index of the frame to show.
  */
 function pickAirFrame(frames, speedY, apexSpeed){

@@ -146,8 +146,8 @@ class World {
     }
 
     /**
-     * Checks whether the game has ended: game over when the death of the character has finished, victory when
-     * the character is alive and the boss is defeated.
+     * Checks whether the game has ended and ends it: game over when the death of the character has finished,
+     * victory when the character is alive and the boss is defeated.
      * @returns {void}
      */
     checkGameEnd(){

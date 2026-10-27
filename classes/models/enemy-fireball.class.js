@@ -43,8 +43,8 @@ class EnemyFireball extends Projectile {
     }
 
     /**
-     * Runs one tick: flies one step, is removed outside of the level, and hurts the character and disappears
-     * when it hits.
+     * Runs one tick: flies one step, is removed outside of the level, and when it hits it hurts the character,
+     * plays the impact sound and disappears.
      * @returns {void}
      */
     updateObject(){

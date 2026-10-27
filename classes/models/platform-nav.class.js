@@ -173,8 +173,8 @@ class PlatformNav {
     }
 
     /**
-     * Checks whether a simulated jump lands in this tick, with the same rules as in the game: it falls, it was
-     * not already below the top of the tile and the cell is walkable.
+     * Finds the row in which a simulated jump lands in this tick, with the same rules as in the game: it falls,
+     * it was not already below the top of the tile and the cell is walkable.
      * @param {number} posX - Horizontal position of the jump.
      * @param {number} previousFeet - Y position of the feet before this tick.
      * @param {number} feet - Y position of the feet now.
@@ -237,7 +237,7 @@ class PlatformNav {
     }
 
     /**
-     * Tells whether a standing place fulfils the goal: any place in the lowest row for 'ground', otherwise
+     * Tells whether a standing place fulfills the goal: any place in the lowest row for 'ground', otherwise
      * exactly the goal place.
      * @param {number} nodeKey - Key of the place to check.
      * @param {number|string} goalKey - Key of the goal place, or 'ground'.

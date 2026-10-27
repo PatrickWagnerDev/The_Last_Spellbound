@@ -136,8 +136,8 @@ class MageBoss extends Boss {
     }
 
     /**
-     * Starts a fireball attack if there is a variant for the height of the character and the waiting time is
-     * over.
+     * Starts a fireball attack and plays the fireball sound if there is a variant for the height of the
+     * character and the waiting time is over.
      * @returns {boolean} True if the attack was started.
      */
     tryStartFireball(){

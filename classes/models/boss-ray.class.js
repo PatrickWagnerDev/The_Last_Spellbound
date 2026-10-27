@@ -2,9 +2,9 @@ const IMAGE_BOSS_RAY = './assets/image/04-bosses/1 Mage/Attack4_Ray.png';
 const RAY_STAGE_ROWS = [[4, 9], [2, 11], [1, 12], [0, 13]];
 
 /**
- * The ray of the mage boss. It starts at the boss and grows longer and faster than a fireball, up to the end
- * of the level or until its time is over. Its picture changes in four stages and its hit area gets thicker.
- * It hurts the character as long as it touches it, the grace time prevents repeated hits.
+ * The ray of the mage boss. It starts at the boss and grows longer, twice as fast as a fireball flies, up to
+ * the end of the level or until its time is over. Its picture changes in four stages and its hit area gets
+ * thicker. It hurts the character as long as it touches it, the grace time prevents repeated hits.
  */
 class BossRay extends Projectile {
     settings = GAME_SETTINGS.mageBoss;

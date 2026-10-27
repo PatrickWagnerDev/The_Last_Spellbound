@@ -1,8 +1,9 @@
 const APEX_SPEED_LIMIT = 2;
 
 /**
- * Base class of the demon and the dark knight. On top of the boss behavior it adds the sprint, which makes
- * the boss faster for a while, and the jump over gaps, and it stops at edges it cannot jump over.
+ * Base class of the demon and, through the knight attacks, of the dark knight. On top of the boss behavior it
+ * adds the sprint, which makes the boss faster for a while, and the jump over gaps, and it stops at edges it
+ * cannot jump over.
  */
 class JumpBoss extends Boss {
     sprintCooldownLeft = 0;

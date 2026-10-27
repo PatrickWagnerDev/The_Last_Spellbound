@@ -15,7 +15,8 @@ class BackgroundObject extends DrawableObject {
     /**
      * Creates a background picture.
      * @param {string} imagePath - Path of the picture.
-     * @param {number} parallaxFactor - How fast the layer moves with the camera, 0 stays still and 1 moves like the level.
+     * @param {number} parallaxFactor - How fast the layer moves with the camera, 0 stays still and 1 moves like
+     * the level.
      * @param {number} startX - Horizontal position of the picture, 0 or the width of the screen.
      */
     constructor(imagePath, parallaxFactor, startX){

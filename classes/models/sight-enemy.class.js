@@ -31,7 +31,7 @@ class SightEnemy extends Enemy {
 
     /**
      * Calculates the sight area: a rectangle around the hitbox that reaches the same distance to the left and
-     * to the right, and further up and down by the settings of the enemy.
+     * to the right and is extended upwards and, if the settings say so, downwards.
      * @returns {{x: number, y: number, width: number, height: number}} The sight rectangle.
      */
     getSightRect(){

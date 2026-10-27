@@ -61,8 +61,8 @@ class Fireball extends Projectile {
     }
 
     /**
-     * Checks whether the fireball hits: it damages the enemy it touches and starts the impact, or it vanishes
-     * when its range is used up or it leaves the level.
+     * Checks for a hit: the fireball damages the enemy it touches, starts the impact and plays the impact
+     * sound, or it vanishes when its range is used up or it leaves the level.
      * @returns {void}
      */
     checkImpact(){

@@ -29,7 +29,7 @@ function hideDialogs(){
 
 /**
  * Closes the dialogs after a click on the area around the window or on the close button.
- * @param {MouseEvent} event - The click.
+ * @param {MouseEvent} event - The click event.
  * @returns {void}
  */
 function closeDialog(event){

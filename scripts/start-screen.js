@@ -3,7 +3,7 @@ const PRESS_EVENTS = ['keydown', 'click'];
 /**
  * Loads what the start screen needs before it is shown: the effect pictures, the standing picture of each
  * character and the two fonts.
- * @returns {Promise<void[]>} Resolves when everything is ready.
+ * @returns {Promise<Array>} Resolves when everything is ready.
  */
 function loadStartAssets(){
     preloadEffectFrames();

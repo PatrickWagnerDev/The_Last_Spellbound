@@ -62,7 +62,7 @@ class Level {
     }
 
     /**
-     * Finds the start position of the character in the map (the number 69).
+     * Finds the start position of the character in the map (the number 69) and stores it.
      * @returns {void}
      */
     buildPlayerStart(){
