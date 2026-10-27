@@ -4,6 +4,10 @@ const IMAGES_PORTAL = [
     './assets/image/08-magic-effects/PNG/Spiral/Spiral3.png'
 ];
 
+/**
+ * The portal that appears when the chest is opened. It grows to its full size, shows a spinning spiral and
+ * starts the transition to the boss part when the character touches it.
+ */
 class Portal extends LevelItem {
     settings = GAME_SETTINGS.portal;
     frameWidth = 128;
@@ -12,6 +16,11 @@ class Portal extends LevelItem {
     appearTicks = 0;
     isUsed = false;
 
+    /**
+     * Creates a portal that stands on the bottom edge of a map cell and starts its game loop.
+     * @param {number} column - Map column of the portal.
+     * @param {number} row - Map row of the portal.
+     */
     constructor(column, row){
         super();
         this.setupSprites(IMAGES_PORTAL);
@@ -21,10 +30,19 @@ class Portal extends LevelItem {
         this.startAnimation();
     }
 
+    /**
+     * Tells whether the portal has finished growing and can be entered.
+     * @returns {boolean} True when the appear time is over.
+     */
     isAppeared(){
         return this.appearTicks >= this.settings.appearTicks;
     }
 
+    /**
+     * Sets the size and the position of the portal for its growth, around its center, and a hitbox of the
+     * middle 60 percent.
+     * @returns {void}
+     */
     updateSize(){
         const PORTAL_SIZE = this.settings.size * Math.min(this.appearTicks / this.settings.appearTicks, 1);
         this.width = PORTAL_SIZE;
@@ -34,6 +52,11 @@ class Portal extends LevelItem {
         this.hitbox = { offsetX: PORTAL_SIZE * 0.2, offsetY: PORTAL_SIZE * 0.2, width: PORTAL_SIZE * 0.6, height: PORTAL_SIZE * 0.6 };
     }
 
+    /**
+     * Runs one tick of the portal: counts the time, updates its size, picks the picture of the spiral and checks
+     * whether the character enters.
+     * @returns {void}
+     */
     updateObject(){
         this.appearTicks++;
         this.updateSize();
@@ -42,6 +65,10 @@ class Portal extends LevelItem {
         this.checkEntering();
     }
 
+    /**
+     * Starts the transition if the portal is ready and unused and the living character touches it.
+     * @returns {void}
+     */
     checkEntering(){
         const PLAYER_CHARACTER = this.world.character;
         if(this.isAppeared() && !this.isUsed && !PLAYER_CHARACTER.isDead() && this.isColliding(PLAYER_CHARACTER)){
