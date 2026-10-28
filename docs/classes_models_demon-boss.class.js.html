@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/demon-boss.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/demon-boss.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const DEMON_BOSS_SPRITES = {
+    walk: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_walk.png', frames: 6 },
+    run: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_run.png', frames: 8 },
+    sneer: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_sneer.png', frames: 6 },
+    jump: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_attack1.png', frames: 4 },
+    melee: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_attack2.png', frames: 8 },
+    hurt: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_hurt.png', frames: 4 },
+    death: { path: './assets/image/04-bosses/2 Demon/Demon_Boss_death.png', frames: 4 }
+};
+
+const DEMON_MELEE_HITBOX = { offsetX: -48, offsetY: 120, width: 135, height: 165 };
+
+const DEMON_BOSS_CONFIG = {
+    settings: GAME_SETTINGS.demonBoss,
+    sprites: DEMON_BOSS_SPRITES,
+    frameSize: 96,
+    hitbox: { offsetX: 70.5, offsetY: 138, width: 147, height: 150 },
+    hurtboxes: [
+        { offsetX: 80, offsetY: 143, width: 134, height: 47 },
+        { offsetX: 83, offsetY: 194, width: 107, height: 47 },
+        { offsetX: 101, offsetY: 245, width: 89, height: 41 }
+    ],
+    spriteFacesLeft: true,
+    deathSound: 'bossDeath',
+    music: 'demonMusic',
+    bodyShift: -48,
+    jumpFrames: { windup: [0], up: 1, down: 2, land: [3] }
+};
+
+/**
+ * The demon boss of level two. On top of the sprint and the jump over gaps of the jump boss it fights with a
+ * club: when the character is within reach it swings, the club only hits during a short part of the swing,
+ * and then the demon has to wait before it can swing again.
+ */
+class DemonBoss extends JumpBoss {
+    state = 'patrol';
+    meleeCooldownLeft = 0;
+    hasMeleeHit = false;
+
+    /**
+     * Creates the demon on a map cell, looking to the left, and starts its game loop. It starts on patrol.
+     * @param {number} column - Map column of the demon.
+     * @param {number} row - Map row of the demon.
+     */
+    constructor(column, row){
+        super(column, row, DEMON_BOSS_CONFIG);
+        this.otherDirection = true;
+        this.startAnimation();
+    }
+
+    /**
+     * Returns the update methods of the states, with the club swing added.
+     * @returns {Object&lt;string, function(): void>} The update method of each state.
+     */
+    getStateUpdates(){
+        return { ...super.getStateUpdates(), melee: () => this.updateMelee() };
+    }
+
+    /**
+     * Counts the waiting times of the sprint and of the club swing down by one tick.
+     * @returns {void}
+     */
+    updateCooldowns(){
+        super.updateCooldowns();
+        this.meleeCooldownLeft = tickDown(this.meleeCooldownLeft);
+    }
+
+    /**
+     * Calculates the reach of the demon: its hitbox, extended by two tiles in the direction it looks.
+     * @returns {{x: number, y: number, width: number, height: number}} The reach rectangle.
+     */
+    getMeleeReach(){
+        const BOSS_RECT = this.getHitbox();
+        const REACH_DISTANCE = this.settings.meleeRangeTiles * TILE_SIZE;
+        return { x: this.otherDirection ? BOSS_RECT.x - REACH_DISTANCE : BOSS_RECT.x, y: BOSS_RECT.y, width: BOSS_RECT.width + REACH_DISTANCE, height: BOSS_RECT.height };
+    }
+
+    /**
+     * Starts the club swing if the character is within reach and the waiting time is over.
+     * @returns {boolean} True if the swing was started.
+     */
+    tryStartAttack(){
+        const IN_REACH = areRectsOverlapping(this.world.character.getHitbox(), this.getMeleeReach());
+        if(!IN_REACH || this.meleeCooldownLeft > 0){
+            return false;
+        }
+        this.startMelee();
+        return true;
+    }
+
+    /**
+     * Starts the swing: ends a running sprint, notes that nothing was hit yet, switches to the melee state and
+     * plays the club sound.
+     * @returns {void}
+     */
+    startMelee(){
+        this.sprintTicksLeft = 0;
+        this.hasMeleeHit = false;
+        this.setState('melee');
+        soundManager.playSound('demonClub');
+    }
+
+    /**
+     * Tells whether the club can hit at this moment, which is only in a short part of the swing animation.
+     * @returns {boolean} True during the hit window of the swing.
+     */
+    isMeleeActive(){
+        return this.state === 'melee' &amp;&amp; this.stateTicks >= this.settings.meleeHitStartTick &amp;&amp; this.stateTicks &lt; this.settings.meleeHitEndTick;
+    }
+
+    /**
+     * Runs a tick of the melee state: the demon aims before the hit window, plays the swing once, hits the
+     * character at most once during the hit window, and starts its waiting time and the chase at the end.
+     * @returns {void}
+     */
+    updateMelee(){
+        if(this.stateTicks &lt; this.settings.meleeHitStartTick){
+            this.faceCharacter();
+        }
+        this.showProgressState('melee', this.stateTicks, this.settings.meleeTicks);
+        if(this.isMeleeActive() &amp;&amp; !this.hasMeleeHit){
+            this.hasMeleeHit = this.hitCharacter(this.getBoxRect(DEMON_MELEE_HITBOX), this.settings.meleeDamage);
+        }
+        if(this.stateTicks >= this.settings.meleeTicks){
+            this.meleeCooldownLeft = this.settings.meleeCooldownTicks;
+            this.startChase();
+        }
+    }
+
+    /**
+     * Draws the sight area and, while the club can hit, the club zone, used while debugging.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawDebugArea(ctx){
+        super.drawDebugArea(ctx);
+        if(this.isMeleeActive()){
+            this.drawRect(ctx, this.getBoxRect(DEMON_MELEE_HITBOX), 'orange');
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

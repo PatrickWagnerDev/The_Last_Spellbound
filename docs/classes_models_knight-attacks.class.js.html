@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/knight-attacks.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/knight-attacks.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The attacks of the dark knight, on top of the sprint and the jump over gaps of the jump boss: a thrust
+ * standing and one while walking, a slash upwards and an aura with a long wind-up. Each attack has its own
+ * waiting time. The dark knight builds on it.
+ */
+class KnightAttacks extends JumpBoss {
+    attackName = 'thrust';
+    hasAttackHit = false;
+    lastStep = 0;
+    cooldownsLeft = { thrust: 0, walkThrust: 0, upSlash: 0, aura: 0 };
+
+    /**
+     * Returns the update methods of the states, with the attack state added.
+     * @returns {Object&lt;string, function(): void>} The update method of each state.
+     */
+    getStateUpdates(){
+        return { ...super.getStateUpdates(), attack: () => this.updateAttack() };
+    }
+
+    /**
+     * Counts the waiting times of the sprint and of all four attacks down by one tick.
+     * @returns {void}
+     */
+    updateCooldowns(){
+        super.updateCooldowns();
+        Object.keys(this.cooldownsLeft).forEach(attackName => this.cooldownsLeft[attackName] = tickDown(this.cooldownsLeft[attackName]));
+    }
+
+    /**
+     * Runs when the knight notices the character for the first time: the aura starts with its full waiting
+     * time, so it is not used at once, and the music starts.
+     * @returns {void}
+     */
+    onFirstNotice(){
+        this.cooldownsLeft.aura = this.settings.attacks.aura.cooldownTicks;
+        super.onFirstNotice();
+    }
+
+    /**
+     * Tells whether the waiting time of an attack is over.
+     * @param {string} attackName - 'thrust', 'walkThrust', 'upSlash' or 'aura'.
+     * @returns {boolean} True if the attack may be used.
+     */
+    isReady(attackName){
+        return this.cooldownsLeft[attackName] === 0;
+    }
+
+    /**
+     * Starts an attack if one fits the situation.
+     * @returns {boolean} True if an attack was started.
+     */
+    tryStartAttack(){
+        const NEXT_ATTACK = this.pickAttack();
+        if(!NEXT_ATTACK){
+            return false;
+        }
+        this.startAttack(NEXT_ATTACK);
+        return true;
+    }
+
+    /**
+     * Picks the attack for the situation: the slash upwards if the character is above, the aura if the
+     * character is close, otherwise the thrust in front (standing or walking, depending on whether he moved).
+     * @returns {string|null} The name of the attack, or null if none fits or is ready.
+     */
+    pickAttack(){
+        if(this.isReady('upSlash') &amp;&amp; this.isCharacterAbove()){
+            return 'upSlash';
+        }
+        if(this.isReady('aura') &amp;&amp; this.isCharacterInRadius()){
+            return 'aura';
+        }
+        const FRONT_ATTACK = this.lastStep === 0 ? 'thrust' : 'walkThrust';
+        const IN_FRONT = areRectsOverlapping(this.world.character.getHitbox(), this.getFrontZone(FRONT_ATTACK));
+        return IN_FRONT &amp;&amp; this.isReady(FRONT_ATTACK) ? FRONT_ATTACK : null;
+    }
+
+    /**
+     * Calculates the zone in front of the knight for a thrust: his hitbox, extended forward by the reach of
+     * the attack.
+     * @param {string} attackName - 'thrust' or 'walkThrust'.
+     * @returns {{x: number, y: number, width: number, height: number}} The zone rectangle.
+     */
+    getFrontZone(attackName){
+        const BOSS_RECT = this.getHitbox();
+        const REACH_DISTANCE = this.settings.attacks[attackName].reachTiles * TILE_SIZE;
+        return { x: this.otherDirection ? BOSS_RECT.x - REACH_DISTANCE : BOSS_RECT.x, y: BOSS_RECT.y, width: BOSS_RECT.width + REACH_DISTANCE, height: BOSS_RECT.height };
+    }
+
+    /**
+     * Calculates the zone above the knight for the slash upwards: one tile wider on each side than his hitbox
+     * and as high as the reach of the attack.
+     * @returns {{x: number, y: number, width: number, height: number}} The zone rectangle.
+     */
+    getUpZone(){
+        const BOSS_RECT = this.getHitbox();
+        const REACH_HEIGHT = this.settings.attacks.upSlash.reachTiles * TILE_SIZE;
+        return { x: BOSS_RECT.x - TILE_SIZE, y: BOSS_RECT.y - REACH_HEIGHT, width: BOSS_RECT.width + 2 * TILE_SIZE, height: REACH_HEIGHT };
+    }
+
+    /**
+     * Tells whether the character is above the knight: its feet are at most half a tile below the top of the
+     * knight and it is inside the zone above him.
+     * @returns {boolean} True if the slash upwards fits.
+     */
+    isCharacterAbove(){
+        const CHARACTER_RECT = this.world.character.getHitbox();
+        const IS_ABOVE = CHARACTER_RECT.y + CHARACTER_RECT.height &lt;= this.getHitbox().y + TILE_SIZE / 2;
+        return IS_ABOVE &amp;&amp; areRectsOverlapping(CHARACTER_RECT, this.getUpZone());
+    }
+
+    /**
+     * Tells whether the character is inside the radius of the aura: the nearest point of its contact box is
+     * not further from the middle of the knight than the reach.
+     * @returns {boolean} True if the aura can hit.
+     */
+    isCharacterInRadius(){
+        const BOSS_RECT = this.getHitbox();
+        const CHARACTER_RECT = this.world.character.getContactRect();
+        const CENTER_X = getRectCenterX(BOSS_RECT);
+        const CENTER_Y = BOSS_RECT.y + BOSS_RECT.height / 2;
+        const NEAR_X = clampValue(CENTER_X, CHARACTER_RECT.x, CHARACTER_RECT.x + CHARACTER_RECT.width);
+        const NEAR_Y = clampValue(CENTER_Y, CHARACTER_RECT.y, CHARACTER_RECT.y + CHARACTER_RECT.height);
+        return Math.hypot(NEAR_X - CENTER_X, NEAR_Y - CENTER_Y) &lt;= this.settings.attacks.aura.reachTiles * TILE_SIZE;
+    }
+
+    /**
+     * Starts an attack: notes its name, ends a running sprint unless it is the walking thrust, switches to the
+     * attack state and plays the sound of the attack.
+     * @param {string} attackName - 'thrust', 'walkThrust', 'upSlash' or 'aura'.
+     * @returns {void}
+     */
+    startAttack(attackName){
+        this.attackName = attackName;
+        this.hasAttackHit = false;
+        if(attackName !== 'walkThrust'){
+            this.sprintTicksLeft = 0;
+        }
+        this.speed = this.isSprinting() ? this.settings.sprintSpeed : this.settings.speed;
+        this.setState('attack');
+        attackName === 'aura' ? soundManager.playSound('bossRay') : soundManager.playSound('knightSwing', this.settings.attackSoundRate, false);
+    }
+
+    /**
+     * Tells whether the current attack can hit at this moment, which is only in the hit window of its animation.
+     * @returns {boolean} True during the hit window.
+     */
+    isAttackActive(){
+        const ATTACK_DATA = this.settings.attacks[this.attackName];
+        return this.state === 'attack' &amp;&amp; this.stateTicks >= ATTACK_DATA.hitStartTick &amp;&amp; this.stateTicks &lt; ATTACK_DATA.hitEndTick;
+    }
+
+    /**
+     * Runs a tick of the attack state: moves the attack on, plays its animation once, hits once during the hit
+     * window and ends the attack when its time is over.
+     * @returns {void}
+     */
+    updateAttack(){
+        const ATTACK_DATA = this.settings.attacks[this.attackName];
+        this.advanceAttack(ATTACK_DATA);
+        this.showProgressState(this.attackName, this.stateTicks, ATTACK_DATA.ticks);
+        if(this.isAttackActive() &amp;&amp; !this.hasAttackHit){
+            this.hasAttackHit = this.hitWithAttack(ATTACK_DATA);
+        }
+        this.finishAttack(ATTACK_DATA);
+    }
+
+    /**
+     * Handles the movement during an attack: the knight looks at the character before the hit window, and the
+     * walking thrust moves him forward unless there is a gap ahead.
+     * @param {object} attack - Settings of the current attack.
+     * @returns {void}
+     */
+    advanceAttack(attack){
+        if(this.stateTicks &lt; attack.hitStartTick){
+            this.faceCharacter();
+        }
+        if(this.attackName === 'walkThrust' &amp;&amp; this.getGapAhead() === 0){
+            this.moveForward();
+        }
+    }
+
+    /**
+     * Ends the attack when its time is over: starts its waiting time and goes back to chasing.
+     * @param {object} attack - Settings of the current attack.
+     * @returns {void}
+     */
+    finishAttack(attack){
+        if(this.stateTicks >= attack.ticks){
+            this.cooldownsLeft[this.attackName] = attack.cooldownTicks;
+            this.startChase();
+        }
+    }
+
+    /**
+     * Hits the character with the current attack: the aura if the character is inside the radius, any other
+     * attack if its zone touches the character.
+     * @param {object} attack - Settings of the current attack, with its damage.
+     * @returns {boolean} True if the character was hit.
+     */
+    hitWithAttack(attack){
+        if(this.attackName === 'aura'){
+            return this.isCharacterInRadius() &amp;&amp; this.hurtCharacter(attack.damage);
+        }
+        return this.hitCharacter(this.getAttackZone(), attack.damage);
+    }
+
+    /**
+     * Returns the hit zone of the current attack: the zone above him for the slash upwards, otherwise the
+     * zone in front of him.
+     * @returns {{x: number, y: number, width: number, height: number}} The zone rectangle.
+     */
+    getAttackZone(){
+        return this.attackName === 'upSlash' ? this.getUpZone() : this.getFrontZone(this.attackName);
+    }
+
+    /**
+     * Draws the sight area and, while an attack can hit, its hit zone or the circle of the aura, used while
+     * debugging.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawDebugArea(ctx){
+        super.drawDebugArea(ctx);
+        if(!this.isAttackActive()){
+            return;
+        }
+        if(this.attackName === 'aura'){
+            this.drawAuraCircle(ctx);
+        } else {
+            this.drawRect(ctx, this.getAttackZone(), 'orange');
+        }
+    }
+
+    /**
+     * Draws the radius of the aura as an orange circle around the middle of the knight, used while debugging.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawAuraCircle(ctx){
+        const BOSS_RECT = this.getHitbox();
+        ctx.strokeStyle = 'orange';
+        ctx.beginPath();
+        ctx.arc(getRectCenterX(BOSS_RECT), BOSS_RECT.y + BOSS_RECT.height / 2, this.settings.attacks.aura.reachTiles * TILE_SIZE, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

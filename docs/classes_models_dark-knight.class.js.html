@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/dark-knight.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/dark-knight.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const DARK_KNIGHT_SPRITES = {
+    idle: { path: './assets/image/05-mega-boss/1/Idle.png', frames: 8 },
+    walk: { path: './assets/image/05-mega-boss/1/Walk.png', frames: 8 },
+    run: { path: './assets/image/05-mega-boss/1/Run.png', frames: 8 },
+    jump: { path: './assets/image/05-mega-boss/1/Jump.png', frames: 8 },
+    thrust: { path: './assets/image/05-mega-boss/1/Attack.png', frames: 8 },
+    walkThrust: { path: './assets/image/05-mega-boss/1/Walk_Attack.png', frames: 8 },
+    upSlash: { path: './assets/image/05-mega-boss/1/Attack3.png', frames: 8 },
+    aura: { path: './assets/image/05-mega-boss/1/Special.png', frames: 8 },
+    hurt: { path: './assets/image/05-mega-boss/1/Hurt.png', frames: 2 },
+    death: { path: './assets/image/05-mega-boss/1/Death.png', frames: 8 }
+};
+
+const JUMP_ALIGN_TOLERANCE = 4;
+
+const DARK_KNIGHT_CONFIG = {
+    settings: GAME_SETTINGS.darkKnight,
+    sprites: DARK_KNIGHT_SPRITES,
+    frameSize: 256,
+    hitbox: { offsetX: 104, offsetY: 134, width: 48, height: 120 },
+    hurtboxes: [
+        { offsetX: 117, offsetY: 162, width: 30, height: 24 },
+        { offsetX: 108, offsetY: 190, width: 39, height: 35 },
+        { offsetX: 114, offsetY: 229, width: 30, height: 25 }
+    ],
+    spriteFacesLeft: false,
+    deathSound: 'bossDeath',
+    music: 'knightMusic',
+    bodyShift: 5,
+    jumpFrames: { windup: [0, 1, 2], up: 3, apex: 4, down: 5, land: [6, 7] }
+};
+
+/**
+ * The dark knight, the boss of level three. On top of the attacks he chases at once without a sneer, follows
+ * the character onto platforms with the map of ways, walks back to the ground when he has lost the character
+ * and makes a sound with his steps.
+ */
+class DarkKnight extends KnightAttacks {
+    lastStepFrame = -1;
+    currentNode = null;
+    afterJumpState = 'chase';
+
+    /**
+     * Creates the dark knight on a map cell, looking to the left, and starts his game loop.
+     * @param {number} column - Map column of the knight.
+     * @param {number} row - Map row of the knight.
+     */
+    constructor(column, row){
+        super(column, row, DARK_KNIGHT_CONFIG);
+        this.otherDirection = true;
+        this.startAnimation();
+    }
+
+    /**
+     * Returns the update methods of the states, with the way back to the ground added.
+     * @returns {Object&lt;string, function(): void>} The update method of each state.
+     */
+    getStateUpdates(){
+        return { ...super.getStateUpdates(), return: () => this.updateReturn() };
+    }
+
+    /**
+     * Runs the behavior of one tick: finds the standing place, runs the boss behavior, remembers how far the
+     * knight moved and plays the step sound.
+     * @returns {void}
+     */
+    updateBehavior(){
+        const START_X = this.x;
+        this.updateNode();
+        super.updateBehavior();
+        this.lastStep = this.x - START_X;
+        this.playStepSound();
+    }
+
+    /**
+     * Plays the step sound at the frames in which a foot touches the ground, only while the knight really
+     * moves. During the sprint it plays faster.
+     * @returns {void}
+     */
+    playStepSound(){
+        const IS_RUNNING = this.currentPath === DARK_KNIGHT_SPRITES.run.path;
+        const IS_STEPPING = this.lastStep !== 0 &amp;&amp; (IS_RUNNING || this.currentPath === DARK_KNIGHT_SPRITES.walk.path);
+        const IS_NEW_FRAME = this.currentFrame !== this.lastStepFrame;
+        this.lastStepFrame = this.currentFrame;
+        if(IS_STEPPING &amp;&amp; IS_NEW_FRAME &amp;&amp; this.settings.stepFrames.includes(this.currentFrame)){
+            soundManager.playSound('knightStep', IS_RUNNING ? this.settings.sprintStepRate : 1);
+        }
+    }
+
+    /**
+     * Replaces the sneer: the knight does not sneer, he looks at the character, notes that he has noticed it
+     * and starts to chase at once.
+     * @returns {void}
+     */
+    startSneer(){
+        this.faceCharacter();
+        this.markNoticed();
+        this.startChase();
+    }
+
+    /**
+     * Returns the map of ways of the knight. It is built at the first use, because it needs the level of the
+     * world, and then it is reused.
+     * @returns {PlatformNav} The map of ways.
+     */
+    getNav(){
+        this.platformNav ??= new PlatformNav(this.world.level, this.settings);
+        return this.platformNav;
+    }
+
+    /**
+     * Keeps track of the standing place of the knight. It is only updated on the ground, in the air the last
+     * place stays.
+     * @returns {void}
+     */
+    updateNode(){
+        if(!this.onGround){
+            return;
+        }
+        const FOUND_NODE = this.getNav().getNodeAt(getRectCenterX(this.getHitbox()), this.y + this.height);
+        this.currentNode = FOUND_NODE ?? this.currentNode;
+    }
+
+    /**
+     * Walks towards the character along the cheapest way of the map of ways. If there is no way he walks
+     * towards the character like any jump boss.
+     * @returns {void}
+     */
+    walkTowardCharacter(){
+        const GOAL_NODE = this.getNav().getGoalNode(this.world.character.getHitbox());
+        const PATH_STEP = GOAL_NODE &amp;&amp; this.getNav().findNextStep(this.currentNode, GOAL_NODE);
+        if(PATH_STEP){
+            this.followStep(PATH_STEP, true);
+        } else {
+            super.walkTowardCharacter();
+        }
+    }
+
+    /**
+     * Follows one step of the map of ways: a jump starts when the knight stands at its take-off point,
+     * otherwise he turns in the direction of the step and moves one step.
+     * @param {object} step - A way of the map: walk, fall or jump, with its direction.
+     * @param {boolean} canSprint - True if he may sprint on a walk step.
+     * @returns {void}
+     */
+    followStep(step, canSprint){
+        const CENTER_X = getRectCenterX(this.getHitbox());
+        if(step.kind === 'jump' &amp;&amp; Math.abs(CENTER_X - step.takeoffX) &lt;= JUMP_ALIGN_TOLERANCE){
+            this.otherDirection = step.direction &lt; 0;
+            this.afterJumpState = this.state;
+            this.setState('jump');
+            return;
+        }
+        this.otherDirection = this.getStepDirection(step, CENTER_X) &lt; 0;
+        this.speed = this.getStepSpeed(step, canSprint);
+        this.showMoveAnimation();
+        this.moveForward();
+    }
+
+    /**
+     * Returns the direction to the next step: towards the take-off point for a jump, the direction of the step
+     * itself otherwise.
+     * @param {object} step - A way of the map.
+     * @param {number} centerX - Horizontal middle of the knight.
+     * @returns {number} -1 for left, 1 for right, 0 if he is exactly at the take-off point.
+     */
+    getStepDirection(step, centerX){
+        return step.kind === 'jump' ? Math.sign(step.takeoffX - centerX) : step.direction;
+    }
+
+    /**
+     * Returns the speed for a step. He sprints only on a walk step when it is allowed, otherwise a running
+     * sprint ends first, so he never sprints into a jump or a fall.
+     * @param {object} step - A way of the map.
+     * @param {boolean} canSprint - True if he may sprint.
+     * @returns {number} The speed in pixels per tick.
+     */
+    getStepSpeed(step, canSprint){
+        if(step.kind !== 'walk' || !canSprint){
+            this.endSprint();
+            return this.settings.speed;
+        }
+        this.updateSprint();
+        return this.isSprinting() ? this.settings.sprintSpeed : this.settings.speed;
+    }
+
+    /**
+     * Tells whether the knight stands in the lowest row, which means on the ground and not on a platform.
+     * @returns {boolean} True if his standing place is in the lowest row.
+     */
+    isOnBottomLevel(){
+        return this.currentNode?.row === this.getNav().bottomRow;
+    }
+
+    /**
+     * Runs when the knight has lost the character: on the ground he patrols, on a platform he first goes back
+     * to the ground.
+     * @returns {void}
+     */
+    loseSight(){
+        if(this.isOnBottomLevel()){
+            super.loseSight();
+        } else {
+            this.setState('return');
+        }
+    }
+
+    /**
+     * Runs a tick of the return state: the knight chases again if he sees the character, otherwise he follows
+     * the way to the ground without sprinting, or patrols if there is none.
+     * @returns {void}
+     */
+    updateReturn(){
+        const RETURN_STEP = this.getNav().findNextStep(this.currentNode, 'ground');
+        if(this.isCharacterInSight()){
+            this.startSneer();
+        } else if(RETURN_STEP){
+            this.followStep(RETURN_STEP, false);
+        } else {
+            super.loseSight();
+        }
+    }
+
+    /**
+     * Runs when a jump has ended: back to the return state if the jump was part of the way to the ground,
+     * otherwise the chase goes on.
+     * @returns {void}
+     */
+    endJump(){
+        if(this.afterJumpState === 'return'){
+            this.setState('return');
+        } else {
+            super.endJump();
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

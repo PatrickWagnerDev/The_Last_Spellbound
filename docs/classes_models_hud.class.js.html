@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/hud.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/hud.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const IMAGE_HEALTH_EMPTY = './assets/image/09-ui/2 Bars/Healthbar_empty.png';
+const IMAGE_HEALTH_FULL = './assets/image/09-ui/2 Bars/Healthbar_full.png';
+const IMAGE_ENERGY_EMPTY = './assets/image/09-ui/2 Bars/Energybar_empty.png';
+const IMAGE_ENERGY_FULL = './assets/image/09-ui/2 Bars/Energybar_full.png';
+
+/**
+ * The display over the game: health and energy bar of the character, one key symbol per key and the
+ * small health bars over the head of the boss. It belongs to the world, which draws it every frame.
+ */
+class Hud {
+    world;
+    barInterval;
+    keyIcon = this.createKeyIcon();
+    energyBar = new StatusBar(IMAGE_ENERGY_EMPTY, IMAGE_ENERGY_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.energyBarY, { blink: false });
+    healthBar = new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, GAME_SETTINGS.ui.statusBarX, GAME_SETTINGS.ui.statusBarY);
+    bossBars = [];
+
+    /**
+     * Creates the display for a world and starts its blink timer.
+     * @param {World} world - The world this display belongs to.
+     */
+    constructor(world){
+        this.world = world;
+        this.startBarTimer();
+    }
+
+    /**
+     * Creates the key symbol that is drawn once for every key of the character.
+     * @returns {DrawableObject} The key symbol with its size and its vertical position.
+     */
+    createKeyIcon(){
+        const KEY_ICON = new DrawableObject();
+        KEY_ICON.loadImage(IMAGE_KEY);
+        KEY_ICON.frameWidth = 16;
+        KEY_ICON.frameHeight = 16;
+        KEY_ICON.width = 16 * GAME_SETTINGS.ui.keyIconScale;
+        KEY_ICON.height = 16 * GAME_SETTINGS.ui.keyIconScale;
+        KEY_ICON.y = GAME_SETTINGS.ui.keyIconY;
+        return KEY_ICON;
+    }
+
+    /**
+     * Creates the small health bars of the boss, one for every few health points.
+     * @param {number} maxHealth - Maximum health of the boss.
+     * @returns {StatusBar[]} The bars, in the order from the first health points to the last.
+     */
+    createBossBars(maxHealth){
+        const BAR_COUNT = maxHealth / GAME_SETTINGS.ui.bossBarHealthPerBar;
+        const BAR_OPTIONS = { scale: GAME_SETTINGS.ui.bossBarScale };
+        return Array.from({ length: BAR_COUNT }, () => new StatusBar(IMAGE_HEALTH_EMPTY, IMAGE_HEALTH_FULL, 0, 0, BAR_OPTIONS));
+    }
+
+    /**
+     * Returns all bars of the display.
+     * @returns {StatusBar[]} Health bar, energy bar and the boss bars.
+     */
+    getBars(){
+        return [this.healthBar, this.energyBar, ...this.bossBars];
+    }
+
+    /**
+     * Starts the timer that updates the bars 60 times per second.
+     * @returns {void}
+     */
+    startBarTimer(){
+        this.barInterval = setInterval(() => this.updateBars(), 1000 / TICKS_PER_SECOND);
+    }
+
+    /**
+     * Counts the blink time of all bars down by one tick, except while the game is paused.
+     * @returns {void}
+     */
+    updateBars(){
+        if(!this.world.isPaused){
+            this.getBars().forEach(bar => bar.updateBlink());
+        }
+    }
+
+    /**
+     * Stops the timer of the display.
+     * @returns {void}
+     */
+    stopTimer(){
+        clearInterval(this.barInterval);
+    }
+
+    /**
+     * Draws the whole display: health and energy bar, key symbols and boss bars. Draws nothing once the game
+     * has ended.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawHud(ctx){
+        if(this.world.isGameEnded){
+            return;
+        }
+        const PLAYER_CHARACTER = this.world.character;
+        this.healthBar.setValue(PLAYER_CHARACTER.health, PLAYER_CHARACTER.maxHealth);
+        this.healthBar.drawObject(ctx);
+        this.energyBar.setValue(PLAYER_CHARACTER.energy, PLAYER_CHARACTER.maxEnergy);
+        this.energyBar.drawObject(ctx);
+        this.drawKeyIcons(ctx);
+        this.drawBossBars(ctx);
+    }
+
+    /**
+     * Draws one key symbol for every key the character carries, side by side.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawKeyIcons(ctx){
+        for(let keyIndex = 0; keyIndex &lt; this.world.character.keyCount; keyIndex++){
+            this.keyIcon.x = GAME_SETTINGS.ui.statusBarX + keyIndex * GAME_SETTINGS.ui.keyIconSpacing;
+            this.keyIcon.drawObject(ctx);
+        }
+    }
+
+    /**
+     * Returns the distance from one boss bar to the next one in a row.
+     * @returns {number} Width of a bar plus the gap, in pixels.
+     */
+    getBossBarStep(){
+        return this.bossBars[0].width + GAME_SETTINGS.ui.bossBarGap;
+    }
+
+    /**
+     * Returns how many boss bars stand in one row.
+     * @returns {number} The configured number per row, or fewer if the boss has fewer bars.
+     */
+    getBarsPerRow(){
+        return Math.min(GAME_SETTINGS.ui.bossBarsPerRow, this.bossBars.length);
+    }
+
+    /**
+     * Calculates where the boss bars of a row start on the screen so that the row is centered over the boss.
+     * @param {Boss} boss - The boss the bars belong to.
+     * @returns {number} Horizontal screen position of the first bar of a row.
+     */
+    getBossBarsStartX(boss){
+        const BARS_WIDTH = this.getBarsPerRow() * this.getBossBarStep() - GAME_SETTINGS.ui.bossBarGap;
+        return getRectCenterX(boss.getHitbox()) - Math.round(this.world.cameraX) - BARS_WIDTH / 2;
+    }
+
+    /**
+     * Draws the boss bars over the head of the boss. They appear when the boss has noticed the character or
+     * was hurt, and disappear when it is dead. They are drawn slightly transparent.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawBossBars(ctx){
+        const BOSS_ENEMY = this.world.findBoss();
+        if(!BOSS_ENEMY || BOSS_ENEMY.isDead() || (!BOSS_ENEMY.hasNoticed &amp;&amp; BOSS_ENEMY.health === BOSS_ENEMY.maxHealth)){
+            return;
+        }
+        if(this.bossBars.length === 0){
+            this.bossBars = this.createBossBars(BOSS_ENEMY.maxHealth);
+        }
+        ctx.globalAlpha = GAME_SETTINGS.ui.bossBarAlpha;
+        this.bossBars.forEach((bar, barIndex) => this.drawBossBar(ctx, bar, BOSS_ENEMY, barIndex));
+        ctx.globalAlpha = 1;
+    }
+
+    /**
+     * Places one boss bar over the boss, sets its value and draws it. The bars empty one after the other,
+     * starting with the top row.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @param {StatusBar} bar - The bar to draw.
+     * @param {Boss} boss - The boss the bar belongs to.
+     * @param {number} barIndex - Index of the bar, 0 is the first one with the first health points.
+     * @returns {void}
+     */
+    drawBossBar(ctx, bar, boss, barIndex){
+        const HEALTH_PER_BAR = GAME_SETTINGS.ui.bossBarHealthPerBar;
+        const ROW_COUNT = Math.ceil(this.bossBars.length / this.getBarsPerRow());
+        const ROW_INDEX = ROW_COUNT - 1 - Math.floor(barIndex / this.getBarsPerRow());
+        const TOP_Y = boss.getHitbox().y - GAME_SETTINGS.ui.bossBarGapAbove - ROW_COUNT * (bar.height + GAME_SETTINGS.ui.bossBarGap);
+        bar.x = Math.round(this.getBossBarsStartX(boss) + (barIndex % this.getBarsPerRow()) * this.getBossBarStep());
+        bar.y = Math.round(Math.max(TOP_Y, GAME_SETTINGS.ui.bossBarMinY) + ROW_INDEX * (bar.height + GAME_SETTINGS.ui.bossBarGap));
+        bar.setValue(clampValue(boss.health - barIndex * HEALTH_PER_BAR, 0, HEALTH_PER_BAR), HEALTH_PER_BAR);
+        bar.drawObject(ctx);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

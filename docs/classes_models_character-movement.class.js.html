@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/character-movement.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/character-movement.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Movement of the character: walking with the keys, jumping with crouch, flight and landing, the short extra
+ * time to jump after leaving a platform, and counting the time without input. It is the lowest of the three
+ * classes that make up the character, the actions (CharacterActions) and the whole character (Character)
+ * build on it.
+ */
+class CharacterMovement extends MovableObject{
+    settings = GAME_SETTINGS.character;
+    width = this.settings.width;
+    height = this.settings.height;
+    speed = this.settings.speed;
+    jumpPhase = 'none';
+    coyoteTicksLeft = 0;
+    phaseTicks = 0;
+    idleTicks = 0;
+    previousKeys = {};
+
+    /**
+     * Places the character on the start cell of the level, with its feet on the bottom edge of the cell.
+     * @param {{column: number, row: number}} start - Start cell from the map.
+     * @returns {void}
+     */
+    placeAt(start){
+        this.x = start.column * TILE_SIZE;
+        this.y = (start.row + 1) * TILE_SIZE - this.height;
+    }
+
+    /**
+     * Sets the walking speed: the normal one on the ground, a faster one in the air.
+     * @returns {void}
+     */
+    updateSpeed(){
+        this.speed = this.onGround ? this.settings.speed : this.settings.speed * this.settings.airSpeedFactor;
+    }
+
+    /**
+     * Tells whether the left or the right key is pressed.
+     * @returns {boolean} True if the player wants to walk.
+     */
+    isWalking(){
+        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+    }
+
+    /**
+     * Tells whether the jump key (up arrow or space) is pressed.
+     * @returns {boolean} True if the player wants to jump.
+     */
+    wantsJump(){
+        return this.world.keyboard.UP || this.world.keyboard.SPACE;
+    }
+
+    /**
+     * Tells whether the player is giving any input. Subclasses add more inputs.
+     * @returns {boolean} True if the player walks or wants to jump.
+     */
+    hasInput(){
+        return this.isWalking() || this.wantsJump();
+    }
+
+    /**
+     * Tells whether a key was pressed just now, which means it was not pressed at the last call. It remembers
+     * the state of the key, so it has to be called once per tick and key.
+     * @param {string} keyName - Name of the key in the keyboard, for example 'UP' or 'SHOOT'.
+     * @returns {boolean} True only at the first tick of a press.
+     */
+    isNewPress(keyName){
+        const IS_PRESSED = this.world.keyboard[keyName];
+        const IS_NEW = IS_PRESSED &amp;&amp; !this.previousKeys[keyName];
+        this.previousKeys[keyName] = IS_PRESSED;
+        return IS_NEW;
+    }
+
+    /**
+     * Tells whether walking with the keys is blocked, which is the case while crouching before a jump and
+     * while landing. Subclasses add more states.
+     * @returns {boolean} True if the keys do not move the character.
+     */
+    isMovementLocked(){
+        return this.jumpPhase === 'crouch' || this.jumpPhase === 'land';
+    }
+
+    /**
+     * Tells whether the character stands on the ground and is not in any jump phase. Subclasses add more
+     * conditions.
+     * @returns {boolean} True if a new jump may start with the crouch.
+     */
+    isReadyOnGround(){
+        return this.onGround &amp;&amp; this.jumpPhase === 'none';
+    }
+
+    /**
+     * Tells whether the character is busy with an action. Subclasses override it, it is always false here.
+     * @returns {boolean} True if the idle time must not count.
+     */
+    isBusy(){
+        return false;
+    }
+
+    /**
+     * Tells whether the character may still jump a moment after it left a platform. Subclasses add conditions.
+     * @returns {boolean} True while the grace time runs and the character is in the air.
+     */
+    isInCoyoteTime(){
+        return this.coyoteTicksLeft > 0 &amp;&amp; this.jumpPhase === 'air';
+    }
+
+    /**
+     * Tells whether a jump may start now.
+     * @returns {boolean} True if the character is ready on the ground or in the grace time.
+     */
+    canJump(){
+        return this.isReadyOnGround() || this.isInCoyoteTime();
+    }
+
+    /**
+     * Moves the character with the arrow keys and turns it in the direction of the key, unless the movement
+     * is locked.
+     * @returns {void}
+     */
+    moveByKeyboard(){
+        if(this.isMovementLocked()){
+            return;
+        }
+        if(this.world.keyboard.RIGHT){
+            this.moveRight();
+            this.otherDirection = false;
+        }
+        if(this.world.keyboard.LEFT){
+            this.moveLeft();
+            this.otherDirection = true;
+        }
+    }
+
+    /**
+     * Keeps the character inside the level between the left wall and the end of the level.
+     * @returns {void}
+     */
+    limitToWall(){
+        const MAX_X = this.world.level.width - this.width + this.settings.rightWallOffset;
+        this.x = clampValue(this.x, this.settings.leftWallX, MAX_X);
+    }
+
+    /**
+     * Starts a jump if the jump key is pressed and a jump is possible.
+     * @returns {void}
+     */
+    handleJump(){
+        if(this.wantsJump() &amp;&amp; this.canJump()){
+            this.startJump();
+        }
+    }
+
+    /**
+     * Starts a jump: with the crouch if the character stands on the ground, at once if it is already in the
+     * air in the grace time.
+     * @returns {void}
+     */
+    startJump(){
+        if(this.isReadyOnGround()){
+            this.startPhase('crouch');
+        } else {
+            this.launchJump();
+        }
+    }
+
+    /**
+     * Keeps the grace time up to date: it is full on the ground and counts down in the air.
+     * @returns {void}
+     */
+    updateCoyoteTime(){
+        this.coyoteTicksLeft = this.onGround ? this.settings.coyoteTicks : tickDown(this.coyoteTicksLeft);
+    }
+
+    /**
+     * Switches to a jump phase and restarts its tick counter.
+     * @param {string} phaseName - 'none', 'crouch', 'air' or 'land'.
+     * @returns {void}
+     */
+    startPhase(phaseName){
+        this.jumpPhase = phaseName;
+        this.phaseTicks = 0;
+    }
+
+    /**
+     * Makes the character take off: sets the upward speed, ends the grace time, switches to the air phase and
+     * plays the jump sound.
+     * @returns {void}
+     */
+    launchJump(){
+        this.speedY = this.settings.jumpSpeed;
+        this.coyoteTicksLeft = 0;
+        this.startPhase('air');
+        soundManager.playSound('jump');
+    }
+
+    /**
+     * Starts the landing phase and plays the landing sound.
+     * @returns {void}
+     */
+    startLanding(){
+        this.startPhase('land');
+        soundManager.playSound('land');
+    }
+
+    /**
+     * Runs one tick of the jump sequence: crouch, take-off, flight, landing, and back to no phase.
+     * @returns {void}
+     */
+    updateJumpPhase(){
+        this.phaseTicks++;
+        if(!this.onGround &amp;&amp; this.jumpPhase !== 'air'){
+            this.startPhase('air');
+        } else if(this.jumpPhase === 'crouch' &amp;&amp; this.phaseTicks >= this.settings.crouchTicks){
+            this.launchJump();
+        } else if(this.jumpPhase === 'air' &amp;&amp; this.onGround){
+            this.startLanding();
+        } else if(this.jumpPhase === 'land' &amp;&amp; this.phaseTicks >= this.settings.landTicks){
+            this.startPhase('none');
+        }
+    }
+
+    /**
+     * Picks the jump picture for the current phase: the crouch and landing pictures follow the time of the
+     * phase, in the air the picture depends on the flight.
+     * @returns {number} Index of the frame in the jump sprite sheet.
+     */
+    getJumpFrame(){
+        const JUMP_FRAMES = this.traits.jumpFrames;
+        if(this.jumpPhase === 'crouch'){
+            return JUMP_FRAMES.crouch[getProgressFrame(this.phaseTicks, this.settings.crouchTicks, JUMP_FRAMES.crouch.length)];
+        }
+        if(this.jumpPhase === 'land'){
+            return JUMP_FRAMES.land[getProgressFrame(this.phaseTicks, this.settings.landTicks, JUMP_FRAMES.land.length)];
+        }
+        return this.getAirFrame();
+    }
+
+    /**
+     * Picks the picture for the flight: rising, at the top or falling.
+     * @returns {number} Index of the frame in the jump sprite sheet.
+     */
+    getAirFrame(){
+        return pickAirFrame(this.traits.jumpFrames, this.speedY, this.settings.apexSpeed);
+    }
+
+    /**
+     * Counts the ticks without input, the counter restarts at any input, jump phase or action.
+     * @returns {void}
+     */
+    updateIdleTicks(){
+        if(this.hasInput() || this.jumpPhase !== 'none' || this.isBusy()){
+            this.idleTicks = 0;
+        } else {
+            this.idleTicks++;
+        }
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

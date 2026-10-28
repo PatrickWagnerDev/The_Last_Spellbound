@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/jump-boss.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/jump-boss.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const APEX_SPEED_LIMIT = 2;
+
+/**
+ * Base class of the demon and, through the knight attacks, of the dark knight. On top of the boss behavior it
+ * adds the sprint, which makes the boss faster for a while, and the jump over gaps, and it stops at edges it
+ * cannot jump over.
+ */
+class JumpBoss extends Boss {
+    sprintCooldownLeft = 0;
+    sprintTicksLeft = 0;
+    landTicks = 0;
+
+    /**
+     * Builds the boss and remembers which frames of the jump sprite sheet belong to which jump phase.
+     * @param {number} column - Map column of the boss.
+     * @param {number} row - Map row of the boss.
+     * @param {object} config - Config of the boss type, including its jump frames.
+     */
+    constructor(column, row, config){
+        super(column, row, config);
+        this.jumpFrames = config.jumpFrames;
+    }
+
+    /**
+     * Returns the update methods of the states, with the jump state added.
+     * @returns {Object&lt;string, function(): void>} The update method of each state.
+     */
+    getStateUpdates(){
+        return { ...super.getStateUpdates(), jump: () => this.updateJump() };
+    }
+
+    /**
+     * Counts the waiting time until the next sprint down by one tick.
+     * @returns {void}
+     */
+    updateCooldowns(){
+        this.sprintCooldownLeft = tickDown(this.sprintCooldownLeft);
+    }
+
+    /**
+     * Reacts to a hit with the normal knockback, except during a jump.
+     * @param {MovableObject} source - The object that caused the hit.
+     * @returns {void}
+     */
+    reactToHit(source){
+        if(this.state !== 'jump'){
+            super.reactToHit(source);
+        }
+    }
+
+    /**
+     * Tells whether the boss is sprinting.
+     * @returns {boolean} True while the sprint time has not run out.
+     */
+    isSprinting(){
+        return this.sprintTicksLeft > 0;
+    }
+
+    /**
+     * Measures the gap ahead of the boss in tiles, counting up to one more than it can jump.
+     * @returns {number} 0 if there is ground ahead, otherwise the width of the gap in tiles, which is one
+     * above the jump limit if the gap is too wide.
+     */
+    getGapAhead(){
+        const PROBE_Y = this.y + this.height + 1;
+        let gapTiles = 0;
+        while(gapTiles &lt;= this.settings.maxJumpGapTiles &amp;&amp; !this.world.level.isWalkableAt(this.getProbeX(EDGE_PROBE_DISTANCE + gapTiles * TILE_SIZE), PROBE_Y)){
+            gapTiles++;
+        }
+        return gapTiles;
+    }
+
+    /**
+     * Tells whether the boss has to turn around: there is a gap ahead.
+     * @returns {boolean} True if a gap lies ahead.
+     */
+    shouldTurn(){
+        return this.getGapAhead() > 0;
+    }
+
+    /**
+     * Patrols like any boss, always at the normal walking speed.
+     * @returns {void}
+     */
+    updatePatrol(){
+        this.speed = this.settings.speed;
+        super.updatePatrol();
+    }
+
+    /**
+     * Runs when the boss has lost the character: it looks to the side where the character vanished and
+     * patrols at once.
+     * @returns {void}
+     */
+    loseSight(){
+        this.otherDirection = this.vanishSide > 0;
+        this.setState('patrol');
+    }
+
+    /**
+     * Walks towards the character depending on the gap ahead: it walks if there is ground, jumps over a gap
+     * it can jump and waits at the edge of a gap that is too wide.
+     * @returns {void}
+     */
+    walkTowardCharacter(){
+        const GAP_TILES = this.getGapAhead();
+        if(GAP_TILES === 0){
+            this.moveTowardCharacter();
+        } else if(GAP_TILES &lt;= this.settings.maxJumpGapTiles){
+            this.setState('jump');
+        } else {
+            this.waitAtEdge();
+        }
+    }
+
+    /**
+     * Stands at an edge it cannot cross: it shows the move animation without moving and lets a running sprint
+     * run out.
+     * @returns {void}
+     */
+    waitAtEdge(){
+        this.showMoveAnimation();
+        if(this.isSprinting()){
+            this.updateSprint();
+        }
+    }
+
+    /**
+     * Walks or sprints one step towards the character, unless it is already very close.
+     * @returns {void}
+     */
+    moveTowardCharacter(){
+        if(Math.abs(this.getCharacterOffset()) &lt;= 4){
+            this.showLoopState('walk', this.settings.animationFps);
+            return;
+        }
+        this.updateSprint();
+        this.speed = this.isSprinting() ? this.settings.sprintSpeed : this.settings.speed;
+        this.showMoveAnimation();
+        this.moveForward();
+    }
+
+    /**
+     * Shows the sprint animation while sprinting and the walk animation otherwise.
+     * @returns {void}
+     */
+    showMoveAnimation(){
+        const IS_SPRINTING = this.isSprinting();
+        this.showLoopState(IS_SPRINTING ? 'run' : 'walk', IS_SPRINTING ? this.settings.sprintFps : this.settings.animationFps);
+    }
+
+    /**
+     * Runs one tick of the sprint: counts it down and starts the waiting time when it ends, or starts a new
+     * sprint if the waiting time is over and the character is far enough away.
+     * @returns {void}
+     */
+    updateSprint(){
+        if(this.isSprinting()){
+            this.sprintTicksLeft--;
+            this.sprintCooldownLeft = this.sprintTicksLeft === 0 ? this.settings.sprintCooldownTicks : 0;
+        } else if(this.sprintCooldownLeft === 0 &amp;&amp; Math.abs(this.getCharacterOffset()) > this.settings.sprintMinTiles * TILE_SIZE){
+            this.sprintTicksLeft = this.settings.sprintTicks;
+        }
+    }
+
+    /**
+     * Ends a running sprint at once and starts the waiting time until the next one.
+     * @returns {void}
+     */
+    endSprint(){
+        if(this.isSprinting()){
+            this.sprintTicksLeft = 0;
+            this.sprintCooldownLeft = this.settings.sprintCooldownTicks;
+        }
+    }
+
+    /**
+     * Hurts the character if it can be hurt.
+     * @param {number} damage - Damage to deal.
+     * @returns {boolean} True if the character was hit.
+     */
+    hurtCharacter(damage){
+        const PLAYER_CHARACTER = this.world.character;
+        if(!PLAYER_CHARACTER.canBeHurt()){
+            return false;
+        }
+        PLAYER_CHARACTER.receiveHit(damage, this);
+        return true;
+    }
+
+    /**
+     * Hurts the character if an attack zone touches its contact box.
+     * @param {{x: number, y: number, width: number, height: number}} rect - The attack zone in world coordinates.
+     * @param {number} damage - Damage to deal.
+     * @returns {boolean} True if the character was hit.
+     */
+    hitCharacter(rect, damage){
+        return areRectsOverlapping(this.world.character.getContactRect(), rect) &amp;&amp; this.hurtCharacter(damage);
+    }
+
+    /**
+     * Runs a tick of the jump state: the wind-up, the take-off, the flight and the landing.
+     * @returns {void}
+     */
+    updateJump(){
+        if(this.stateTicks &lt; this.settings.jumpWindupTicks){
+            this.showFrameState('jump', this.getWindupFrame());
+        } else if(this.stateTicks === this.settings.jumpWindupTicks){
+            this.launchJump();
+        } else if(!this.onGround){
+            this.flyJump();
+        } else {
+            this.landJump();
+        }
+    }
+
+    /**
+     * Picks the frame for the wind-up: the wind-up frames spread over its time.
+     * @returns {number} Index of the frame in the jump sprite sheet.
+     */
+    getWindupFrame(){
+        const WINDUP_FRAMES = this.jumpFrames.windup;
+        return WINDUP_FRAMES[getProgressFrame(this.stateTicks, this.settings.jumpWindupTicks, WINDUP_FRAMES.length)];
+    }
+
+    /**
+     * Picks the frame for the flight: rising, at the top or falling.
+     * @returns {number} Index of the frame in the jump sprite sheet.
+     */
+    getAirFrame(){
+        return pickAirFrame(this.jumpFrames, this.speedY, APEX_SPEED_LIMIT);
+    }
+
+    /**
+     * Picks the frame for the landing: the landing frames spread over its time.
+     * @returns {number} Index of the frame in the jump sprite sheet.
+     */
+    getLandFrame(){
+        const LAND_FRAMES = this.jumpFrames.land;
+        return LAND_FRAMES[getProgressFrame(this.landTicks, this.settings.jumpLandTicks, LAND_FRAMES.length)];
+    }
+
+    /**
+     * Makes the boss take off: sets the upward speed, leaves the ground, restarts the landing counter and
+     * plays the jump sound.
+     * @returns {void}
+     */
+    launchJump(){
+        this.speedY = this.settings.jumpPower;
+        this.onGround = false;
+        this.landTicks = 0;
+        this.showFrameState('jump', this.getAirFrame());
+        soundManager.playSound('jump');
+    }
+
+    /**
+     * Runs a tick of the flight: moves the boss forward at the jump speed and shows the flight frame.
+     * @returns {void}
+     */
+    flyJump(){
+        this.speed = this.settings.jumpSpeed;
+        this.moveForward();
+        this.showFrameState('jump', this.getAirFrame());
+    }
+
+    /**
+     * Runs a tick of the landing: shows the landing frame, plays the landing sound at the first tick and ends
+     * the jump when the landing time is over.
+     * @returns {void}
+     */
+    landJump(){
+        this.landTicks++;
+        this.showFrameState('jump', this.getLandFrame());
+        if(this.landTicks === 1){
+            soundManager.playSound('land');
+        }
+        if(this.landTicks >= this.settings.jumpLandTicks){
+            this.endJump();
+        }
+    }
+
+    /**
+     * Runs when the jump has ended: the boss goes on chasing. Subclasses can do something else.
+     * @returns {void}
+     */
+    endJump(){
+        this.startChase();
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

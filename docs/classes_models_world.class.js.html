@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/world.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/world.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const VISIBLE_MARGIN = 128;
+
+/**
+ * The running world of a level. It holds the level, the character, the projectiles, the display, the camera
+ * and the portal transition. It draws everything again for every frame, checks for the end of the game and
+ * knows the pause and the debug displays.
+ */
+class World {
+    level;
+    levelData;
+    restartLevelData;
+    frameRequest;
+    onGameEnd;
+    isGameEnded = false;
+    hud = new Hud(this);
+    ctx;
+    canvas;
+    keyboard;
+    cameraX = 0;
+    projectiles = [];
+    isPaused = false;
+    transition = null;
+    showHitboxes = GAME_SETTINGS.debug.showHitboxes;
+
+    /**
+     * Builds the world: the level, the character at the start point, the links between all objects and the
+     * drawing loop.
+     * @param {HTMLCanvasElement} canvas - The game canvas.
+     * @param {Keyboard} keyboard - The state of the keys.
+     * @param {object} levelData - Data of the level part to build.
+     * @param {function(boolean): void} onGameEnd - Called when the game ends, with true for a victory.
+     * @param {string} characterId - 'fireWizard' or 'lightningMage'.
+     */
+    constructor(canvas, keyboard, levelData, onGameEnd, characterId){
+        this.onGameEnd = onGameEnd;
+        this.setLevel(levelData);
+        this.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.keyboard = keyboard;
+        this.character = new Character(characterId);
+        this.character.placeAt(this.level.playerStart);
+        this.setWorld();
+        this.drawWorld();
+    }
+
+    /**
+     * Draws the background layers with the parallax effect: every layer is shifted by the camera position
+     * times its own factor, so far layers move slowly and near layers move fast.
+     * @returns {void}
+     */
+    drawBackgroundObjects(){
+        this.level.backgroundObjects.forEach(layer => {
+            const LAYER_OFFSET = (this.cameraX * layer.parallaxFactor) % BACKGROUND_WIDTH;
+            this.ctx.save();
+            this.ctx.translate(-Math.round(LAYER_OFFSET), 0);
+            layer.drawObject(this.ctx);
+            this.ctx.restore();
+        });
+    }
+
+    /**
+     * Gives the character, the enemies and the items a link to this world.
+     * @returns {void}
+     */
+    setWorld(){
+        this.character.world = this;
+        this.level.enemies.forEach(enemy => enemy.world = this);
+        this.level.items.forEach(item => item.world = this);
+    }
+
+    /**
+     * Adds an item to the running level and links it to the world.
+     * @param {LevelItem} item - The item to add.
+     * @returns {void}
+     */
+    addItem(item){
+        item.world = this;
+        this.level.items.push(item);
+    }
+
+    /**
+     * Builds the level from its data and remembers which data a restart starts with.
+     * @param {object} levelData - Data of the level part.
+     * @returns {void}
+     */
+    setLevel(levelData){
+        this.levelData = levelData;
+        this.level = new Level(levelData);
+        this.restartLevelData = levelData.restartLevel ?? levelData;
+    }
+
+    /**
+     * Stops and removes all projectiles.
+     * @returns {void}
+     */
+    clearProjectiles(){
+        this.projectiles.forEach(projectile => projectile.stopAnimation());
+        this.projectiles = [];
+    }
+
+    /**
+     * Finds the boss of the level.
+     * @returns {Boss|undefined} The boss, or undefined if the level part has none.
+     */
+    findBoss(){
+        return this.level.enemies.find(enemy => enemy.isBoss);
+    }
+
+    /**
+     * Switches to a new level part: stops the old objects and projectiles, builds the new level, links
+     * everything, puts the character on the new start and resets the camera.
+     * @param {object} levelData - Data of the new level part.
+     * @returns {void}
+     */
+    loadLevel(levelData){
+        this.level.stopAll();
+        this.clearProjectiles();
+        this.setLevel(levelData);
+        this.setWorld();
+        this.character.placeAt(this.level.playerStart);
+        this.cameraX = 0;
+    }
+
+    /**
+     * Stops the world completely: the drawing loop and the timers of the level, the character, the
+     * projectiles, the transition and the display.
+     * @returns {void}
+     */
+    stopWorld(){
+        cancelAnimationFrame(this.frameRequest);
+        this.level.stopAll();
+        this.character.stopAnimation();
+        this.clearProjectiles();
+        this.transition?.stopAnimation();
+        this.hud.stopTimer();
+    }
+
+    /**
+     * Starts the portal transition: pauses the game and creates the transition at the portal.
+     * @param {Portal} portal - The portal the character entered.
+     * @returns {void}
+     */
+    startTransition(portal){
+        this.isPaused = true;
+        this.transition = new PortalTransition(this, portal.centerX - this.cameraX, portal.centerY, portal.width, this.levelData.getNextLevel());
+    }
+
+    /**
+     * Checks whether the game has ended and ends it: game over when the death of the character has finished,
+     * victory when the character is alive and the boss is defeated.
+     * @returns {void}
+     */
+    checkGameEnd(){
+        if(this.isGameEnded){
+            return;
+        }
+        if(this.character.hasDeathFinished()){
+            this.endGame(false);
+        } else if(!this.character.isDead() &amp;&amp; this.hasBossDefeated()){
+            this.endGame(true);
+        }
+    }
+
+    /**
+     * Tells whether the boss is defeated, which means it has finished dying.
+     * @returns {boolean} True if there is a boss and its death has finished.
+     */
+    hasBossDefeated(){
+        const BOSS_ENEMY = this.findBoss();
+        return BOSS_ENEMY?.hasDeathFinished() ?? false;
+    }
+
+    /**
+     * Ends the game: after a victory the projectiles are removed and the keys are released, then the end
+     * function of the page is called.
+     * @param {boolean} isVictory - True for a victory, false for game over.
+     * @returns {void}
+     */
+    endGame(isVictory){
+        this.isGameEnded = true;
+        if(isVictory){
+            this.clearProjectiles();
+            this.keyboard = new Keyboard();
+        }
+        this.onGameEnd?.(isVictory);
+    }
+
+    /**
+     * Switches the pause on or off, not during the portal transition and not after the end of the game.
+     * @returns {void}
+     */
+    togglePause(){
+        if(!this.transition &amp;&amp; !this.isGameEnded){
+            this.isPaused = !this.isPaused;
+        }
+    }
+
+    /**
+     * Tells whether the pause chosen by the player is active, not the stop during a transition or after the end.
+     * @returns {boolean} True if the pause menu has to be shown.
+     */
+    isPauseActive(){
+        return this.isPaused &amp;&amp; !this.transition &amp;&amp; !this.isGameEnded;
+    }
+
+    /**
+     * Ends the portal transition: stops and removes it and lets the game run again.
+     * @returns {void}
+     */
+    endTransition(){
+        this.transition.stopAnimation();
+        this.transition = null;
+        this.isPaused = false;
+    }
+
+    /**
+     * Darkens the whole canvas with a transparent black layer while the pause is active.
+     * @returns {void}
+     */
+    drawPauseOverlay(){
+        if(this.isPauseActive()){
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${GAME_SETTINGS.ui.pauseOverlayAlpha})`;
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+    }
+
+    /**
+     * Draws the portal transition if one is running.
+     * @returns {void}
+     */
+    drawTransition(){
+        if(this.transition){
+            this.transition.drawObject(this.ctx);
+        }
+    }
+
+    /**
+     * Adds a projectile to the world and links it to it.
+     * @param {Projectile} projectile - The projectile to add.
+     * @returns {void}
+     */
+    addProjectile(projectile){
+        projectile.world = this;
+        this.projectiles.push(projectile);
+    }
+
+    /**
+     * Takes a projectile out of the list of the world.
+     * @param {Projectile} projectile - The projectile to remove.
+     * @returns {void}
+     */
+    removeProjectile(projectile){
+        this.projectiles = this.projectiles.filter(other => other !== projectile);
+    }
+
+    /**
+     * Centers the camera on the character, but never beyond the start or the end of the level.
+     * @returns {void}
+     */
+    updateCamera(){
+        const TARGET_X = this.character.x + this.character.width / 2 - this.canvas.width / 2;
+        const MAX_CAMERA_X = Math.max(this.level.width - this.canvas.width, 0);
+        this.cameraX = clampValue(TARGET_X, 0, MAX_CAMERA_X);
+    }
+
+    /**
+     * Draws everything that scrolls with the camera, from back to front: tiles, items, character, enemies,
+     * projectiles and the debug outlines.
+     * @returns {void}
+     */
+    drawScrollingObjects(){
+        this.ctx.save();
+        this.ctx.translate(-Math.round(this.cameraX), 0);
+        this.addObjectsToMap(this.level.tiles);
+        this.addObjectsToMap(this.level.items);
+        this.character.drawObject(this.ctx);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.projectiles);
+        this.drawHitboxes();
+        this.ctx.restore();
+    }
+
+    /**
+     * Draws one frame: clears the canvas, checks for the end of the game, moves the camera, draws background,
+     * objects, display, pause layer and transition, and asks the browser for the next frame.
+     * @returns {void}
+     */
+    drawWorld(){
+        this.ctx.imageSmoothingEnabled = false;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.checkGameEnd();
+        this.updateCamera();
+        this.drawBackgroundObjects();
+        this.drawScrollingObjects();
+        this.hud.drawHud(this.ctx);
+        this.drawPauseOverlay();
+        this.drawTransition();
+        this.frameRequest = requestAnimationFrame(() => this.drawWorld());
+    }
+
+    /**
+     * Tells whether an object is inside the visible area, which is the width of the canvas plus a margin.
+     * @param {DrawableObject} object - The object to check.
+     * @returns {boolean} True if it has to be drawn.
+     */
+    isVisible(object){
+        return object.x + object.width + VISIBLE_MARGIN > this.cameraX &amp;&amp; object.x - VISIBLE_MARGIN &lt; this.cameraX + this.canvas.width;
+    }
+
+    /**
+     * Draws the visible objects of a list.
+     * @param {DrawableObject[]} objects - The objects to draw.
+     * @returns {void}
+     */
+    addObjectsToMap(objects){
+        objects.filter(object => this.isVisible(object)).forEach(object => object.drawObject(this.ctx));
+    }
+
+    /**
+     * Draws the hitboxes of the character, the enemies and the projectiles, only while the debug setting is on.
+     * @returns {void}
+     */
+    drawHitboxes(){
+        if(!this.showHitboxes){
+            return;
+        }
+        this.character.drawHitbox(this.ctx, 'lime');
+        this.character.drawRect(this.ctx, this.character.getContactRect(), 'cyan');
+        this.character.drawAttackBox(this.ctx);
+        this.level.enemies.forEach(enemy => {
+            enemy.drawHitbox(this.ctx, 'lime');
+            enemy.drawHurtboxes(this.ctx, enemy.touchesRect(this.character.getContactRect()) ? 'red' : 'cyan');
+            enemy.drawDebugArea(this.ctx);
+        });
+        this.projectiles.forEach(projectile => projectile.drawHitbox(this.ctx, 'orange'));
+    }
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:17 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/models/enemy.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/models/enemy.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const EDGE_PROBE_DISTANCE = 24;
+
+/**
+ * Base class of all enemies and bosses. It builds an enemy from its config and runs the common tick: falling,
+ * death, hurt phase, gravity and then the behavior of the subclass. It also handles hits with knockback,
+ * turning at edges, the hurt boxes that touch the character, and the removal after death.
+ */
+class Enemy extends MovableObject {
+    isBoss = false;
+
+    /**
+     * Builds the enemy from its config and puts it on a map cell with its feet on the bottom edge of the cell.
+     * @param {number} column - Map column of the enemy.
+     * @param {number} row - Map row of the enemy.
+     * @param {object} config - Settings, sprites, frame size, hitbox, hurt boxes and sounds of this enemy type.
+     */
+    constructor(column, row, config){
+        super();
+        this.applyConfig(config);
+        this.applyStats();
+        this.frameCount = Object.values(this.sprites)[0].frames;
+        this.setupSprites(Object.values(this.sprites).map(sprite => sprite.path));
+        this.x = column * TILE_SIZE;
+        this.y = (row + 1) * TILE_SIZE - this.height;
+    }
+
+    /**
+     * Copies the config into the properties of the enemy.
+     * @param {object} config - Settings, sprites, frame size, hitbox, hurt boxes, facing and sounds.
+     * @returns {void}
+     */
+    applyConfig(config){
+        this.settings = config.settings;
+        this.sprites = config.sprites;
+        this.width = this.settings.width;
+        this.height = this.settings.height;
+        this.frameWidth = config.frameSize;
+        this.frameHeight = config.frameSize;
+        this.hitbox = config.hitbox;
+        this.hurtboxes = config.hurtboxes;
+        this.spriteFacesLeft = config.spriteFacesLeft;
+        this.deathSound = config.deathSound;
+        this.bodyShift = config.bodyShift ?? 0;
+    }
+
+    /**
+     * Takes speed, animation speed and health from the settings and fills the health.
+     * @returns {void}
+     */
+    applyStats(){
+        this.speed = this.settings.speed;
+        this.animationFps = this.settings.animationFps;
+        this.maxHealth = this.settings.maxHealth;
+        this.health = this.maxHealth;
+    }
+
+    /**
+     * Takes a hit: the enemy loses health and plays the death sound if it died, otherwise the hit sound and
+     * its reaction.
+     * @param {number} damage - Damage to take.
+     * @param {MovableObject} source - The object that caused the hit.
+     * @returns {void}
+     */
+    receiveHit(damage, source){
+        this.takeDamage(damage);
+        if(this.isDead()){
+            soundManager.playSound(this.deathSound);
+            return;
+        }
+        soundManager.playSound('enemyHit');
+        this.reactToHit(source);
+    }
+
+    /**
+     * Reacts to a hit that did not kill: the enemy is pushed away from the source and looks at it.
+     * @param {MovableObject} source - The object that caused the hit.
+     * @returns {void}
+     */
+    reactToHit(source){
+        this.startKnockback(source);
+        this.otherDirection = this.knockbackDirection > 0;
+    }
+
+    /**
+     * Runs one tick of the enemy: falling, death, hurt phase and gravity, and then its behavior. While it is
+     * hurt only the hurt animation plays.
+     * @returns {void}
+     */
+    updateObject(){
+        this.checkFall();
+        if(this.isDead()){
+            this.updateDeath();
+            return;
+        }
+        this.updateHurt();
+        this.applyGravity();
+        if(this.isHurt()){
+            this.showProgressState('hurt', this.getHurtElapsed(), this.settings.hurtTicks);
+            return;
+        }
+        this.updateBehavior();
+    }
+
+    /**
+     * Kills the enemy at once and plays its death sound if it has fallen out of the level.
+     * @returns {void}
+     */
+    checkFall(){
+        if(this.hasFallenOut()){
+            this.dieByFall();
+            soundManager.playSound(this.deathSound);
+        }
+    }
+
+    /**
+     * Hook for the behavior of one tick, every enemy type overrides it. Does nothing here.
+     * @returns {void}
+     */
+    updateBehavior(){
+    }
+
+    /**
+     * Patrols on the platform: it turns around at an edge or the end of the level and walks one step
+     * forward. Only works on the ground.
+     * @returns {void}
+     */
+    patrolPlatform(){
+        if(!this.onGround){
+            return;
+        }
+        if(this.shouldTurn()){
+            this.otherDirection = !this.otherDirection;
+        }
+        this.moveForward();
+    }
+
+    /**
+     * Returns the x position of a point ahead of the enemy, measured from the middle of its hitbox in the
+     * direction it looks.
+     * @param {number} distance - Distance ahead in pixels.
+     * @returns {number} The x position of the probe point.
+     */
+    getProbeX(distance){
+        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
+        return getRectCenterX(this.getHitbox()) + STEP_DIRECTION * distance;
+    }
+
+    /**
+     * Tells whether there is walkable ground a short distance ahead, just under the feet.
+     * @returns {boolean} True if the enemy does not stand at an edge.
+     */
+    hasGroundAhead(){
+        return this.world.level.isWalkableAt(this.getProbeX(EDGE_PROBE_DISTANCE), this.y + this.height + 1);
+    }
+
+    /**
+     * Returns the hurt boxes of the enemy in world coordinates, mirrored with the enemy.
+     * @returns {{x: number, y: number, width: number, height: number}[]} The hurt box rectangles.
+     */
+    getHurtRects(){
+        return this.hurtboxes.map(box => this.getBoxRect(box));
+    }
+
+    /**
+     * Tells whether any hurt box of the enemy touches a rectangle. Touching several boxes still gives one answer.
+     * @param {{x: number, y: number, width: number, height: number}} rect - Rectangle in world coordinates.
+     * @returns {boolean} True if at least one hurt box overlaps the rectangle.
+     */
+    touchesRect(rect){
+        return this.getHurtRects().some(hurtRect => areRectsOverlapping(hurtRect, rect));
+    }
+
+    /**
+     * Draws the hurt boxes of the enemy, used while debugging.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @param {string} color - Outline color, any CSS color.
+     * @returns {void}
+     */
+    drawHurtboxes(ctx, color){
+        this.getHurtRects().forEach(hurtRect => this.drawRect(ctx, hurtRect, color));
+    }
+
+    /**
+     * Draws the current frame shifted by the body shift, which puts the body of the figure in the middle of
+     * the hitbox so that it does not jump when the enemy turns around.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @param {number} drawX - Horizontal position to draw at, this.x or 0 when the context is mirrored.
+     * @returns {void}
+     */
+    drawFrame(ctx, drawX){
+        super.drawFrame(ctx, drawX + this.bodyShift);
+    }
+
+    /**
+     * Tells whether the enemy has to turn around: just below the front edge of its body is no ground or the
+     * level ends.
+     * @returns {boolean} True at an edge or at the end of the level.
+     */
+    shouldTurn(){
+        const STEP_DIRECTION = this.otherDirection ? -1 : 1;
+        const PROBE_X = this.x + this.width / 2 + STEP_DIRECTION * this.width / 2;
+        const PROBE_Y = this.y + this.height + 1;
+        const IS_OUT_OF_BOUNDS = PROBE_X &lt; 0 || PROBE_X > this.world.level.width;
+        return IS_OUT_OF_BOUNDS || !this.world.level.isWalkableAt(PROBE_X, PROBE_Y);
+    }
+
+    /**
+     * Hook for subclasses that draw extra areas while debugging, such as the sight area. Does nothing here.
+     * @param {CanvasRenderingContext2D} ctx - Drawing context of the game canvas.
+     * @returns {void}
+     */
+    drawDebugArea(ctx){
+    }
+
+    /**
+     * Runs one tick of a dead enemy: it falls to the ground, its death animation plays and it is removed when
+     * the animation has finished.
+     * @returns {void}
+     */
+    updateDeath(){
+        this.applyGravity();
+        this.advanceDeath('death');
+        if(this.hasDeathFinished()){
+            this.finishDeath();
+        }
+    }
+
+    /**
+     * Returns the duration of the death animation.
+     * @returns {number} Duration in ticks.
+     */
+    getDeathTicks(){
+        return this.settings.deathTicks;
+    }
+
+    /**
+     * Removes the enemy for good: stops its timer and takes it out of the level.
+     * @returns {void}
+     */
+    finishDeath(){
+        this.stopAnimation();
+        this.world.level.removeEnemy(this);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

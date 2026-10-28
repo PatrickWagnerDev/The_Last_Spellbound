@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scripts/game-settings.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scripts/game-settings.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * All tunable values of the game: physics, combat, character, enemies, bosses, display, energy and the debug
+ * switches. The meaning of every value is described in the documentation.
+ * @see scripts/GAME-SETTINGS.md
+ */
+const GAME_SETTINGS = {
+    physics: {
+        gravityForce: 0.5
+    },
+    combat: {
+        hitDamage: 1,
+        invincibleTicks: 60
+    },
+    character: {
+        width: 150,
+        height: 150,
+        maxHealth: 3,
+        hurtTicks: 24,
+        knockbackSpeed: 5,
+        deathTicks: 60,
+        rollTicks: 55,
+        rollSpeed: 5,
+        rollCooldownTicks: 30,
+        attackTicks: 30,
+        attackHitStartTick: 12,
+        attackHitEndTick: 18,
+        castTicks: 40,
+        castReleaseTick: 25,
+        castCooldownTicks: 60,
+        speed: 3,
+        airSpeedFactor: 1.25,
+        jumpSpeed: 11.5,
+        crouchTicks: 6,
+        landTicks: 9,
+        coyoteTicks: 6,
+        apexSpeed: 3,
+        restDelayTicks: 600,
+        restTicks: 60,
+        idleFps: 5,
+        walkCycleTicks: 45,
+        edgeTolerance: 12,
+        leftWallX: -60,
+        rightWallOffset: 60
+    },
+    bear: {
+        width: 80,
+        height: 80,
+        maxHealth: 2,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
+        deathTicks: 60
+    },
+    mage: {
+        width: 64,
+        height: 64,
+        maxHealth: 1,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
+        deathTicks: 60,
+        sightTiles: 5,
+        sightBehindTiles: 1,
+        sightAboveTiles: 2,
+        sightBelowTiles: 2,
+        loseSightTicks: 120,
+        attackTicks: 48,
+        fireballReleaseTick: 24,
+        attackCooldownTicks: 180,
+        fireballDamage: 1,
+        fireballScale: 4,
+        fireballFps: 12
+    },
+    red: {
+        width: 64,
+        height: 64,
+        maxHealth: 1,
+        speed: 3,
+        animationFps: 8,
+        dashFps: 14,
+        turnDelayTicks: 20,
+        hurtTicks: 24,
+        knockbackSpeed: 4,
+        deathTicks: 60,
+        sightTiles: 6,
+        sightAboveTiles: 2,
+        sightBelowTiles: 2
+    },
+    mageBoss: {
+        width: 192,
+        height: 192,
+        maxHealth: 9,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 1,
+        deathTicks: 90,
+        sightTiles: 7,
+        sightAboveTiles: 2,
+        loseSightTicks: 60,
+        sneerTicks: 60,
+        searchTicks: 60,
+        lookSwitchTicks: 20,
+        attackTicks: 45,
+        fireballReleaseTick: 28,
+        fireballCooldownTicks: 300,
+        fireballDamage: 1,
+        fireballScale: 3,
+        fireballLowHeight: 48,
+        fireballMaxHeight: 99,
+        rayCooldownTicks: 900,
+        rayWindupTicks: 60,
+        rayTicks: 90,
+        rayDamage: 2,
+        raySpeedFactor: 2,
+        rayScale: 3,
+        rayMaxHeight: 48
+    },
+    demonBoss: {
+        width: 288,
+        height: 288,
+        maxHealth: 18,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 1,
+        deathTicks: 90,
+        sightTiles: 7,
+        sightAboveTiles: 2,
+        loseSightTicks: 60,
+        sneerTicks: 60,
+        meleeRangeTiles: 2,
+        meleeTicks: 48,
+        meleeHitStartTick: 24,
+        meleeHitEndTick: 42,
+        meleeDamage: 2,
+        meleeCooldownTicks: 90,
+        maxJumpGapTiles: 2,
+        jumpWindupTicks: 12,
+        jumpPower: 9,
+        jumpSpeed: 5,
+        jumpLandTicks: 12,
+        sprintSpeed: 3,
+        sprintFps: 12,
+        sprintMinTiles: 3,
+        sprintTicks: 60,
+        sprintCooldownTicks: 300
+    },
+    darkKnight: {
+        width: 256,
+        height: 256,
+        maxHealth: 27,
+        speed: 0.5,
+        animationFps: 8,
+        hurtTicks: 24,
+        knockbackSpeed: 1,
+        deathTicks: 90,
+        sightTiles: 7,
+        sightAboveTiles: 3,
+        sightBelowTiles: 4,
+        loseSightTicks: 240,
+        maxJumpGapTiles: 2,
+        maxPlatformTiles: 4,
+        jumpWindupTicks: 18,
+        jumpPower: 11.5,
+        jumpSpeed: 3.5,
+        jumpLandTicks: 18,
+        sprintSpeed: 3.5,
+        sprintFps: 12,
+        attackSoundRate: 0.8,
+        stepFrames: [0, 4],
+        sprintStepRate: 1.5,
+        sprintMinTiles: 3,
+        sprintTicks: 150,
+        sprintCooldownTicks: 720,
+        attacks: {
+            thrust: { ticks: 48, hitStartTick: 24, hitEndTick: 42, damage: 1, cooldownTicks: 90, reachTiles: 2 },
+            walkThrust: { ticks: 48, hitStartTick: 24, hitEndTick: 42, damage: 1, cooldownTicks: 90, reachTiles: 2 },
+            upSlash: { ticks: 48, hitStartTick: 12, hitEndTick: 30, damage: 1, cooldownTicks: 120, reachTiles: 2 },
+            aura: { ticks: 120, hitStartTick: 60, hitEndTick: 96, damage: 2, cooldownTicks: 900, reachTiles: 3 }
+        }
+    },
+    fireball: {
+        damage: 3,
+        speed: 6,
+        range: 420,
+        flightFps: 12,
+        impactTicks: 30
+    },
+    item: {
+        pickupFps: 14
+    },
+    key: {
+        scale: 2,
+        animationFps: 10
+    },
+    pizza: {
+        scale: 2,
+        healAmount: 1
+    },
+    donut: {
+        scale: 2
+    },
+    chest: {
+        scale: 2,
+        openDistance: 48,
+        openFps: 8,
+        openSoundFrame: 5,
+        portalOffset: 2
+    },
+    portal: {
+        size: 96,
+        animationFps: 8,
+        appearTicks: 30
+    },
+    transition: {
+        expandTicks: 36,
+        contractTicks: 36,
+        spinFps: 12
+    },
+    energy: {
+        maxCharges: 5,
+        startCharges: 1
+    },
+    ui: {
+        statusBarScale: 2,
+        statusBarX: 12,
+        statusBarY: 12,
+        energyBarY: 44,
+        keyIconY: 76,
+        keyIconSpacing: 36,
+        keyIconScale: 2,
+        blinkTicks: 60,
+        blinkIntervalTicks: 6,
+        bossBarScale: 0.5,
+        bossBarGap: 0,
+        bossBarGapAbove: 10,
+        bossBarMinY: 4,
+        bossBarAlpha: 0.55,
+        bossBarHealthPerBar: 3,
+        bossBarsPerRow: 3,
+        pauseOverlayAlpha: 0.5
+    },
+    debug: {
+        unlockAllLevels: false,
+        startInBossLevel: false,
+        showHitboxes: false
+    }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bear.html">Bear</a></li><li><a href="Boss.html">Boss</a></li><li><a href="BossRay.html">BossRay</a></li><li><a href="Character.html">Character</a></li><li><a href="CharacterActions.html">CharacterActions</a></li><li><a href="CharacterMovement.html">CharacterMovement</a></li><li><a href="Chest.html">Chest</a></li><li><a href="Collectible.html">Collectible</a></li><li><a href="DarkKnight.html">DarkKnight</a></li><li><a href="DemonBoss.html">DemonBoss</a></li><li><a href="Donut.html">Donut</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="EnemyFireball.html">EnemyFireball</a></li><li><a href="Fireball.html">Fireball</a></li><li><a href="Hud.html">Hud</a></li><li><a href="JumpBoss.html">JumpBoss</a></li><li><a href="Key.html">Key</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="KnightAttacks.html">KnightAttacks</a></li><li><a href="Level.html">Level</a></li><li><a href="LevelItem.html">LevelItem</a></li><li><a href="LevelProgress.html">LevelProgress</a></li><li><a href="Mage.html">Mage</a></li><li><a href="MageBoss.html">MageBoss</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Pizza.html">Pizza</a></li><li><a href="PlatformNav.html">PlatformNav</a></li><li><a href="Portal.html">Portal</a></li><li><a href="PortalTransition.html">PortalTransition</a></li><li><a href="Projectile.html">Projectile</a></li><li><a href="Red.html">Red</a></li><li><a href="SightEnemy.html">SightEnemy</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="Tile.html">Tile</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#GAME_SETTINGS">GAME_SETTINGS</a></li><li><a href="global.html#addMenuSounds">addMenuSounds</a></li><li><a href="global.html#areRectsOverlapping">areRectsOverlapping</a></li><li><a href="global.html#buildPreviewLevels">buildPreviewLevels</a></li><li><a href="global.html#centerTitleLines">centerTitleLines</a></li><li><a href="global.html#chooseCharacter">chooseCharacter</a></li><li><a href="global.html#clampValue">clampValue</a></li><li><a href="global.html#closeDialog">closeDialog</a></li><li><a href="global.html#closeLevelChoice">closeLevelChoice</a></li><li><a href="global.html#createImage">createImage</a></li><li><a href="global.html#createWorld">createWorld</a></li><li><a href="global.html#fadeThroughBlack">fadeThroughBlack</a></li><li><a href="global.html#finishStartGame">finishStartGame</a></li><li><a href="global.html#finishStartIntro">finishStartIntro</a></li><li><a href="global.html#fitEffectToCanvas">fitEffectToCanvas</a></li><li><a href="global.html#getEffectPaths">getEffectPaths</a></li><li><a href="global.html#getLevelParts">getLevelParts</a></li><li><a href="global.html#getMusicNames">getMusicNames</a></li><li><a href="global.html#getProgressFrame">getProgressFrame</a></li><li><a href="global.html#getRectCenterX">getRectCenterX</a></li><li><a href="global.html#getStartLevelData">getStartLevelData</a></li><li><a href="global.html#getTicksPerFrame">getTicksPerFrame</a></li><li><a href="global.html#goHome">goHome</a></li><li><a href="global.html#handleIntroEnd">handleIntroEnd</a></li><li><a href="global.html#handlePauseKey">handlePauseKey</a></li><li><a href="global.html#hideDialogs">hideDialogs</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initFullscreen">initFullscreen</a></li><li><a href="global.html#initTouchControls">initTouchControls</a></li><li><a href="global.html#isDialogOpen">isDialogOpen</a></li><li><a href="global.html#leavePressScreen">leavePressScreen</a></li><li><a href="global.html#loadLevelAssets">loadLevelAssets</a></li><li><a href="global.html#loadStartAssets">loadStartAssets</a></li><li><a href="global.html#loadThenStart">loadThenStart</a></li><li><a href="global.html#markCharacter">markCharacter</a></li><li><a href="global.html#moveCharacterMark">moveCharacterMark</a></li><li><a href="global.html#openDialog">openDialog</a></li><li><a href="global.html#openLevelChoice">openLevelChoice</a></li><li><a href="global.html#pauseInPortrait">pauseInPortrait</a></li><li><a href="global.html#pickAirFrame">pickAirFrame</a></li><li><a href="global.html#playCharacterEffect">playCharacterEffect</a></li><li><a href="global.html#playClickSound">playClickSound</a></li><li><a href="global.html#playHoverSound">playHoverSound</a></li><li><a href="global.html#playPauseSound">playPauseSound</a></li><li><a href="global.html#playStartIntro">playStartIntro</a></li><li><a href="global.html#playUnpauseSound">playUnpauseSound</a></li><li><a href="global.html#preloadEffectFrames">preloadEffectFrames</a></li><li><a href="global.html#preloadStaticImages">preloadStaticImages</a></li><li><a href="global.html#pressTouchKey">pressTouchKey</a></li><li><a href="global.html#releaseAllKeys">releaseAllKeys</a></li><li><a href="global.html#releaseFocus">releaseFocus</a></li><li><a href="global.html#releaseTouchKey">releaseTouchKey</a></li><li><a href="global.html#restartLevel">restartLevel</a></li><li><a href="global.html#restartWorld">restartWorld</a></li><li><a href="global.html#setStartPhase">setStartPhase</a></li><li><a href="global.html#showEffectFrame">showEffectFrame</a></li><li><a href="global.html#showGameEnd">showGameEnd</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showPressScreen">showPressScreen</a></li><li><a href="global.html#showStartScreen">showStartScreen</a></li><li><a href="global.html#startLevel">startLevel</a></li><li><a href="global.html#startNextLevel">startNextLevel</a></li><li><a href="global.html#startNextWorld">startNextWorld</a></li><li><a href="global.html#stopCharacterEffect">stopCharacterEffect</a></li><li><a href="global.html#tickDown">tickDown</a></li><li><a href="global.html#toggleControlsPage">toggleControlsPage</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLoadingHint">toggleLoadingHint</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#togglePause">togglePause</a></li><li><a href="global.html#toggleScreen">toggleScreen</a></li><li><a href="global.html#updateBadgeUi">updateBadgeUi</a></li><li><a href="global.html#updateFullscreenUi">updateFullscreenUi</a></li><li><a href="global.html#updateGameOverUi">updateGameOverUi</a></li><li><a href="global.html#updateKey">updateKey</a></li><li><a href="global.html#updateLevelButtons">updateLevelButtons</a></li><li><a href="global.html#updateMuteUi">updateMuteUi</a></li><li><a href="global.html#updateNextLevelUi">updateNextLevelUi</a></li><li><a href="global.html#updatePauseUi">updatePauseUi</a></li><li><a href="global.html#updateStartScreenUi">updateStartScreenUi</a></li><li><a href="global.html#waitForImages">waitForImages</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 28 2026 09:15:16 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
